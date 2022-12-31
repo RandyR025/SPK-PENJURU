@@ -21,7 +21,9 @@ class KriteriaController extends Controller
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
-        return view('backend/admin.data_kriteria', compact('admin','guru', 'wali'));
+        $kriteria = Kriteria::all();
+        $no = 1;
+        return view('backend/admin.data_kriteria', compact('admin','guru', 'wali','kriteria','no'));
     }
 
     /**
@@ -156,11 +158,11 @@ class KriteriaController extends Controller
     }
 
 
-    public function fetchkriteria()
-    {
-        $kriteria = Kriteria::all();
-        return response()->json([
-            'kriteria' => $kriteria,
-        ]);
-    }
+    // public function fetchkriteria()
+    // {
+    //     $kriteria = Kriteria::all();
+    //     return response()->json([
+    //         'kriteria' => $kriteria,
+    //     ]);
+    // }
 }

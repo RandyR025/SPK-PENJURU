@@ -303,6 +303,7 @@
 
 <!-- Vendor Scripts Start -->
 <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script>
+@yield('js')
 <script src="{{asset('backend/js/vendor/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('backend/js/vendor/OverlayScrollbars.min.js')}}"></script>
 <script src="{{asset('backend/js/vendor/autoComplete.min.js')}}"></script>
@@ -333,17 +334,18 @@
 <!-- Template Base Scripts End -->
 <!-- Page Specific Scripts Start -->
 
-<!-- <script src="{{asset('backend/js/cs/datatable.extend.js')}}"></script>
-<script src="{{asset('backend/js/plugins/datatable.editablerows.js')}}"></script> -->
-<script src="{{asset('backend/js/common.js')}}"></script>
-<script src="{{asset('backend/js/scripts.js')}}"></script>
+<script src="{{asset('backend/js/cs/datatable.extend.js')}}"></script>
 <script src="{{asset('backend/js/cs/glide.custom.js')}}"></script>
 <script src="{{asset('backend/js/pages/blocks.details.js')}}"></script>
 <script src="{{asset('backend/js/cs/dropzone.templates.js')}}"></script>
 <script src="{{asset('backend/js/forms/controls.dropzone.js')}}"></script>
+<script src="{{asset('backend/js/common.js')}}"></script>
+<script src="{{asset('backend/js/scripts.js')}}"></script>
 
 <!-- Font Awesome -->
 <script src="https://kit.fontawesome.com/207ca6be0a.js" crossorigin="anonymous"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <!-- <script type="text/javascript">
 

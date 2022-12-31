@@ -65,6 +65,55 @@ Kelola Data
         </tr>
       </thead>
       <tbody>
+      <tbody>
+        @foreach($dataguru as $data)
+        @if($data->image == null)
+        <tr>
+          <td>{{$no++}}</td>
+          <td><image src="backend/img/profile/profile-11.jpg" width="100px" height="100px" alt="image"></td>
+          <td>{{$data->nik}}</td>
+          <td>{{$data->name}}</td>
+          <td>{{$data->tanggal_lahir}}</td>
+          <td>{{$data->tempat_lahir}}</td>
+          <td>{{$data->jenis_kelamin}}</td>
+          <td>{{$data->alamat}}</td>
+          <td>{{$data->no_telp}}</td>
+          <td><button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_guru" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+          <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </td>
+        </tr>
+        @else
+        <tr>
+          <td>{{$no++}}</td>
+          <td><image src="images/{{$data->image}}" width="100px" height="100px" alt="image"></td>
+          <td>{{$data->nik}}</td>
+          <td>{{$data->name}}</td>
+          <td>{{$data->tanggal_lahir}}</td>
+          <td>{{$data->tempat_lahir}}</td>
+          <td>{{$data->jenis_kelamin}}</td>
+          <td>{{$data->alamat}}</td>
+          <td>{{$data->no_telp}}</td>
+          <td><button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_guru" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+            <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+          <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </td>
+        </tr>
+        @endif
+        @endforeach
+      </tbody>
       </tbody>
     </table>
   </div>
@@ -173,8 +222,9 @@ Kelola Data
   </div>
 </div>
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
-<script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script>
+<!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->
 <!-- <script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+@section('js')
 <script type="text/javascript">
   $(document).ready(function() {
     var table = $('#datatable').DataTable({
@@ -200,6 +250,5 @@ Kelola Data
   });
 </script>
 <script src="{{asset('js/Guru.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+@endsection
 @endsection

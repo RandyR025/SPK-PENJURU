@@ -63,6 +63,24 @@ Kelola Data
         </tr>
       </thead>
       <tbody>
+      @foreach($penilaian as $data)
+      <tr>
+      <td>{{$no++}}</td>
+          <td>{{$data->id_penilaian}}</td>
+          <td>{{$data->nama_penilaian}}</td>
+          <td>
+          <button value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+          <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+            <button value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_penilaian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+            <i class="fa-solid fa-trash-can"></i>
+            </button>
+            <a href="/show-pengisian/{{$data->id_penilaian}}" value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_penilaian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+            <i class="fa-regular fa-eye"></i>
+            </a>
+          </td>
+      </tr>
+      @endforeach
       </tbody>
     </table>
   </div>
@@ -165,9 +183,10 @@ Kelola Data
     </div>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->
-<script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+@section('js')
 <script type="text/javascript">
   $(document).ready(function() {
     var table = $('#datatable').DataTable({
@@ -193,6 +212,5 @@ Kelola Data
   });
 </script>
 <script src="{{asset('js/Penilaian.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+@endsection
 @endsection

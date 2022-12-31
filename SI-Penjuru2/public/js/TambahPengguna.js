@@ -45,36 +45,36 @@
 
 
 /* Fetch Pengguna */
-fetchuser();
-function fetchuser() {
-  $.ajax({
-    type: "GET",
-    url: "/fetch-user",
-    dataType: "json",
-    success: function(response){
-      // console.log(response.user);
-      $('tbody').html("");
-      $.each(response.user, function(key, item){
-        $('tbody').append('<tr>\
-          <td>'+(key+1)+'</td>\
-          <td>'+item.name+'</td>\
-          <td>'+item.email+'</td>\
-          <td>'+item.level+'</td>\
-          <td>\
-            <button value="'+item.id+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_user" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="modal">\
-              <i class="fa-solid fa-pen-to-square"></i>\
-            </button>\
-            <button value="'+item.id+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_user" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
-            <i class="fa-solid fa-trash-can"></i>\
-            </button>\
-          </td>\
-        </tr>'
-        );
-      });
-    }
+// fetchuser();
+// function fetchuser() {
+//   $.ajax({
+//     type: "GET",
+//     url: "/fetch-user",
+//     dataType: "json",
+//     success: function(response){
+//       // console.log(response.user);
+//       $('tbody').html("");
+//       $.each(response.user, function(key, item){
+//         $('tbody').append('<tr>\
+//           <td>'+(key+1)+'</td>\
+//           <td>'+item.name+'</td>\
+//           <td>'+item.email+'</td>\
+//           <td>'+item.level+'</td>\
+//           <td>\
+//             <button value="'+item.id+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_user" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="modal">\
+//               <i class="fa-solid fa-pen-to-square"></i>\
+//             </button>\
+//             <button value="'+item.id+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_user" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
+//             <i class="fa-solid fa-trash-can"></i>\
+//             </button>\
+//           </td>\
+//         </tr>'
+//         );
+//       });
+//     }
     
-  });      
-}
+//   });      
+// }
 
 /* Delete Data Pengguna */
 // $(document).on('click', '.delete_user', function(e){
@@ -142,7 +142,10 @@ $(document).on('click', '.delete_user', function(e){
           // $('#success_message').addClass('alert alert-success');
           // $('#success_message').text(response.message);
           // $('#deleteModal').modal('hide');
-          fetchuser();
+          // fetchuser();
+          setTimeout(function(){
+            window.location.reload();
+         }, 2000);
         }
       });
       
@@ -249,7 +252,10 @@ $(document).on('click', '.update_user', function(e){
               reverseButtons: true
             })
             $('#editModal').modal('hide');
-            fetchuser();
+            // fetchuser();
+            setTimeout(function(){
+              window.location.reload();
+           }, 2000);
       }
     }
   })
@@ -304,7 +310,10 @@ $(document).on('click', '.update_user', function(e){
             })
             $('#AddPenggunaModal').modal('hide');
             $('#AddPenggunaModal').find('input').val("");
-            fetchuser();
+            // fetchuser();
+            setTimeout(function(){
+              window.location.reload();
+           }, 2000);
 
           }
 

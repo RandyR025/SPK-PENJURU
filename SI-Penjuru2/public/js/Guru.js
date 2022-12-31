@@ -43,117 +43,117 @@
 //   });
 
 /* Fetch Pengguna */
-fetchguru();
-function fetchguru() {
-    $.ajax({
-        type: "GET",
-        url: "/fetch-guru",
-        dataType: "json",
-        success: function (response) {
-            console.log(response.guru);
-            $("tbody").html("");
-            $.each(response.guru, function (key, item) {
-                if(item.image == null){
-                    $("tbody").append(
-                        "<tr>\
-              <td>" +
-                            (key + 1) +
-                            '</td>\
-              <td><image src="backend/img/profile/profile-11.jpg" width="100px" height="100px" alt="image"></td>\
-              <td>' +
-                            item.nik +
-                            "</td>\
-              <td>" +
-                            item.name +
-                            "</td>\
-              <td>" +
-                            item.tanggal_lahir +
-                            "</td>\
-              <td>" +
-                            item.tempat_lahir +
-                            "</td>\
-              <td>" +
-                            item.jenis_kelamin +
-                            "</td>\
-              <td>" +
-                            item.alamat +
-                            "</td>\
-              <td>" +
-                            item.no_telp +
-                            '</td>\
-              <td>\
-                <button value="' +
-                            item.id +
-                            '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_guru" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
-                  <i class="fa-solid fa-pen-to-square"></i>\
-                </button>\
-                <button value="' +
-                            item.id +
-                            '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
-                <i class="fa-solid fa-trash-can"></i>\
-                </button>\
-                <button value="' +
-                            item.id +
-                            '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
-                <i class="fa-regular fa-eye"></i>\
-                </button>\
-              </td>\
-            </tr>'
-                    );
-                }else{
-                    $("tbody").append(
-                        "<tr>\
-              <td>" +
-                            (key + 1) +
-                            '</td>\
-              <td><image src="images/' +
-                            item.image +
-                            '" width="100px" height="100px" alt="image"></td>\
-              <td>' +
-                            item.nik +
-                            "</td>\
-              <td>" +
-                            item.name +
-                            "</td>\
-              <td>" +
-                            item.tanggal_lahir +
-                            "</td>\
-              <td>" +
-                            item.tempat_lahir +
-                            "</td>\
-              <td>" +
-                            item.jenis_kelamin +
-                            "</td>\
-              <td>" +
-                            item.alamat +
-                            "</td>\
-              <td>" +
-                            item.no_telp +
-                            '</td>\
-              <td>\
-                <button value="' +
-                            item.id +
-                            '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_guru" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
-                  <i class="fa-solid fa-pen-to-square"></i>\
-                </button>\
-                <button value="' +
-                            item.id +
-                            '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
-                <i class="fa-solid fa-trash-can"></i>\
-                </button>\
-                <button value="' +
-                            item.id +
-                            '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
-                <i class="fa-regular fa-eye"></i>\
-                </button>\
-              </td>\
-            </tr>'
-                    );
-                }
-            });
-        },
-    });
-}
+// fetchguru();
+// function fetchguru() {
+//     $.ajax({
+//         type: "GET",
+//         url: "/fetch-guru",
+//         dataType: "json",
+//         success: function (response) {
+//             console.log(response.guru);
+//             $("tbody").html("");
+//             $.each(response.guru, function (key, item) {
+//                 if(item.image == null){
+//                     $("tbody").append(
+//                         "<tr>\
+//               <td>" +
+//                             (key + 1) +
+//                             '</td>\
+//               <td><image src="backend/img/profile/profile-11.jpg" width="100px" height="100px" alt="image"></td>\
+//               <td>' +
+//                             item.nik +
+//                             "</td>\
+//               <td>" +
+//                             item.name +
+//                             "</td>\
+//               <td>" +
+//                             item.tanggal_lahir +
+//                             "</td>\
+//               <td>" +
+//                             item.tempat_lahir +
+//                             "</td>\
+//               <td>" +
+//                             item.jenis_kelamin +
+//                             "</td>\
+//               <td>" +
+//                             item.alamat +
+//                             "</td>\
+//               <td>" +
+//                             item.no_telp +
+//                             '</td>\
+//               <td>\
+//                 <button value="' +
+//                             item.id +
+//                             '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_guru" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
+//                   <i class="fa-solid fa-pen-to-square"></i>\
+//                 </button>\
+//                 <button value="' +
+//                             item.id +
+//                             '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
+//                 <i class="fa-solid fa-trash-can"></i>\
+//                 </button>\
+//                 <button value="' +
+//                             item.id +
+//                             '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
+//                 <i class="fa-regular fa-eye"></i>\
+//                 </button>\
+//               </td>\
+//             </tr>'
+//                     );
+//                 }else{
+//                     $("tbody").append(
+//                         "<tr>\
+//               <td>" +
+//                             (key + 1) +
+//                             '</td>\
+//               <td><image src="images/' +
+//                             item.image +
+//                             '" width="100px" height="100px" alt="image"></td>\
+//               <td>' +
+//                             item.nik +
+//                             "</td>\
+//               <td>" +
+//                             item.name +
+//                             "</td>\
+//               <td>" +
+//                             item.tanggal_lahir +
+//                             "</td>\
+//               <td>" +
+//                             item.tempat_lahir +
+//                             "</td>\
+//               <td>" +
+//                             item.jenis_kelamin +
+//                             "</td>\
+//               <td>" +
+//                             item.alamat +
+//                             "</td>\
+//               <td>" +
+//                             item.no_telp +
+//                             '</td>\
+//               <td>\
+//                 <button value="' +
+//                             item.id +
+//                             '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_guru" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
+//                   <i class="fa-solid fa-pen-to-square"></i>\
+//                 </button>\
+//                 <button value="' +
+//                             item.id +
+//                             '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
+//                 <i class="fa-solid fa-trash-can"></i>\
+//                 </button>\
+//                 <button value="' +
+//                             item.id +
+//                             '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_guru" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
+//                 <i class="fa-regular fa-eye"></i>\
+//                 </button>\
+//               </td>\
+//             </tr>'
+//                     );
+//                 }
+//             });
+//         },
+//     });
+// }
 
 /* Delete Data Pengguna */
 // $(document).on("click", ".delete_guru", function (e) {
@@ -220,7 +220,10 @@ $(document).on("click", ".delete_guru", function (e) {
                     // $("#success_message").addClass("alert alert-success");
                     // $("#success_message").text(response.message);
                     $("#deleteModal").modal("hide");
-                    fetchguru();
+                    // fetchguru();
+                    setTimeout(function(){
+                      window.location.reload();
+                   }, 2000);
                 },
             });
           
@@ -400,7 +403,10 @@ $(document).on("submit", "#guru_form", function (e) {
                   })
                 $("#editModal").modal("hide");
                 $("#editModal").find("input").val("");
-                fetchguru();
+                // fetchguru();
+                setTimeout(function(){
+                  window.location.reload();
+               }, 2000);
             }
         },
     });

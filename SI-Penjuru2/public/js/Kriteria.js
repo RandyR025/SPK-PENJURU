@@ -1,35 +1,35 @@
-fetchkriteria();
-function fetchkriteria() {
-  $.ajax({
-    type: "GET",
-    url: "/fetch-kriteria",
-    dataType: "json",
-    success: function(response){
-      // console.log(response.user);
-      $('tbody').html("");
-      $.each(response.kriteria, function(key, item){
-        $('tbody').append('<tr>\
-          <td>'+(key+1)+'</td>\
-          <td>'+item.kode_kriteria+'</td>\
-          <td>'+item.nama_kriteria+'</td>\
-          <td>\
-          <button value="' +item.kode_kriteria + '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_kriteria" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
-          <i class="fa-solid fa-pen-to-square"></i>\
-          </button>\
-            <button value="'+item.kode_kriteria+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_kriteria" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
-            <i class="fa-solid fa-trash-can"></i>\
-            </button>\
-            <a href="/show-subkriteria/'+item.kode_kriteria +'" value="'+item.kode_kriteria +'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_kriteria" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
-            <i class="fa-regular fa-eye"></i>\
-            </a>\
-          </td>\
-        </tr>'
-        );
-      });
-    }
+// fetchkriteria();
+// function fetchkriteria() {
+//   $.ajax({
+//     type: "GET",
+//     url: "/fetch-kriteria",
+//     dataType: "json",
+//     success: function(response){
+//       // console.log(response.user);
+//       $('tbody').html("");
+//       $.each(response.kriteria, function(key, item){
+//         $('tbody').append('<tr>\
+//           <td>'+(key+1)+'</td>\
+//           <td>'+item.kode_kriteria+'</td>\
+//           <td>'+item.nama_kriteria+'</td>\
+//           <td>\
+//           <button value="' +item.kode_kriteria + '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_kriteria" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
+//           <i class="fa-solid fa-pen-to-square"></i>\
+//           </button>\
+//             <button value="'+item.kode_kriteria+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_kriteria" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
+//             <i class="fa-solid fa-trash-can"></i>\
+//             </button>\
+//             <a href="/show-subkriteria/'+item.kode_kriteria +'" value="'+item.kode_kriteria +'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_kriteria" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
+//             <i class="fa-regular fa-eye"></i>\
+//             </a>\
+//           </td>\
+//         </tr>'
+//         );
+//       });
+//     }
     
-  });      
-}
+//   });      
+// }
 
 
 /* Tambah Data Kriteia */
@@ -169,7 +169,10 @@ $(document).on("submit", "#kriteria_form", function (e) {
               })
               $("#editModal").modal("hide");
               $("#editModal").find("input").val("");
-              fetchkriteria();
+              // fetchkriteria();
+              setTimeout(function(){
+                window.location.reload();
+             }, 2000);
           }
       },
   });
@@ -240,7 +243,10 @@ $(document).on("click", ".delete_kriteria", function (e) {
             // $("#success_message").addClass("alert alert-success");
             // $("#success_message").text(response.message);
             // $("#deleteModal").modal("hide");
-            fetchkriteria();
+            // fetchkriteria();
+            setTimeout(function(){
+              window.location.reload();
+           }, 2000);
         },
     });
       

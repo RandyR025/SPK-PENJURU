@@ -26,7 +26,9 @@ class DataGuruController extends Controller
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
-        return view('backend/admin.data_guru', compact('admin', 'guru', 'wali'));
+        $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->get();
+        $no = 1;
+        return view('backend/admin.data_guru', compact('admin', 'guru', 'wali','dataguru','no'));
     }
 
     /**
@@ -219,12 +221,12 @@ class DataGuruController extends Controller
         ]);
     }
 
-    public function fetchguru()
-    {
-        $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->get();
-        // $guru = Guru::with(['user'])->get();
-        return response()->json([
-            'guru' => $guru,
-        ]);
-    }
+    // public function fetchguru()
+    // {
+    //     $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->get();
+    //     // $guru = Guru::with(['user'])->get();
+    //     return response()->json([
+    //         'guru' => $guru,
+    //     ]);
+    // }
 }

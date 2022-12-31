@@ -1,35 +1,35 @@
-fetchpenilaian();
-function fetchpenilaian() {
-  $.ajax({
-    type: "GET",
-    url: "/fetch-penilaian",
-    dataType: "json",
-    success: function(response){
-      // console.log(response.user);
-      $('tbody').html("");
-      $.each(response.penilaian, function(key, item){
-        $('tbody').append('<tr>\
-          <td>'+(key+1)+'</td>\
-          <td>'+item.id_penilaian+'</td>\
-          <td>'+item.nama_penilaian+'</td>\
-          <td>\
-          <button value="' +item.id_penilaian + '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
-          <i class="fa-solid fa-pen-to-square"></i>\
-          </button>\
-            <button value="'+item.id_penilaian+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_penilaian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
-            <i class="fa-solid fa-trash-can"></i>\
-            </button>\
-            <a href="/show-pengisian/'+item.id_penilaian +'" value="'+item.id_penilaian +'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_penilaian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
-            <i class="fa-regular fa-eye"></i>\
-            </a>\
-          </td>\
-        </tr>'
-        );
-      });
-    }
+// fetchpenilaian();
+// function fetchpenilaian() {
+//   $.ajax({
+//     type: "GET",
+//     url: "/fetch-penilaian",
+//     dataType: "json",
+//     success: function(response){
+//       // console.log(response.user);
+//       $('tbody').html("");
+//       $.each(response.penilaian, function(key, item){
+//         $('tbody').append('<tr>\
+//           <td>'+(key+1)+'</td>\
+//           <td>'+item.id_penilaian+'</td>\
+//           <td>'+item.nama_penilaian+'</td>\
+//           <td>\
+//           <button value="' +item.id_penilaian + '" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">\
+//           <i class="fa-solid fa-pen-to-square"></i>\
+//           </button>\
+//             <button value="'+item.id_penilaian+'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_penilaian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">\
+//             <i class="fa-solid fa-trash-can"></i>\
+//             </button>\
+//             <a href="/show-pengisian/'+item.id_penilaian +'" value="'+item.id_penilaian +'" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_penilaian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">\
+//             <i class="fa-regular fa-eye"></i>\
+//             </a>\
+//           </td>\
+//         </tr>'
+//         );
+//       });
+//     }
     
-  });      
-}
+//   });      
+// }
 
 
 /* Tambah Data Kriteia */
@@ -80,7 +80,10 @@ $(function(){
             })
             $('#AddPenilaianModal').modal('hide');
             $('#AddPenilaianModal').find('input').val("");
-            fetchpenilaian();
+            // fetchpenilaian();
+            setTimeout(function(){
+              window.location.reload();
+           }, 2000);
 
           }
 
@@ -166,7 +169,10 @@ $(document).on("submit", "#penilaian_form", function (e) {
               })
               $("#editModal").modal("hide");
               $("#editModal").find("input").val("");
-              fetchpenilaian();
+              // fetchpenilaian();
+              setTimeout(function(){
+                window.location.reload();
+             }, 2000);
           }
       },
   });
@@ -238,7 +244,10 @@ $(document).on("click", ".delete_penilaian", function (e) {
             // $("#success_message").addClass("alert alert-success");
             // $("#success_message").text(response.message);
             $("#deleteModal").modal("hide");
-            fetchpenilaian();
+            // fetchpenilaian();
+            setTimeout(function(){
+              window.location.reload();
+           }, 2000);
         },
     });
       

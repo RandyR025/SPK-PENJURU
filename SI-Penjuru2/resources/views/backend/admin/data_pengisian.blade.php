@@ -65,21 +65,21 @@ Kelola Data
         </tr>
       </thead>
       <tbody>
-      @foreach ($pengisian as $item)
+      @foreach ($pengisian as $data)
       <tr>
           <td>{{ $no++ }}</td>
-          <td>{{ $item->kode_pengisian }}</td>
-          <td>{{ $item->nama_pengisian }}</td>
-          <td>{{ $item->nama_subkriteria }}</td>
-          <td>{{ $item->id_penilaian }}</td>
+          <td>{{ $data->kode_pengisian }}</td>
+          <td>{{ $data->nama_pengisian }}</td>
+          <td>{{ $data->nama_subkriteria }}</td>
+          <td>{{ $data->id_penilaian }}</td>
           <td>
-          <button value="{{ $item->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_pengisian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+          <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_pengisian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
           <i class="fa-solid fa-pen-to-square"></i>
           </button>
-            <button value="{{ $item->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_pengisian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+            <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_pengisian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
             <i class="fa-solid fa-trash-can"></i>
             </button>
-          <a href="/show-pilihan/{{ $item->kode_pengisian }}" value="{{ $item->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_pengisian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+          <a href="/show-pilihan/{{ $data->kode_pengisian }}" value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_pengisian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
             <i class="fa-solid fa-list"></i>
           </a>
           </td>
@@ -231,9 +231,10 @@ Kelola Data
     </div>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->
-<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+@section('js')
 <script type="text/javascript">
   $(document).ready(function() {
     var table = $('#datatable').DataTable({
@@ -260,6 +261,5 @@ Kelola Data
   });
 </script>
 <script src="{{asset('js/Pengisian.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+@endsection
 @endsection
