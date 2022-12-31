@@ -65,7 +65,6 @@ Kelola Data
         </tr>
       </thead>
       <tbody>
-      <tbody>
         @foreach($dataguru as $data)
         @if($data->image == null)
         <tr>
@@ -113,7 +112,6 @@ Kelola Data
         </tr>
         @endif
         @endforeach
-      </tbody>
       </tbody>
     </table>
   </div>
@@ -251,4 +249,5 @@ Kelola Data
 </script>
 <script src="{{asset('js/Guru.js')}}"></script>
 @endsection
+
 @endsection
