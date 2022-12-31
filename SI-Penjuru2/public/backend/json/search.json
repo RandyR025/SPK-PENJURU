@@ -1,0 +1,418 @@
+[
+    {
+        "label": "Apps > Calendar",
+        "url": "Apps.Calendar.html"
+    },
+    {
+        "label": "Apps > Chat",
+        "url": "Apps.Chat.html"
+    },
+    {
+        "label": "Apps > Contacts",
+        "url": "Apps.Contacts.html"
+    },
+    {
+        "label": "Apps > Mailbox",
+        "url": "Apps.Mailbox.html"
+    },
+    {
+        "label": "Apps > Tasks",
+        "url": "Apps.Tasks.html"
+    },
+    {
+        "label": "Blocks > Cta",
+        "url": "Blocks.Cta.html"
+    },
+    {
+        "label": "Blocks > Details",
+        "url": "Blocks.Details.html"
+    },
+    {
+        "label": "Blocks > Gallery",
+        "url": "Blocks.Gallery.html"
+    },
+    {
+        "label": "Blocks > Images",
+        "url": "Blocks.Images.html"
+    },
+    {
+        "label": "Blocks > List",
+        "url": "Blocks.List.html"
+    },
+    {
+        "label": "Blocks > Stats",
+        "url": "Blocks.Stats.html"
+    },
+    {
+        "label": "Blocks > Steps",
+        "url": "Blocks.Steps.html"
+    },
+    {
+        "label": "Blocks > Tabular Data",
+        "url": "Blocks.TabularData.html"
+    },
+    {
+        "label": "Blocks > Thumbnails",
+        "url": "Blocks.Thumbnails.html"
+    },
+    {
+        "label": "Dashboards > Visual",
+        "url": "Dashboards.Visual.html"
+    },
+    {
+        "label": "Dashboards > Analytic",
+        "url": "Dashboards.Analytic.html"
+    },
+    {
+        "label": "Dashboards > Default",
+        "url": "Dashboards.Default.html"
+    },
+    {
+        "label": "Interface > Components > Accordion",
+        "url": "Interface.Components.Accordion.html"
+    },
+    {
+        "label": "Interface > Components > Alerts",
+        "url": "Interface.Components.Alerts.html"
+    },
+    {
+        "label": "Interface > Components > Badge",
+        "url": "Interface.Components.Badge.html"
+    },
+    {
+        "label": "Interface > Components > Breadcrumb",
+        "url": "Interface.Components.Breadcrumb.html"
+    },
+    {
+        "label": "Interface > Components > ButtonGroup",
+        "url": "Interface.Components.ButtonGroup.html"
+    },
+    {
+        "label": "Interface > Components > Buttons",
+        "url": "Interface.Components.Buttons.html"
+    },
+    {
+        "label": "Interface > Components > Card",
+        "url": "Interface.Components.Card.html"
+    },
+    {
+        "label": "Interface > Components > Close",
+        "url": "Interface.Components.Close.html"
+    },
+    {
+        "label": "Interface > Components > Collapse",
+        "url": "Interface.Components.Collapse.html"
+    },
+    {
+        "label": "Interface > Components > Dropdowns",
+        "url": "Interface.Components.Dropdowns.html"
+    },
+    {
+        "label": "Interface > Components > ListGroup",
+        "url": "Interface.Components.ListGroup.html"
+    },
+    {
+        "label": "Interface > Components > Modal",
+        "url": "Interface.Components.Modal.html"
+    },
+    {
+        "label": "Interface > Components > Navs",
+        "url": "Interface.Components.Navs.html"
+    },
+    {
+        "label": "Interface > Components > Offcanvas",
+        "url": "Interface.Components.Offcanvas.html"
+    },
+    {
+        "label": "Interface > Components > Pagination",
+        "url": "Interface.Components.Pagination.html"
+    },
+    {
+        "label": "Interface > Components > Popovers",
+        "url": "Interface.Components.Popovers.html"
+    },
+    {
+        "label": "Interface > Components > Progress",
+        "url": "Interface.Components.Progress.html"
+    },
+    {
+        "label": "Interface > Components > Scrollspy",
+        "url": "Interface.Components.Scrollspy.html"
+    },
+    {
+        "label": "Interface > Components > Spinners",
+        "url": "Interface.Components.Spinners.html"
+    },
+    {
+        "label": "Interface > Components > Toasts",
+        "url": "Interface.Components.Toasts.html"
+    },
+    {
+        "label": "Interface > Components > Tooltips",
+        "url": "Interface.Components.Tooltips.html"
+    },
+    {
+        "label": "Interface > Content > Images",
+        "url": "Interface.Content.Images.html"
+    },
+    {
+        "label": "Interface > Content > Menu > MobileOnly",
+        "url": "Interface.Content.Menu.MobileOnly.html"
+    },
+    {
+        "label": "Interface > Content > Menu > Sidebar",
+        "url": "Interface.Content.Menu.Sidebar.html"
+    },
+    {
+        "label": "Interface > Content > Menu > VerticalNoSemiHidden",
+        "url": "Interface.Content.Menu.VerticalNoSemiHidden.html"
+    },
+    {
+        "label": "Interface > Content > Menu > VerticalSemiHidden",
+        "url": "Interface.Content.Menu.VerticalSemiHidden.html"
+    },
+    {
+        "label": "Interface > Content > Menu > VerticalStandard",
+        "url": "Interface.Content.Menu.VerticalStandard.html"
+    },
+    {
+        "label": "Interface > Content > Icons > BootstrapIcons",
+        "url": "Interface.Content.Icons.BootstrapIcons.html"
+    },
+    {
+        "label": "Interface > Content > Icons > CSIcons",
+        "url": "Interface.Content.CSIcons.html"
+    },
+    {
+        "label": "Interface > Content > Tables",
+        "url": "Interface.Content.Tables.html"
+    },
+    {
+        "label": "Interface > Content > Typography",
+        "url": "Interface.Content.Typography.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Autocomplete",
+        "url": "Interface.Forms.Controls.Autocomplete.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Checkbox-Radio",
+        "url": "Interface.Forms.Controls.CheckboxRadio.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > DatePicker",
+        "url": "Interface.Forms.Controls.DatePicker.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Dropzone",
+        "url": "Interface.Forms.Controls.Dropzone.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Editor",
+        "url": "Interface.Forms.Controls.Editor.html"
+    },
+    {
+        "label": "Interface > Forms.Controls > InputSpinner",
+        "url": "Interface.Forms.Controls.InputSpinner.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Rating",
+        "url": "Interface.Forms.Controls.Rating.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Select2",
+        "url": "Interface.Forms.Controls.Select2.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Slider",
+        "url": "Interface.Forms.Controls.Slider.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Tags",
+        "url": "Interface.Forms.Controls.Tags.html"
+    },
+    {
+        "label": "Interface > Forms > Controls > Timepicker",
+        "url": "Interface.Forms.Controls.TimePicker.html"
+    },
+    {
+        "label": "Interface > Forms > Genericforms",
+        "url": "Interface.Forms.GenericForms.html"
+    },
+    {
+        "label": "Interface > Forms > Inputmask",
+        "url": "Interface.Forms.InputMask.html"
+    },
+    {
+        "label": "Interface > Forms > InputGroup",
+        "url": "Interface.Forms.InputGroup.html"
+    },
+    {
+        "label": "Interface > Forms > Layouts",
+        "url": "Interface.Forms.Layouts.html"
+    },
+    {
+        "label": "Interface > Forms > Validation",
+        "url": "Interface.Forms.Validation.html"
+    },
+    {
+        "label": "Interface > Forms > Wizard",
+        "url": "Interface.Forms.Wizard.html"
+    },
+    {
+        "label": "Interface > Plugins > Carousel",
+        "url": "Interface.Plugins.Carousel.html"
+    },
+    {
+        "label": "Interface > Plugins > Charts",
+        "url": "Interface.Plugins.Charts.html"
+    },
+    {
+        "label": "Interface > Plugins > Clamp",
+        "url": "Interface.Plugins.Clamp.html"
+    },
+    {
+        "label": "Interface > Plugins > Context Menu",
+        "url": "Interface.Plugins.ContextMenu.html"
+    },
+    {
+        "label": "Interface > Plugins > Datatables > Boxed Variations",
+        "url": "Interface.Plugins.Datatables.BoxedVariations.html"
+    },
+    {
+        "label": "Interface > Plugins > Datatables > Editable Boxed",
+        "url": "Interface.Plugins.Datatables.EditableBoxed.html"
+    },
+    {
+        "label": "Interface > Plugins > Datatables > Editable Rows",
+        "url": "Interface.Plugins.Datatables.EditableRows.html"
+    },
+    {
+        "label": "Interface > Plugins > Datatables > Editable Rows Slim",
+        "url": "Interface.Plugins.Datatables.EditableRowsSlim.html"
+    },
+    {
+        "label": "Interface > Plugins > Datatables > Rows Ajax",
+        "url": "Interface.Plugins.Datatables.RowsAjax.html"
+    },
+    {
+        "label": "Interface > Plugins > Datatables > Rows Server Side",
+        "url": "Interface.Plugins.Datatables.RowsServerSide.html"
+    },
+    {
+        "label": "Interface > Plugins > Lightbox",
+        "url": "Interface.Plugins.Lightbox.html"
+    },
+    {
+        "label": "Interface > Plugins > List",
+        "url": "Interface.Plugins.List.html"
+    },
+    {
+        "label": "Interface > Plugins > Maps",
+        "url": "Interface.Plugins.Maps.html"
+    },
+    {
+        "label": "Interface > Plugins > Notify",
+        "url": "Interface.Plugins.Notify.html"
+    },
+    {
+        "label": "Interface > Plugins > Player",
+        "url": "Interface.Plugins.Player.html"
+    },
+    {
+        "label": "Interface > Plugins > Progress",
+        "url": "Interface.Plugins.Progress.html"
+    },
+    {
+        "label": "Interface > Plugins > Scrollbar",
+        "url": "Interface.Plugins.Scrollbar.html"
+    },
+    {
+        "label": "Interface > Plugins > Shortcuts",
+        "url": "Interface.Plugins.Shortcuts.html"
+    },
+    {
+        "label": "Interface > Plugins > Sortable",
+        "url": "Interface.Plugins.Sortable.html"
+    },
+    {
+        "label": "Pages > Authentication > ForgotPassword",
+        "url": "Pages.Authentication.ForgotPassword.html"
+    },
+    {
+        "label": "Pages > Authentication > Login",
+        "url": "Pages.Authentication.Login.html"
+    },
+    {
+        "label": "Pages > Authentication > Register",
+        "url": "Pages.Authentication.Register.html"
+    },
+    {
+        "label": "Pages > Authentication > ResetPassword",
+        "url": "Pages.Authentication.ResetPassword.html"
+    },
+    {
+        "label": "Pages > Blog > Detail",
+        "url": "Pages.Blog.Detail.html"
+    },
+    {
+        "label": "Pages > Blog > Grid",
+        "url": "Pages.Blog.Grid.html"
+    },
+    {
+        "label": "Pages > Blog > Home",
+        "url": "Pages.Blog.Home.html"
+    },
+    {
+        "label": "Pages > Blog > List",
+        "url": "Pages.Blog.List.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Coming Soon",
+        "url": "Pages.Miscellaneous.ComingSoon.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Empty",
+        "url": "Pages.Miscellaneous.Empty.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Error",
+        "url": "Pages.Miscellaneous.Error.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Faq",
+        "url": "Pages.Miscellaneous.Faq.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Mailing",
+        "url": "Pages.Miscellaneous.Mailing.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Knowledge Base",
+        "url": "Pages.Miscellaneous.KnowledgeBase.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Pricing",
+        "url": "Pages.Miscellaneous.Pricing.html"
+    },
+    {
+        "label": "Pages > Miscellaneous > Search",
+        "url": "Pages.Miscellaneous.Search.html"
+    },
+    {
+        "label": "Pages > Portfolio > Detail",
+        "url": "Pages.Portfolio.Detail.html"
+    },
+    {
+        "label": "Pages > Portfolio > Home",
+        "url": "Pages.Portfolio.Home.html"
+    },
+    {
+        "label": "Pages > Profile > Settings",
+        "url": "Pages.Profile.Settings.html"
+    },
+    {
+        "label": "Pages > Profile > Standard",
+        "url": "Pages.Profile.Standard.html"
+    }
+]

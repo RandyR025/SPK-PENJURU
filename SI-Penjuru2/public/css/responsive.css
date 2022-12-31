@@ -1,0 +1,32 @@
+/* .menghilang{
+    display: none;
+} */
+
+@media (min-width: 1400px) { 
+    .menghilang{
+        display: block;
+    }
+ }
+
+ .footer-content{
+    margin-top: 100px !important;
+ }
+
+ @media (min-width: 800px) { 
+    .footer-content{
+        margin-top: 0px !important;
+    }
+    .halaman{
+        margin-left:450px !important;
+    }
+ }
+
+
+.dtr-title{
+    margin-left:-30px;
+    margin-bottom:10px;
+    margin-right:5px;
+}
+.dtr-data{
+    text-indent:30px;
+}

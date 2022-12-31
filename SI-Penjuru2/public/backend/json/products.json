@@ -1,0 +1,124 @@
+{
+    "data": [
+        {
+            "Name": "Anadama",
+            "Sales": "674",
+            "Stock": "22",
+            "Category": "Sourdough",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Bammy",
+            "Sales": "221",
+            "Stock": "32",
+            "Category": "Multigrain",
+            "Tag": "New",
+            "Check": ""
+        },
+        {
+            "Name": "Chopping Bread",
+            "Sales": "214",
+            "Stock": "12",
+            "Category": "Whole Wheat",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Damper",
+            "Sales": "1245",
+            "Stock": "232",
+            "Category": "Sourdough",
+            "Tag": "New",
+            "Check": ""
+        },
+        {
+            "Name": "Flatbrød",
+            "Sales": "4235",
+            "Stock": "233",
+            "Category": "Whole Wheat",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Mohnflesserl",
+            "Sales": "1255",
+            "Stock": "23",
+            "Category": "Sourdough",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Paratha",
+            "Sales": "3221",
+            "Stock": "452",
+            "Category": "Whole Wheat",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Ruisreikäleipä",
+            "Sales": "3423",
+            "Stock": "222",
+            "Category": "Multigrain",
+            "Tag": "Sale",
+            "Check": ""
+        },
+        {
+            "Name": "Samoon",
+            "Sales": "1135",
+            "Stock": "234",
+            "Category": "Whole Wheat",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Teacake",
+            "Sales": "4522",
+            "Stock": "2334",
+            "Category": "Multigrain",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Baguette",
+            "Sales": "482",
+            "Stock": "55",
+            "Category": "Whole Wheat",
+            "Tag": "Sale",
+            "Check": ""
+        },
+        {
+            "Name": "Michetta",
+            "Sales": "571",
+            "Stock": "44",
+            "Category": "Sourdough",
+            "Tag": "New",
+            "Check": ""
+        },
+        {
+            "Name": "Boule",
+            "Sales": "711",
+            "Stock": "67",
+            "Category": "Whole Wheat",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Steirer Brot",
+            "Sales": "882",
+            "Stock": "79",
+            "Category": "Sourdough",
+            "Tag": "",
+            "Check": ""
+        },
+        {
+            "Name": "Zopf",
+            "Sales": "2190",
+            "Stock": "397",
+            "Category": "Whole Wheat",
+            "Tag": "",
+            "Check": ""
+        }
+    ]
+}

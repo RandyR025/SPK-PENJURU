@@ -1,0 +1,57 @@
+[
+    {
+        "id": 1,
+        "title": "Crash Course",
+        "start": "2020-12-05",
+        "end": "2020-12-07",
+        "color": "",
+        "category": "Education"
+    },
+    {
+        "id": 2,
+        "title": "Sale Meetings",
+        "start": "2020-12-09",
+        "end": "2020-12-12",
+        "color": "",
+        "category": "Work"
+    },
+    {
+        "id": 3,
+        "title": "Birthday Party",
+        "start": "2020-12-22",
+        "color": "#1859bb",
+        "category": "Personal"
+    },
+    {
+        "id": 4,
+        "title": "Link",
+        "start": "2020-12-28",
+        "url": "https://themeforest.net/user/coloredstrategies/portfolio/",
+        "color": "",
+        "category": "Work"
+    },
+    {
+        "id": 5,
+        "title": "Meeting",
+        "start": "2020-12-20T10:30:00",
+        "end": "2020-12-20T12:30:00",
+        "color": "",
+        "category": "Work"
+    },
+    {
+        "id": 6,
+        "title": "Lunch",
+        "start": "2020-12-20T14:30:00",
+        "end": "2020-12-20T15:30:00",
+        "color": "",
+        "category": "Personal"
+    },
+    {
+        "id": 7,
+        "title": "Dinner",
+        "start": "2020-12-20T19:30:00",
+        "end": "2020-12-20T21:30:00",
+        "color": "",
+        "category": "Personal"
+    }
+]
