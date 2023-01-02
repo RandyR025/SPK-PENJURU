@@ -79,14 +79,14 @@ class ProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $user = $request->input('level');
         // dd($user);
         if ($user == "admin") {
             $adminn = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->where('user_id',Auth::user()->id)->get();
             if (count($adminn)<1) {
-                $validator = Validator::make($request->all(), [
+                $request->validate([
                     'nik' => 'required|unique:guru',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
@@ -94,12 +94,6 @@ class ProfileController extends Controller
                     'no_telp' => 'required',
                     'alamat' => 'required',
                 ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => 400,
-                        'errors' => $validator->messages(),
-                    ]);
-                }else {
                     $admin = new Admin;
                     if ($request->hasFile('image')) {
                         $file = $request->file('image');
@@ -107,7 +101,7 @@ class ProfileController extends Controller
                         $filename = time().'.'.$extension;
                         $file->move('images',$filename);
 
-                        $admin->user_id = $request->edit_id;
+                        $admin->user_id = Auth::user()->id;
                         $admin->nik = $request->nik;
                         $admin->tempat_lahir = $request->tempat_lahir;
                         $admin->tanggal_lahir = $request->tanggal_lahir;
@@ -116,8 +110,9 @@ class ProfileController extends Controller
                         $admin->alamat = $request->alamat;
                         $admin->image = $filename;
                         $admin->save();
+                        return redirect()->route('profile');
                     }else {
-                        $admin->user_id = $request->edit_id;
+                        $admin->user_id = Auth::user()->id;
                         $admin->nik = $request->nik;
                         $admin->tempat_lahir = $request->tempat_lahir;
                         $admin->tanggal_lahir = $request->tanggal_lahir;
@@ -125,22 +120,13 @@ class ProfileController extends Controller
                         $admin->no_telp = $request->no_telp;
                         $admin->alamat = $request->alamat;
                         $admin->save();
+                        return redirect()->route('profile');
                     }
-                    return response()->json([
-                        'status' => 200,
-                        'message' => "Data Berhasil Di Perbarui !!!",
-                    ]);
-                }
+                
             }else {
-                $validator = Validator::make($request->all(), [
+                $request->validate([
                     'name' => 'required|max:32',
                 ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => 400,
-                        'errors' => $validator->messages(),
-                    ]);
-                } else {
                     $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->where('user_id',Auth::user()->id);
                     if ($admin) {
                         if ($request->hasFile('image')) {
@@ -172,20 +158,14 @@ class ProfileController extends Controller
                                 'no_telp' => $request->no_telp,
                             ]);
                         }
+                        return redirect()->route('profile');
                     }
-                    
-                    return response()->json([
-                        'status' => 200,
-                        'message' => "Data Berhasil Di Perbarui !!!",
-                    ]);
-                            
-                }
             }
             
         }elseif ($user == "guru") {
             $guruu = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->where('user_id',Auth::user()->id)->get();
             if (count($guruu)<1) {
-                $validator = Validator::make($request->all(), [
+                $request = Validator::make($request->all(), [
                     'nik' => 'required|unique:guru',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
@@ -193,12 +173,6 @@ class ProfileController extends Controller
                     'no_telp' => 'required',
                     'alamat' => 'required',
                 ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => 400,
-                        'errors' => $validator->messages(),
-                    ]);
-                }else {
                     $guru = new Guru;
                     if ($request->hasFile('image')) {
                         $file = $request->file('image');
@@ -206,7 +180,7 @@ class ProfileController extends Controller
                         $filename = time().'.'.$extension;
                         $file->move('images',$filename);
 
-                        $guru->user_id = $request->edit_id;
+                        $guru->user_id = Auth::user()->id;
                         $guru->nik = $request->nik;
                         $guru->tempat_lahir = $request->tempat_lahir;
                         $guru->tanggal_lahir = $request->tanggal_lahir;
@@ -216,7 +190,7 @@ class ProfileController extends Controller
                         $guru->image = $filename;
                         $guru->save();
                     }else {
-                        $guru->user_id = $request->edit_id;
+                        $guru->user_id = Auth::user()->id;
                         $guru->nik = $request->nik;
                         $guru->tempat_lahir = $request->tempat_lahir;
                         $guru->tanggal_lahir = $request->tanggal_lahir;
@@ -225,21 +199,10 @@ class ProfileController extends Controller
                         $guru->alamat = $request->alamat;
                         $guru->save();
                     }
-                    return response()->json([
-                        'status' => 200,
-                        'message' => "Data Berhasil Di Perbarui !!!",
-                    ]);
-                }
             }else {
-                $validator = Validator::make($request->all(), [
+                $request = Validator::make($request->all(), [
                     'name' => 'required|max:32',
                 ]);
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => 400,
-                        'errors' => $validator->messages(),
-                    ]);
-                } else {
                     $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->where('user_id',Auth::user()->id);
                     if ($guru) {
                         if ($request->hasFile('image')) {
@@ -270,27 +233,14 @@ class ProfileController extends Controller
                                 'alamat' => $request->alamat,
                                 'no_telp' => $request->no_telp,
                             ]);
-                        }
-                    }
-                    
-                    return response()->json([
-                        'status' => 200,
-                        'message' => "Data Berhasil Di Perbarui !!!",
-                    ]);
-                            
+                        }                   
                 }
             }
             
         }elseif($user == "wali"){
-            $validator = Validator::make($request->all(), [
+            $request = Validator::make($request->all(), [
                 'name' => 'required|max:32',
             ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 400,
-                    'errors' => $validator->messages(),
-                ]);
-            } else {
                 $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id',Auth::user()->id);
                 if ($wali) {
                     if ($request->hasFile('image')) {
@@ -323,13 +273,6 @@ class ProfileController extends Controller
                         ]);
                     }
                 }
-                
-                return response()->json([
-                    'status' => 200,
-                    'message' => "Data Berhasil Di Perbarui !!!",
-                ]);
-                        
-            }
         }
     }
 

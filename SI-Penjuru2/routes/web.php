@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cek_login:admin']], function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-        Route::post('/profile/{id}',[ProfileController::class, 'update'])->name('updateprofile');
+        Route::post('/profile/ubah',[ProfileController::class, 'update'])->name('updateprofile');
 
         /*Start Data Pengguna */
         Route::get('/datapengguna', [DataPenggunaController::class, 'index'])->name('datapengguna');
@@ -137,7 +137,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['middleware' => ['cek_login:guru']], function () {
         Route::get('/dashboardguru', [DashboardController::class, 'index'])->name('dashboardguru');
         Route::get('/profileguru', [ProfileController::class, 'index'])->name('profileguru');
-        Route::post('/profileguru/{id}',[ProfileController::class, 'update'])->name('updateprofileguru');
+        Route::post('/profileguru/ubah',[ProfileController::class, 'update'])->name('updateprofileguru');
         Route::get('/penilaiankinerjaguru',[PenilaianKinerjaGuruController::class, 'index'])->name('penilaiankinerjaguru');
         Route::get('/detailkinerjaguru/{id}',[PenilaianKinerjaGuruController::class, 'show'])->name('detailkinerjaguru');
         Route::post('/gethasilpenilaian', [PenilaianKinerjaGuruController::class, 'hasilpilihan'])->name('gethasilpenilaian');

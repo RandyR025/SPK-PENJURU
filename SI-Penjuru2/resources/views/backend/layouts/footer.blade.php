@@ -303,7 +303,6 @@
 
 <!-- Vendor Scripts Start -->
 <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script>
-@yield('js')
 <script src="{{asset('backend/js/vendor/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('backend/js/vendor/OverlayScrollbars.min.js')}}"></script>
 <script src="{{asset('backend/js/vendor/autoComplete.min.js')}}"></script>
@@ -345,6 +344,7 @@
 <!-- Font Awesome -->
 <script src="https://kit.fontawesome.com/207ca6be0a.js" crossorigin="anonymous"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@yield('js')
 
 
 <!-- <script type="text/javascript">
