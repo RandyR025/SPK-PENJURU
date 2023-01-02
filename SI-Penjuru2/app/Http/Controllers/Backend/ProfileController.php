@@ -105,7 +105,7 @@ class ProfileController extends Controller
                         $file = $request->file('image');
                         $extension = $file->getClientOriginalExtension();
                         $filename = time().'.'.$extension;
-                        $file->move('images',$filename);
+                        $file->move(public_path('images'),$filename);
 
                         $admin->user_id = $request->edit_id;
                         $admin->nik = $request->nik;
@@ -149,7 +149,7 @@ class ProfileController extends Controller
                             $file = $request->file('image');
                             $extension = $file->getClientOriginalExtension();
                             $filename= time().'.'.$extension;
-                            $file->move('images', $filename);
+                            $file->move(public_path('images'), $filename);
                             $admin->update([
                                 'name' => $request->name,
                                 'nik' => $request->nik,
@@ -204,7 +204,7 @@ class ProfileController extends Controller
                         $file = $request->file('image');
                         $extension = $file->getClientOriginalExtension();
                         $filename = time().'.'.$extension;
-                        $file->move('images',$filename);
+                        $file->move(public_path('images'),$filename);
 
                         $guru->user_id = $request->edit_id;
                         $guru->nik = $request->nik;
@@ -248,7 +248,7 @@ class ProfileController extends Controller
                             $file = $request->file('image');
                             $extension = $file->getClientOriginalExtension();
                             $filename= time().'.'.$extension;
-                            $file->move('images', $filename);
+                            $file->move(public_path('images'), $filename);
                             $guru->update([
                                 'name' => $request->name,
                                 'nik' => $request->nik,
