@@ -20,16 +20,16 @@ Setting
 <h2 class="small-title">Public Info</h2>
 <div class="card mb-5">
   <div class="card-body">
-    <form method="post" id="profile_form" enctype="multipart/form-data" action="{{route('updateprofile')}}">
+    <form method="post" id="profile_form" enctype="multipart/form-data" action="">
       @csrf
-      <!-- <div class="mb-3 row">
+      <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>id</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input id="edit_id" type="text" class="id form-control" value="{{ Auth::user()->id }}" name="edit_id" hidden />
         </div>
-      </div> -->
+      </div>
       <div class="mb-3 row">
-        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>Level</label>
+        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>Name</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input id="edit_level" name="level" type="text" class="form-control" value="{{ Auth::user()->level }}" hidden />
         </div>
@@ -37,19 +37,15 @@ Setting
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Name</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input id="edit_name" name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ Auth::user()->name }}" />
-          @error('name')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_name" name="name" type="text" class="form-control" value="{{ Auth::user()->name }}" />
+          <span class="text-danger error-text name_error"></span>
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Email</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input id="edit_email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" value="{{ Auth::user()->email }}" />
-          @error('email')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_email" name="email" type="email" class="form-control" value="{{ Auth::user()->email }}" />
+          <span class="text-danger error-text email_error"></span>
         </div>
       </div>
       <div class="mb-3 row">
@@ -62,15 +58,11 @@ Setting
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">NIK</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($admin->nik))
-          <input id="edit_nik" name="nik" type="text" class="form-control @error('nik') is-invalid @enderror" value="{{ $admin->nik }}" />
-          @error('nik')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_nik" name="nik" type="text" class="form-control" value="{{ $admin->nik }}" />
+          <span class="text-danger error-text nik_error"></span>
           @else
-          <input id="edit_nik" name="nik" type="text" class="form-control @error('nik') is-invalid @enderror" value="" />
-          @error('nik')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_nik" name="nik" type="text" class="form-control" value="" />
+          <span class="text-danger error-text nik_error"></span>
           @endif
         </div>
       </div>
@@ -78,15 +70,11 @@ Setting
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Tanggal Lahir</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($admin->tanggal_lahir))
-          <input id="edit_tanggallahir" name="tanggal_lahir" type="date" class="form-control date-picker-close @error('tanggal_lahir') is-invalid @enderror" id="birthday" value="{{ $admin->tanggal_lahir }}" />
-          @error('tanggal_lahir')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_tanggallahir" name="tanggal_lahir" type="date" class="form-control date-picker-close" id="birthday" value="{{ $admin->tanggal_lahir }}" />
+          <span class="text-danger error-text tanggal_lahir_error"></span>
           @else
-          <input id="edit_tanggallahir" name="tanggal_lahir" type="date" class="form-control date-picker-close @error('tanggal_lahir') is-invalid @enderror" id="birthday" value="" />
-          @error('tanggal_lahir')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_tanggallahir" name="tanggal_lahir" type="date" class="form-control date-picker-close" id="birthday" value="" />
+          <span class="text-danger error-text tanggal_lahir_error"></span>
           @endif
         </div>
       </div>
@@ -94,15 +82,11 @@ Setting
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Tempat Lahir</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($admin->tempat_lahir))
-          <input id="edit_tempatlahir" name="tempat_lahir" type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" value="{{ $admin->tempat_lahir }}" />
-          @error('tempat_lahir')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_tempatlahir" name="tempat_lahir" type="text" class="form-control" value="{{ $admin->tempat_lahir }}" />
+          <span class="text-danger error-text tempat_lahir_error"></span>
           @else
-          <input id="edit_tempatlahir" name="tempat_lahir" type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" value="" />
-          @error('tempat_lahir')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_tempatlahir" name="tempat_lahir" type="text" class="form-control" value="" />
+          <span class="text-danger error-text tempat_lahir_error"></span>
           @endif
         </div>
       </div>
@@ -131,15 +115,11 @@ Setting
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Alamat</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($admin->alamat))
-          <textarea class="form-control @error('alamat') is-invalid @enderror" rows="3" name="alamat" id="edit_alamat">{{ $admin->alamat }}</textarea>
-          @error('alamat')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <textarea class="form-control" rows="3" name="alamat" id="edit_alamat">{{ $admin->alamat }}</textarea>
+          <span class="text-danger error-text alamat_error"></span>
           @else
-          <textarea class="form-control @error('alamat') is-invalid @enderror" rows="3" name="alamat" id="edit_alamat"></textarea>
-          @error('alamat')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <textarea class="form-control" rows="3" name="alamat" id="edit_alamat"></textarea>
+          <span class="text-danger error-text alamat_error"></span>
           @endif
         </div>
       </div>
@@ -147,15 +127,11 @@ Setting
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">No Telp</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($admin->no_telp))
-          <input id="edit_notelp" type="text" class="form-control @error('no_telp') is-invalid @enderror" value="{{ $admin->no_telp }}" name="no_telp" />
-          @error('no_telp')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_notelp" type="text" class="form-control" value="{{ $admin->no_telp }}" name="no_telp" />
+          <span class="text-danger error-text no_telp_error"></span>
           @else
-          <input id="edit_notelp" type="text" class="form-control @error('no_telp') is-invalid @enderror" value="" name="no_telp" />
-          @error('no_telp')
-          <div class="invalid-feedback">{{$message}}</div>
-          @enderror
+          <input id="edit_notelp" type="text" class="form-control" value="" name="no_telp" />
+          <span class="text-danger error-text no_telp_error"></span>
           @endif
         </div>
       </div>
@@ -188,14 +164,14 @@ Setting
 <h2 class="small-title">Public Info</h2>
 <div class="card mb-5">
   <div class="card-body">
-    <form method="post" id="profileguru_form" enctype="multipart/form-data" action="{{route('updateprofileguru')}}">
+    <form method="post" id="profileguru_form" enctype="multipart/form-data" action="">
       @csrf
-      <!-- <div class="mb-3 row">
+      <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>id</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input id="edit_id" type="text" class="id form-control" value="{{ Auth::user()->id }}" name="edit_id" hidden />
         </div>
-      </div> -->
+      </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>Name</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
