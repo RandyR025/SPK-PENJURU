@@ -135,7 +135,7 @@ class ProfileController extends Controller
                             $file = $request->file('image');
                             $extension = $file->getClientOriginalExtension();
                             $filename= time().'.'.$extension;
-                            $file->move('images', $filename);
+                            $file->move(public_path('images'), $filename);
                             $admin->update([
                                 'name' => $request->name,
                                 'nik' => $request->nik,
