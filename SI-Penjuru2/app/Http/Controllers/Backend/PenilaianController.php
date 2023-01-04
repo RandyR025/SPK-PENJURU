@@ -158,12 +158,12 @@ class PenilaianController extends Controller
     }
 
 
-    public function fetchpenilaian()
-    {
-        $penilaian = Penilaian::all();
-        return response()->json([
-            'penilaian' => $penilaian,
-        ]);
-    }
+    // public function fetchpenilaian()
+    // {
+    //     $penilaian = Penilaian::all();
+    //     return response()->json([
+    //         'penilaian' => $penilaian,
+    //     ]);
+    // }
     
 }

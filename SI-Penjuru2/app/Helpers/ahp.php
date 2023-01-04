@@ -226,17 +226,16 @@ function getNilaiPerbandinganKriteria($kriteria1,$kriteria2)
 	$id_kriteria2 = getKriteriaID($kriteria2);
 
     $query = DB::table('perbandingan_kriteria')->select('value')->where('kriteria_pertama','=',$id_kriteria1)->where('kriteria_kedua','=', $id_kriteria2)->get()->count();
+    $data = DB::table('perbandingan_kriteria')->select('value')->where('kriteria_pertama','=',$id_kriteria1)->where('kriteria_kedua','=', $id_kriteria2)->get();
     // $query = DB::select("SELECT nilai FROM perbandingan_kriteria WHERE kriteria_pertama = $id_kriteria1 AND kriteria_kedua = $id_kriteria2")->count();
     
     if ($query == 0) {
         $nilai = 1;
     }else {
-        if (is_array($query)||is_object($query)) {
-            foreach ($query as $row) {
-                $nilai = $row->nilai;
+            foreach ($data as $row) {
+                $nilai = $row->value;
                 return $nilai;
             }
-        }
     }
 }
 
@@ -246,19 +245,18 @@ function getNilaiPerbandinganSubkriteria($kriteria1,$kriteria2,$id_kriteria)
 	$id_kriteria2 = getSubkriteriaID($kriteria2,$id_kriteria);
 
     $query = DB::table('perbandingan_subkriteria')->select('value')->where('subkriteria_pertama','=',$id_kriteria1)->where('subkriteria_kedua','=', $id_kriteria2)->where('id_kriteria','=',$id_kriteria)->get()->count();
+    $data = DB::table('perbandingan_subkriteria')->select('value')->where('subkriteria_pertama','=',$id_kriteria1)->where('subkriteria_kedua','=', $id_kriteria2)->where('id_kriteria','=',$id_kriteria)->get();
     // $query = DB::select("SELECT nilai FROM perbandingan_kriteria WHERE kriteria_pertama = $id_kriteria1 AND kriteria_kedua = $id_kriteria2")->count();
     
     if ($query == 0) {
         $nilai = 1;
     }else {
-        if (is_array($query)||is_object($query)) {
-            foreach ($query as $row) {
-                $nilai = $row->nilai;
+            foreach ($data as $row) {
+                $nilai = $row->value;
                 return $nilai;
             }
         }
     }
-}
 
 function showTabelPerbandingan($jenis, $kriteria)
 {

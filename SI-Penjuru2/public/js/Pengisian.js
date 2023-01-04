@@ -36,6 +36,7 @@
  $(document).on('click', '.edit_pengisian', function(e){
     e.preventDefault();
     var penilaian_id = $(this).val();
+    // var kriteriaID = $(this).val();
    /*  console.log(user_id); */
   
   
@@ -53,7 +54,28 @@
         $('#edit_id').val(penilaian_id);
         $('#edit_kodepengisian').val(response.pengisian[0].kode_pengisian);
         $('#edit_namapengisian').val(response.pengisian[0].nama_pengisian);
-        $('#edit_kodesubkriteria').val(response.pengisian[0].kode_subkriteria);
+        $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria);
+        $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
+        $.ajax({
+          url: '/getsubkriteria/'+response.pengisian[0].kode_kriteria,
+          type: "GET",
+          dataType: "json",
+          success:function(response)
+          {
+            if(response){
+               $('#edit_kode_subkriteria').empty();
+               $('#edit_kode_subkriteria').append('<option hidden>Choose Course</option>'); 
+               $.each(response, function(key, subkriteria){
+                 // console.log(subkriteria);
+                 $.each(subkriteria, function (key, value) {
+                   $('select[name="edit_kode_subkriteria"]').append('<option value="'+ value.kode_subkriteria +'">' + value.nama_subkriteria+ '</option>');
+                 });
+               });
+           }else{
+               $('#edit_kode_subkriteria').empty();
+           }
+        }
+      });
       }
     }
    });
@@ -330,3 +352,39 @@
        }
     });
     });
+
+
+    $(document).ready(function() {
+      $('#edit_kode_kriteria').on('change', function() {
+         var kriteriaID = $(this).val();
+         $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+         if(kriteriaID) {
+             $.ajax({
+                 url: '/getsubkriteria/'+kriteriaID,
+                 type: "GET",
+                 dataType: "json",
+                 success:function(response)
+                 {
+                   if(response){
+                      $('#edit_kode_subkriteria').empty();
+                      $('#edit_kode_subkriteria').append('<option hidden>Choose Course</option>'); 
+                      $.each(response, function(key, subkriteria){
+                        // console.log(subkriteria);
+                        $.each(subkriteria, function (key, value) {
+                          $('select[name="edit_kode_subkriteria"]').append('<option value="'+ value.kode_subkriteria +'">' + value.nama_subkriteria+ '</option>');
+                        });
+                      });
+                  }else{
+                      $('#edit_kode_subkriteria').empty();
+                  }
+               }
+             });
+         }else{
+           $('#edit_kode_subkriteria').empty();
+         }
+      });
+      });

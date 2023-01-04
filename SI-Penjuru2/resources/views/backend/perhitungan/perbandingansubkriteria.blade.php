@@ -32,13 +32,29 @@ Kelola Data
         </tr>
       </thead>
       <tbody>
+        @foreach($kriteria as $data)
+        <tr>
+          <td>{{$no++}}</td>
+          <td>{{$data->kode_kriteria}}</td>
+          <td>{{$data->nama_kriteria}}</td>
+          <td>
+            <a href="/show-subkriteria/{{$data->kode_kriteria}}" value="{{$data->kode_kriteria}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_kriteria" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+            <i class="fa-regular fa-eye"></i>
+            </a>
+            <a href="/show-perbandingansubkriteria/{{$data->kode_kriteria}}" value="{{$data->kode_kriteria}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_kriteria" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+            <i class="fa-solid fa-table-cells"></i>
+            </a>
+          </td>
+        </tr>
+        @endforeach
       </tbody>
     </table>
   </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->
-<script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<!-- <script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
+@section('js')
 <script type="text/javascript">
   $(document).ready(function() {
     var table = $('#datatable').DataTable({
@@ -63,6 +79,7 @@ Kelola Data
     new $.fn.dataTable.FixedHeader(table);
   });
 </script>
-<script src="{{asset('js/PerbandinganSubKriteria.js')}}"></script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- <script src="{{asset('js/PerbandinganSubKriteria.js')}}"></script> -->
+@endsection
+<!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 @endsection

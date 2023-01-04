@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kriteria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,9 @@ class PerbandingansubkriteriaController extends Controller
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
-        return view('backend/perhitungan.perbandingansubkriteria', compact('admin','guru', 'wali'));
+        $kriteria = Kriteria::all();
+        $no = 1;
+        return view('backend/perhitungan.perbandingansubkriteria', compact('admin','guru', 'wali','kriteria','no'));
     }
 
     /**

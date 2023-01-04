@@ -95,11 +95,12 @@ class PengisianController extends Controller
      */
     public function edit($id)
     {
-        $pengisian = DB::table('pengisian')->where('pengisian.kode_pengisian',$id)->get();
+        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->join('kriteria','subkriteria.kode_kriteria','=','kriteria.kode_kriteria')->where('pengisian.kode_pengisian',$id)->get();
         if ($pengisian) {
             return response()->json([
                 'status' => 200,
                 'pengisian' => $pengisian,
+                // 'kontol' => 'pokeh',
             ]);
         } else {
             return response()->json([
@@ -121,7 +122,8 @@ class PengisianController extends Controller
         $validator = Validator::make($request->all(), [
             'kode_pengisian' => 'required',
             'nama_pengisian' => 'required',
-            'kode_subkriteria' => 'required',
+            'edit_kode_kriteria' => 'required',
+            'edit_kode_subkriteria' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -134,7 +136,7 @@ class PengisianController extends Controller
                 $pengisian->update([
                     'kode_pengisian' => $request->kode_pengisian,
                     'nama_pengisian' => $request->nama_pengisian,
-                    'kode_subkriteria' => $request->kode_subkriteria,
+                    'kode_subkriteria' => $request->edit_kode_subkriteria,
                 
                 
                 ]);
