@@ -55,21 +55,23 @@
         $('#edit_kodepengisian').val(response.pengisian[0].kode_pengisian);
         $('#edit_namapengisian').val(response.pengisian[0].nama_pengisian);
         $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria);
-        $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
+        // $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
         $.ajax({
           url: '/getsubkriteria/'+response.pengisian[0].kode_kriteria,
           type: "GET",
           dataType: "json",
-          success:function(response)
+          success:function(res)
           {
-            if(response){
+            if(res){
                $('#edit_kode_subkriteria').empty();
-               $('#edit_kode_subkriteria').append('<option hidden>Choose Course</option>'); 
-               $.each(response, function(key, subkriteria){
+              //  $('#edit_kode_subkriteria').append('<option hidden>Choose Course</option>'); 
+               $.each(res, function(key, subkriteria){
                  // console.log(subkriteria);
                  $.each(subkriteria, function (key, value) {
                    $('select[name="edit_kode_subkriteria"]').append('<option value="'+ value.kode_subkriteria +'">' + value.nama_subkriteria+ '</option>');
                  });
+        $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
+
                });
            }else{
                $('#edit_kode_subkriteria').empty();
