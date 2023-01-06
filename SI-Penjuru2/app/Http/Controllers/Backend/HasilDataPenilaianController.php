@@ -122,16 +122,20 @@ class HasilDataPenilaianController extends Controller
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
 
         // $pengisian = collect(DB::table('pilihan')->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->join('subkriteria', 'pengisian.kode_subkriteria', '=', 'subkriteria.kode_subkriteria')->join('kriteria', 'subkriteria.kode_kriteria', '=', 'kriteria.kode_kriteria')->get()->groupBy('kode_pengisian'));
-        $jumlah = Pengisian::with('penilaian')->where('id_penilaian','=',$pen)->get()->count();
-        $coba1 = Pengisian::with('penilaian')->where('id_penilaian','=',$pen)->paginate(1);
-        foreach ($coba1 as $key => $value) {
-            $coba[$key] = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
+        $kriteria = DB::table('kriteria')->paginate(1);
+        $jumlah = DB::table('kriteria')->get()->count();
+        // $jumlah = Pengisian::with('penilaian')->where('id_penilaian','=',$pen)->get()->count();
+        foreach ($kriteria as $keykriteria => $data) {
+            $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$pen], ['kode_kriteria','=',$data->kode_kriteria]])->get();
+            foreach ($coba1[$keykriteria] as $key => $value) {
+                $coba[$key] = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
+            }
         }
         // dd($coba);
         $user = DB::table('users')->where('id','=',$id)->get();
         $hasilpilihan = DB::table('hasilpilihan')->where('user_id','=',$id)->get();
         // dd($hasilpilihan);
-        return view('backend/admin.hasil_cek', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','user'));   
+        return view('backend/admin.hasil_cek', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','user','kriteria'));   
     }
 
 
@@ -225,6 +229,6 @@ class HasilDataPenilaianController extends Controller
         return $pdf->stream('laporan-hasil-penilaian');
     }
     public function eksport_excel($id){
-        return Excel::download(new HasilPenilaianExcelExport($id),'penilaian.csv');
+        return Excel::download(new HasilPenilaianExcelExport($id),'penilaian.xlsx');
     }
 }

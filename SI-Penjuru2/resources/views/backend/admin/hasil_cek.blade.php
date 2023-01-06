@@ -24,10 +24,17 @@ Penilaian
         @php
             $choicenum = 1;
         @endphp
-        @foreach ($coba1 as $key => $item)
+        @foreach ($kriteria as $keykriteria => $data)
+        <h1 hidden>
+            {{ $keykriteria + $kriteria->firstItem() }}
+        </h1>
+        <h2 class="small-title">
+            {{$data->nama_kriteria}}
+        </h2>
+        @foreach ($coba1[$keykriteria] as $key => $item)
             <div class="d-flex flex-row align-content-center align-items-center mb-5">
                 <div class="sw-5 me-4">
-                    <div class="border border-1 border-primary rounded-xl sw-5 sh-5 text-primary d-flex justify-content-center align-items-center">{{ $key + $coba1->firstItem() }}</div>
+                    <div class="border border-1 border-primary rounded-xl sw-5 sh-5 text-primary d-flex justify-content-center align-items-center">{{$questionNum++}}</div>
                 </div>
                 <div class="heading mb-0">
                     {{$item['nama_pengisian']}}
@@ -61,8 +68,8 @@ Penilaian
                     Chocolate bar sugar plum gingerbread. Gingerbread tiramisu fruitcake icing brownie. Marshmallow carrot cake jelly-o cotton candy danish. Wafer danish cupcake chocolate sesame snaps dessert marzipan.
                 </div>
             </div> -->
-            
-            @if($jumlah == $key + $coba1->firstItem())
+            @endforeach
+            @if($jumlah == $keykriteria + $kriteria->firstItem())
             <div class="row" style="margin-top: 100px;">
         <div class="col-12 text-center">
             <a href="{{ route('gettotalnilaicek', [$item->id_penilaian,$user[0]->id])}}">
@@ -78,7 +85,7 @@ Penilaian
             @endforeach
         </div>
     </div>
-    {{$coba1->links('vendor.pagination.bootstrap-4')}}
+    {{$kriteria->onEachSide(1)->links('vendor.pagination.bootstrap-4')}}
 
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->
