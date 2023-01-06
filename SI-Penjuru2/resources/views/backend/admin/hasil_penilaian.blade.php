@@ -41,7 +41,7 @@ Kelola Data
                 </button>
                 <div class="dropdown-menu shadow dropdown-menu-end">
                     <button class="dropdown-item export-copy" type="button">Copy</button>
-                    <button class="dropdown-item export-excel" type="button">Excel</button>
+                    <a href="{{route('hasilpenilaiancetakexcel',$penilaian[0]->id_penilaian)}}" class="dropdown-item export-excel" type="button">Excel</a>
                     <a href="{{route('hasilpenilaiancetakpdf',$penilaian[0]->id_penilaian)}}" class="dropdown-item export-cvs" type="button">PDF</a>
                 </div>
             </div>
@@ -59,7 +59,7 @@ Kelola Data
                     <th>No</th>
                     <th>Nama</th>
                     @foreach($pengisian as $data)
-                    <th>{{$data->nama_pengisian}}</th>
+                    <th>{{$data->nama_subkriteria}}</th>
                     @endforeach
                     <th>Cek Jawaban</th>
                 </tr>
@@ -92,7 +92,7 @@ Kelola Data
 <script type="text/javascript">
     $(document).ready(function() {
         var table = $('#datatable').DataTable({
-            responsive: true
+            // responsive: true
         });
 
         /* table.on('click', '.edit', function (){
@@ -113,6 +113,6 @@ Kelola Data
         new $.fn.dataTable.FixedHeader(table);
     });
 </script>
-<script src="{{asset('js/Subkriteria.js')}}"></script>
+<!-- <script src="{{asset('js/Subkriteria.js')}}"></script> -->
 @endsection
 @endsection

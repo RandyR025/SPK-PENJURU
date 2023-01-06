@@ -15,6 +15,11 @@ Penilaian
 <div class="alert alert-danger" role="alert">{{ session('loginError')}}</div>
 @endif
 <div id="success_message"></div>
+@if (session('status'))
+    <div class="alert alert-danger">
+        {{ session('status') }}
+    </div>
+@endif
 @php $questionNum = 1; @endphp
 
 <!-- <h2 class="small-title">Questions</h2> -->
@@ -83,7 +88,7 @@ Penilaian
         @endforeach
     </div>
 </div>
-{{$kriteria->links('vendor.pagination.bootstrap-4')}}
+{{$kriteria->onEachSide(1)->links('vendor.pagination.bootstrap-4')}}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->

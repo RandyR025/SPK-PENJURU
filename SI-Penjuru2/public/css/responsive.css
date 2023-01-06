@@ -17,7 +17,8 @@
         margin-top: 0px !important;
     }
     .halaman{
-        margin-left:450px !important;
+        /* margin-left:350px !important; */
+        margin: auto !important;
     }
  }
 

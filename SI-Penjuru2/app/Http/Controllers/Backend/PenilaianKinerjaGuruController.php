@@ -167,7 +167,11 @@ class PenilaianKinerjaGuruController extends Controller
                 ->join('kriteria','subkriteria.kode_kriteria','=','kriteria.kode_kriteria')
                 ->join('pv_subkriteria','subkriteria.kode_subkriteria','=','pv_subkriteria.id_subkriteria')
                 ->join('pv_kriteria','kriteria.kode_kriteria','=','pv_kriteria.id_kriteria')->first();
-                $nilai = $nilai + $coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria ;   
+                if ($coba1[$key] ==  null) {
+                    return back()->with('status','Silahkan Jawab Semua Pertanyaan');
+                }else {
+                    $nilai = $nilai + $coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria ;   
+                }
             }
             
 

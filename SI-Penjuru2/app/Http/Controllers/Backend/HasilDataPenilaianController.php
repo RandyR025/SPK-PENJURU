@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\HasilPenilaianExcelExport;
 use App\Http\Controllers\Controller;
 use App\Models\Hasil;
 use App\Models\Hasilpilihan;
@@ -9,6 +10,7 @@ use App\Models\Pengisian;
 use App\Models\Pilihan;
 // use Barryvdh\DomPDF\PDF;
 use PDF;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -75,7 +77,7 @@ class HasilDataPenilaianController extends Controller
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->get();
         }
-        $pengisian = DB::table('pengisian')->where('id_penilaian','=',$id)->get();
+        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$id)->get();
         // dd($coba);
         return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba1','coba','pengisian'));
     }
@@ -221,5 +223,8 @@ class HasilDataPenilaianController extends Controller
         $pengisian = DB::table('pengisian')->where('id_penilaian','=',$id)->get();
         $pdf = PDF::loadview('backend/admin.hasilpenilaian_pdf',['coba'=>$coba, 'coba1'=>$coba1, 'pengisian'=>$pengisian, 'penilaian'=>$penilaian, 'no'=>$no ,'data'=>'Laporan Hasil Penilaian']);
         return $pdf->stream('laporan-hasil-penilaian');
+    }
+    public function eksport_excel($id){
+        return Excel::download(new HasilPenilaianExcelExport($id),'penilaian.csv');
     }
 }
