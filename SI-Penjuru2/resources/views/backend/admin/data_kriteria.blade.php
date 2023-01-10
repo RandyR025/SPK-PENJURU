@@ -122,7 +122,12 @@ Kelola Data
     </div>
   </div>
 </div>
-
+<?php
+$noUrut = (int) substr($maxkriteria, 1, 2);
+$noUrut++;
+$char = "A";
+$newID = $char . sprintf("%02s", $noUrut);
+?>
 
 <div class="modal fade modal-close-out" id="AddKriteriaModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable mt-3">
@@ -137,7 +142,7 @@ Kelola Data
             @csrf
             <div class="mb-3">
               <label class="form-label">Kode Kriteria</label>
-              <input name="kode_kriteria" type="text" class="kode_kriteria form-control" />
+              <input name="kode_kriteria" type="text" class="kode_kriteria form-control" value="<?=$newID?>" />
               <span class="text-danger error-text kode_kriteria_error"></span>
             </div>
             <div class="mb-3">

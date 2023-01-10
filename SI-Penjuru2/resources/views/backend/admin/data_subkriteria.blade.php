@@ -123,6 +123,12 @@ Kelola Data
   </div>
 </div>
 
+<?php
+$noUrut = (int) substr($maxsubkriteria, 1, 2);
+$noUrut++;
+$char = "B";
+$newID = $char . sprintf("%02s", $noUrut);
+?>
 
 <div class="modal fade modal-close-out" id="AddSubKriteriaModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable mt-3">
@@ -142,7 +148,7 @@ Kelola Data
             </div>
             <div class="mb-3">
               <label class="form-label">Kode Sub Kriteria</label>
-              <input name="kode_subkriteria" type="text" class="kode_subkriteria form-control" />
+              <input name="kode_subkriteria" type="text" class="kode_subkriteria form-control" value="<?=$newID?>"/>
               <span class="text-danger error-text kode_subkriteria_error"></span>
             </div>
             <div class="mb-3">

@@ -132,6 +132,12 @@ Kelola Data
   </div>
 </div>
 
+<?php
+$noUrut = (int) substr($maxpilihan, 1, 2);
+$noUrut++;
+$char = "O";
+$newID = $char . sprintf("%02s", $noUrut);
+?>
 
 <div class="modal fade modal-close-out" id="AddPilihanModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable mt-3">
@@ -151,7 +157,7 @@ Kelola Data
             </div>
             <div class="mb-3">
               <label class="form-label">Kode Pilihan</label>
-              <input name="kode_pilihan" type="text" class="kode_pilihan form-control" />
+              <input name="kode_pilihan" type="text" class="kode_pilihan form-control" value="<?= $newID ?>"/>
               <span class="text-danger error-text kode_pilihan_error"></span>
             </div>
             <!-- <div class="mb-3">

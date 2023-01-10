@@ -83,8 +83,9 @@ class PengisianController extends Controller
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $no = 1;
+        $maxpengisian = Pengisian::max('kode_pengisian');
         // dd($pengisian);
-        return view('backend/admin.data_pengisian', compact('admin','guru', 'wali', 'pengisian', 'no', 'penilaian','subkriteria','kriteria'));
+        return view('backend/admin.data_pengisian', compact('admin','guru', 'wali', 'pengisian', 'no', 'penilaian','subkriteria','kriteria','maxpengisian'));
     }
 
     /**

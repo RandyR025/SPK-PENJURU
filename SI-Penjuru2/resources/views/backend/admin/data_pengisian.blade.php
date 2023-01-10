@@ -150,6 +150,12 @@ Kelola Data
   </div>
 </div>
 
+<?php
+$noUrut = (int) substr($maxpengisian, 1, 2);
+$noUrut++;
+$char = "C";
+$newID = $char . sprintf("%02s", $noUrut);
+?>
 
 <div class="modal fade modal-close-out" id="AddPengisianModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable mt-3">
@@ -169,7 +175,7 @@ Kelola Data
             </div>
             <div class="mb-3">
               <label class="form-label">Kode Pengisian</label>
-              <input name="kode_pengisian" type="text" class="kode_pengisian form-control" />
+              <input name="kode_pengisian" type="text" class="kode_pengisian form-control" value="<?=$newID?>"/>
               <span class="text-danger error-text kode_pengisian_error"></span>
             </div>
             <!-- <div class="mb-3">

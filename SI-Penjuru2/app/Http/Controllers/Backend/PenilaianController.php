@@ -22,8 +22,9 @@ class PenilaianController extends Controller
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $penilaian = Penilaian::all();
+        $maxpenilaian =Penilaian::max('id_penilaian');
         $no = 1;
-        return view('backend/admin.data_penilaian', compact('admin', 'guru', 'wali','penilaian','no'));
+        return view('backend/admin.data_penilaian', compact('admin', 'guru', 'wali','penilaian','no','maxpenilaian'));
     }
 
     /**

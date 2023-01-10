@@ -71,19 +71,27 @@ class PenilaianKinerjaGuruController extends Controller
 
         // $pengisian = collect(DB::table('pilihan')->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->join('subkriteria', 'pengisian.kode_subkriteria', '=', 'subkriteria.kode_subkriteria')->join('kriteria', 'subkriteria.kode_kriteria', '=', 'kriteria.kode_kriteria')->get()->groupBy('kode_pengisian'));
         // $jumlah = Pengisian::with('penilaian')->where('id_penilaian','=',$id)->get()->count();
-        $kriteria = DB::table('kriteria')->paginate(1);
-        $jumlah = DB::table('kriteria')->get()->count();
+        $kriteria = DB::table('kriteria')->join('subkriteria','kriteria.kode_kriteria','=','subkriteria.kode_kriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->join('penilaian','pengisian.id_penilaian','=','penilaian.id_penilaian')->groupBy('kriteria.kode_kriteria')->where('penilaian.id_penilaian','=',$id)->paginate(1);
+        // dd($kriteria);
+        // $jumlah = DB::table('kriteria')->get()->count();
+        $jumlah = DB::table('kriteria')->join('subkriteria','kriteria.kode_kriteria','=','subkriteria.kode_kriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->join('penilaian','pengisian.id_penilaian','=','penilaian.id_penilaian')->groupBy('kriteria.kode_kriteria')->where('penilaian.id_penilaian','=',$id)->get()->count();
+        $penilaian = Penilaian::where('id_penilaian','=',$id)->first();
+        $coba = [];
         foreach ($kriteria as $keykriteria => $data) {
             $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$id], ['kode_kriteria','=',$data->kode_kriteria]])->get();
             // dd($coba1);
             foreach ($coba1[$keykriteria] as $key => $value) {
-                $coba[$key] = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
+                $cek = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
+                if (isset($cek)) {
+                    
+                    $coba[$key] = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
+                }
             }
         }
         // dd($coba);
         $hasilpilihan = DB::table('hasilpilihan')->where('user_id','=',Auth::user()->id)->get();
         // dd($hasilpilihan);
-        return view('backend/guru.detailkinerjaguru', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','kriteria'));
+        return view('backend/guru.detailkinerjaguru', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','kriteria','penilaian'));
     }
 
     /**

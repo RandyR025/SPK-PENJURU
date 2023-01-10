@@ -76,7 +76,7 @@ Penilaian
         @if($jumlah == $keykriteria + $kriteria->firstItem())
         <div class="row" style="margin-top: 100px;">
             <div class="col-12 text-center">
-                <a href="{{ route('gettotalnilai', $item->id_penilaian)}}">
+                <a href="{{ route('gettotalnilai', $penilaian->id_penilaian)}}">
                     <button class="btn btn-outline-primary btn-icon btn-icon-end sw-25">
                         <span>Done</span>
                         <i data-acorn-icon="check"></i>

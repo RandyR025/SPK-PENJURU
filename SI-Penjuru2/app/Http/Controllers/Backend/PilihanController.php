@@ -85,8 +85,9 @@ class PilihanController extends Controller
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $no = 1;
+        $maxpilihan = Pilihan::max('kode_pilihan');
         // dd($pilihan);
-        return view('backend/admin.data_pilihan', compact('admin','guru', 'wali', 'pilihan', 'no', 'pengisian'));
+        return view('backend/admin.data_pilihan', compact('admin','guru', 'wali', 'pilihan', 'no', 'pengisian','maxpilihan'));
     }
 
     /**

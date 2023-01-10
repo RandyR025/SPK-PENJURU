@@ -124,6 +124,14 @@ Kelola Data
 </div>
 
 
+
+<?php
+$noUrut = (int) substr($maxpenilaian, 1, 2);
+$noUrut++;
+$char = "P";
+$newID = $char . sprintf("%02s", $noUrut);
+?>
+
 <div class="modal fade modal-close-out" id="AddPenilaianModal" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable mt-3">
     <div class="modal-content">
@@ -137,7 +145,7 @@ Kelola Data
             @csrf
             <div class="mb-3">
               <label class="form-label">Kode Penilaian</label>
-              <input name="id_penilaian" type="text" class="id_penilaian form-control" />
+              <input name="id_penilaian" type="text" class="id_penilaian form-control" value="<?= $newID?>" />
               <span class="text-danger error-text id_penilaian_error"></span>
             </div>
             <div class="mb-3">

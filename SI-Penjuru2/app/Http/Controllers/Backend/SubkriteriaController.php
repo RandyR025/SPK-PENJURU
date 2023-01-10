@@ -80,7 +80,8 @@ class SubkriteriaController extends Controller
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $no = 1;
-        return view('backend/admin.data_subkriteria', compact('admin','guru', 'wali', 'subkriteria', 'no', 'kriteria'));
+        $maxsubkriteria = Subkriteria::max('kode_subkriteria');
+        return view('backend/admin.data_subkriteria', compact('admin','guru', 'wali', 'subkriteria', 'no', 'kriteria','maxsubkriteria'));
         
     }
 

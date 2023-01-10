@@ -22,8 +22,9 @@ class KriteriaController extends Controller
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $kriteria = Kriteria::all();
+        $maxkriteria = Kriteria::max('kode_kriteria');
         $no = 1;
-        return view('backend/admin.data_kriteria', compact('admin','guru', 'wali','kriteria','no'));
+        return view('backend/admin.data_kriteria', compact('admin','guru', 'wali','kriteria','no','maxkriteria'));
     }
 
     /**
