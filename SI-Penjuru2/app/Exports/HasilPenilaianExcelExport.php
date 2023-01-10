@@ -15,8 +15,10 @@ use PhpOffice\PhpSpreadsheet\Cell\DefaultValueBinder;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class HasilPenilaianExcelExport implements FromView, ShouldAutoSize
+class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -66,4 +68,20 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize
 
         ]);
     }
+    public function registerEvents(): array
+{
+    return [
+        AfterSheet::class    => function(AfterSheet $event) {
+            $styleArray = [
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+                        'color' => ['argb' => 'FFFF0000'],
+                    ]
+                ]
+            ];
+            $event->sheet->getDelegate()->getStyle('B2:G8')->applyFromArray($styleArray);
+        },
+    ];
+}
 }
