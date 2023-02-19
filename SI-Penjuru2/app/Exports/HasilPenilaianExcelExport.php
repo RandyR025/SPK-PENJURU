@@ -74,7 +74,7 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
         AfterSheet::class    => function(AfterSheet $event) {
             $styleArray = [
                 'borders' => [
-                    'outline' => [
+                    'border' => [
                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
                         'color' => ['argb' => 'FFFF0000'],
                     ]

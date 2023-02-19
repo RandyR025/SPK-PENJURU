@@ -8,6 +8,7 @@ use App\Models\Hasilpilihan;
 use App\Models\Pengisian;
 use App\Models\Penilaian;
 use App\Models\Pilihan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,13 +23,16 @@ class PenilaianKinerjaGuruController extends Controller
      */
     public function index()
     {
-        $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian')->groupBy('id_penilaian')->get();
+        $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.deadline','penilaian.image')->groupBy('id_penilaian')->get();
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $no = 1; 
-        // dd($penilaian);
-        return view('backend/guru.penilaiankinerjaguru', compact('admin','guru', 'wali', 'penilaian'));
+        $tanggal = Carbon::now('Asia/Jakarta');
+        $dt = $tanggal->toDateString();
+        $future = $tanggal->addWeek();
+        /* dd($future); */
+        return view('backend/guru.penilaiankinerjaguru', compact('admin','guru', 'wali', 'penilaian','dt','future'));
     }
 
     /**

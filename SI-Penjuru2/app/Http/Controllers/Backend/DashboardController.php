@@ -19,7 +19,11 @@ class DashboardController extends Controller
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
-        return view('backend/autentikasi.dashboard', compact('admin','guru', 'wali'));
+        $totalguru = DB::table('guru')->count();
+        $totalkriteria = DB::table('kriteria')->count();
+        $totalsubkriteria = DB::table('subkriteria')->count();
+        $totalpenilaian = DB::table('penilaian')->count();
+        return view('backend/autentikasi.dashboard', compact('admin','guru', 'wali','totalguru','totalkriteria','totalsubkriteria','totalpenilaian'));
     }
 
     /**

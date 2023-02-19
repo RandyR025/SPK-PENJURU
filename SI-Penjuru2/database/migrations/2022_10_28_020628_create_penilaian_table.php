@@ -16,6 +16,9 @@ class CreatePenilaianTable extends Migration
         Schema::create('penilaian', function (Blueprint $table) {
             $table->string('id_penilaian')->primary();
             $table->string('nama_penilaian');
+            $table->date('tanggal');
+            $table->date('deadline');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

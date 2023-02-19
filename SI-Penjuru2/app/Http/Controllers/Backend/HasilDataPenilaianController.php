@@ -24,7 +24,7 @@ class HasilDataPenilaianController extends Controller
      */
     public function index()
     {
-        $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian')->groupBy('id_penilaian')->get();
+        $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->groupBy('id_penilaian')->get();
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
@@ -111,9 +111,13 @@ class HasilDataPenilaianController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,$pen)
     {
-        //
+        DB::table('hasil')->where([['user_id','=',$id],['id_penilaian','=',$pen],])->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data Berhasil Di Hapus !!!',
+        ]);
     }
 
     public function cek($id,$pen){

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class PenilaianController extends Controller
 {
@@ -59,6 +60,15 @@ class PenilaianController extends Controller
             $penilaian = new Penilaian;
             $penilaian->id_penilaian = $request->input('id_penilaian');
             $penilaian->nama_penilaian = $request->input('nama_penilaian');
+            $penilaian->tanggal = $request->input('tanggal_pelaksanaan');
+            $penilaian->deadline = $request->input('deadline');
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $extension = $file->getClientOriginalExtension();
+                $filename = time().'.'.$extension;
+                $file->move('images',$filename);
+                $penilaian->image = $filename;
+            }
             $penilaian->save();
 
             return response()->json([
@@ -122,12 +132,35 @@ class PenilaianController extends Controller
         } else {
             $penilaian = DB::table('penilaian')->where('id_penilaian',$id);
             if ($penilaian) {
-                $penilaian->update([
-                    'id_penilaian' => $request->id_penilaian,
-                    'nama_penilaian' => $request->nama_penilaian,
-                
-                
+                if ($request->hasFile('image')) {
+                    $gambar = DB::table('penilaian')->where('id_penilaian',$id)->first();
+                    File::delete('images/'.$gambar->image);
+                    $file = $request->file('image');
+                    $extension = $file->getClientOriginalExtension();
+                    $filename= time().'.'.$extension;
+                    $file->move('images', $filename);
+                    $penilaian->update([
+                        'id_penilaian' => $request->id_penilaian,
+                        'nama_penilaian' => $request->nama_penilaian,
+                        'tanggal' => $request->tanggal_pelaksanaan,
+                        'deadline' => $request->deadline,
+                        'image' => $filename,
+                        
                 ]);
+                } else {
+                    $penilaian->update([
+                        'id_penilaian' => $request->id_penilaian,
+                        'nama_penilaian' => $request->nama_penilaian,
+                        'tanggal' => $request->tanggal_pelaksanaan,
+                        'deadline' => $request->deadline,
+                    ]);
+                }
+                // $penilaian->update([
+                //     'id_penilaian' => $request->id_penilaian,
+                //     'nama_penilaian' => $request->nama_penilaian,
+                
+                
+                // ]);
                 return response()->json([
                     'status' => 200,
                     'message' => "Data Berhasil Di Perbarui !!!",

@@ -59,6 +59,8 @@ Kelola Data
           <th>No</th>
           <th>Id Penilaian</th>
           <th>Nama Penilaian</th>
+          <th>Tangal Pelaksanaan</th>
+          <th>Deadline</th>
           <th class="#"></th>
         </tr>
       </thead>
@@ -68,6 +70,8 @@ Kelola Data
       <td>{{$no++}}</td>
           <td>{{$data->id_penilaian}}</td>
           <td>{{$data->nama_penilaian}}</td>
+          <td>{{$data->tanggal}}</td>
+          <td>{{$data->deadline}}</td>
           <td>
           <button value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -112,6 +116,24 @@ Kelola Data
               <span class="text-danger error-text nama_penilaian_error"></span>
 
             </div>
+            <div class="mb-3">
+              <label class="form-label">Tanggal Pelaksanaan</label>
+              <input id="edit_tanggalpelaksanaan" type="date" class="tanggalpelaksanaan form-control" value="" name="tanggal_pelaksanaan" />
+              <span class="text-danger error-text tanggalpelaksanaan_error"></span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Deadline</label>
+              <input id="edit_deadline" type="date" class="deadline form-control" value="" name="deadline" />
+              <span class="text-danger error-text deadline_error"></span>
+            </div>
+            <div class="position-relative d-inline-block" id="singleImageUploadExample">
+              <div class="img-holder-update">
+              </div>
+              <button class="btn btn-sm btn-icon btn-icon-only btn-separator-light rounded-xl position-absolute e-0 b-0" type="button">
+                <i data-cs-icon="upload"></i>
+              </button>
+              <input class="file-upload d-none" type="file" name="image" id="edit_image" data-value="" />
+            </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -152,6 +174,20 @@ $newID = $char . sprintf("%02s", $noUrut);
               <label class="form-label">Nama Penilaian</label>
               <input name="nama_penilaian" type="text" class="nama_penilaian form-control" />
               <span class="text-danger error-text nama_penilaian_error"></span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Tanggal Pelaksanaan</label>
+              <input name="tanggal_pelaksanaan" type="date" class="tanggal_pelaksanaan form-control" />
+              <span class="text-danger error-text tanggalpelaksanaan_error"></span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Deadline</label>
+              <input name="deadline" type="date" class="deadline form-control" />
+              <span class="text-danger error-text deadline_error"></span>
+            </div>
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="inputGroupFile02" name="image" />
+                <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
 
 

@@ -18,18 +18,22 @@ Penilaian
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-5 g-4">
 @foreach ($penilaian as $item)
-    <div class="col">
+    <div class="col penilaian">
         <div class="card h-100">
+            @if($item->image == null)
             <img src="{{asset('backend/img/background/sekolah2.jpeg')}}" class="card-img-top sh-25" alt="card image">
+            @else
+            <img src="images/{{$item->image}}" class="card-img-top sh-25" alt="card image">
+            @endif
             <div class="card-body">
                 <h5 class="heading mb-2">
                     <a href="Quiz.Detail.html" class="body-link">
                         <span class="clamp-line sh-6 lh-1-5" data-line="2">{{$item->nama_penilaian}}</span>
                     </a>
                 </h5>
-                <div class="mb-3 text-muted sh-8 clamp-line" data-line="3">
+                <!-- <div class="mb-3 text-muted sh-8 clamp-line" data-line="3">
                     Pie fruitcake jelly beans. Candy tootsie chocolate croissant jujubes icing chocolate croissant jujubes icing macaroon croissant.
-                </div>
+                </div> -->
                 <div class="row g-0 align-items-center mb-1">
                     <div class="col ">
                         <div class="row g-0">
@@ -49,7 +53,7 @@ Penilaian
                                 <div class="text-alternate sh-4 d-flex align-items-center lh-1-25">Tanggal</div>
                             </div>
                             <div class="col-auto">
-                                <div class="sh-4 d-flex align-items-center text-alternate">5m</div>
+                                <div class="sh-4 d-flex align-items-center text-alternate">{{$item->tanggal}}</div>
                             </div>
                         </div>
                     </div>

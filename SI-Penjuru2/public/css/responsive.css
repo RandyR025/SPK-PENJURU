@@ -27,6 +27,9 @@
        width: 50%;
    }
 }
+.penilaian{
+    width: 300px;
+   }
 
 
 .dtr-title{
@@ -37,3 +40,55 @@
 .dtr-data{
     text-indent:30px;
 }
+
+blockquote {
+
+    max-width: 500px;
+   
+    margin: 0;
+   
+    width: 100%;
+   
+    padding: 40px 70px;
+   
+    background: ;
+   
+       color: ; 
+   
+    position: relative;
+   
+   }
+   
+   blockquote::before,
+   
+   blockquote::after {
+   
+    font-size: 350%;
+   
+    font-family: arial;
+   
+    display:block;
+   
+    position: absolute;
+   
+   }
+   
+   blockquote::before {
+   
+    content: open-quote;
+   
+    left: 30px;
+   
+       line-height: 40px;
+   
+   }
+   
+   blockquote::after {
+   
+    content: close-quote;
+   
+    right: 30px;
+   
+       line-height: 30px;
+   
+   }

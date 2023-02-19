@@ -67,10 +67,10 @@ Dashboard
       <div class="card hover-scale-up cursor-pointer sh-19">
         <div class="h-100 d-flex flex-column justify-content-between card-body align-items-center">
           <div class="bg-gradient-2 sh-5 sw-5 rounded-xl d-flex justify-content-center align-items-center mb-2">
-            <i data-cs-icon="radish" class="text-white"></i>
+          <i class="fa-solid fa-users-rectangle text-white"></i>
           </div>
-          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Radish</div>
-          <div class="text-small text-primary">14 PRODUCTS</div>
+          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Data Guru</div>
+          <div class="text-small text-primary">{{$totalguru}} GURU</div>
         </div>
       </div>
     </div>
@@ -78,10 +78,10 @@ Dashboard
       <div class="card hover-scale-up cursor-pointer sh-19">
         <div class="h-100 d-flex flex-column justify-content-between card-body align-items-center">
           <div class="bg-gradient-2 sh-5 sw-5 rounded-xl d-flex justify-content-center align-items-center mb-2">
-            <i data-cs-icon="mushrooms" class="text-white"></i>
+            <i class="fa-solid fa-bars text-white"></i>
           </div>
-          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Mushroom</div>
-          <div class="text-small text-primary">8 PRODUCTS</div>
+          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Kriteria</div>
+          <div class="text-small text-primary">{{$totalkriteria}}</div>
         </div>
       </div>
     </div>
@@ -89,14 +89,25 @@ Dashboard
       <div class="card hover-scale-up cursor-pointer sh-19">
         <div class="h-100 d-flex flex-column justify-content-between card-body align-items-center">
           <div class="bg-gradient-2 sh-5 sw-5 rounded-xl d-flex justify-content-center align-items-center mb-2">
-            <i data-cs-icon="pepper" class="text-white"></i>
+          <i class="fa-solid fa-bars-staggered text-white"></i>
           </div>
-          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Pepper</div>
-          <div class="text-small text-primary">21 PRODUCTS</div>
+          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Sub Kriteria</div>
+          <div class="text-small text-primary">{{$totalsubkriteria}}</div>
         </div>
       </div>
     </div>
     <div class="col-12 col-sm-6 col-lg-3">
+      <div class="card hover-scale-up cursor-pointer sh-19">
+        <div class="h-100 d-flex flex-column justify-content-between card-body align-items-center">
+          <div class="bg-gradient-2 sh-5 sw-5 rounded-xl d-flex justify-content-center align-items-center mb-2">
+          <i class="fa-solid fa-file-pen text-white"></i>
+          </div>
+          <div class="heading text-center mb-0 d-flex align-items-center lh-1">Penilaian</div>
+          <div class="text-small text-primary">{{$totalpenilaian}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-12 col-sm-6 col-lg-3">
       <div class="card hover-scale-up cursor-pointer sh-19">
         <div class="h-100 d-flex flex-column justify-content-between card-body align-items-center">
           <div class="sh-5 sw-5 border border-dashed rounded-xl mx-auto">
@@ -108,7 +119,7 @@ Dashboard
           <div class="text-small text-primary">&nbsp;</div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 @endif
@@ -168,7 +179,7 @@ Dashboard
               <li class="glide__slide p-0">
                 <img alt="thumb" src="{{asset('backend/img/background/sekolah3.jpeg')}}" class="responsive rounded-md img-fluid" />
               </li>
-              <li class="glide__slide p-0">
+              <!-- <li class="glide__slide p-0">
                 <img alt="thumb" src="{{asset('backend/img/product/thumb/guernsey-gache-thumb.jpg')}}" class="responsive rounded-md img-fluid" />
               </li>
               <li class="glide__slide p-0">
@@ -176,7 +187,7 @@ Dashboard
               </li>
               <li class="glide__slide p-0">
                 <img alt="thumb" src="{{asset('backend/img/product/thumb/baguette-thumb.jpg')}}" class="responsive rounded-md img-fluid" />
-              </li>
+              </li> -->
             </ul>
           </div>
           <div class="glide__arrows" data-glide-el="controls">
@@ -190,46 +201,44 @@ Dashboard
         </div>
       </div>
       <div class="card-body pt-0">
-        <h4 class="mb-3">Carrot Cake Gingerbread</h4>
+        <h4 class="mb-3">SDIT Harapan Umat Jember</h4>
         <div>
           <p>
-            Toffee croissant icing toffee. Sweet roll chupa chups marshmallow muffin liquorice chupa chups soufflé bonbon. Liquorice gummi bears
-            cake donut chocolate lollipop gummi bears. Cotton candy cupcake ice cream gummies dessert muffin chocolate jelly. Danish brownie
-            chocolate bar lollipop cookie tootsie roll candy canes. Jujubes lollipop cheesecake gummi bears cheesecake. Cake jujubes soufflé.
+            Sekolah Dasar Islam Terpadu Harapan Umat merupakan sekolah yang melayani pendidikan jenjang dasar di Kabupaten Jember. 
+            Didirikan tahun 2005 di lingkungan Tegal Gede, Jalan Danau Toba Kec.Sumbersari dibawah naungan Yayasan Islamic Centre. 
+            SDIT Harapan Umat memiliki kurikulum terpadu antara pendidikan umum dan pendidikan Islam yaitu dari kurikulum diknas 
+            dan kurikulum Jaringan Sekolah Islam Terpadu.
           </p>
           <p>
-            Cake chocolate bar biscuit sweet roll liquorice jelly jujubes. Gingerbread icing macaroon bear claw jelly toffee. Chocolate cake
-            marshmallow muffin wafer. Pastry cake tart apple pie bear claw sweet. Apple pie macaroon sesame snaps cotton candy jelly
-            <u>pudding lollipop caramels</u>
-            marshmallow. Powder halvah dessert ice cream. Carrot cake gingerbread chocolate cake tootsie roll. Oat cake jujubes jelly-o jelly
-            chupa chups lollipop jelly wafer soufflé.
+            SDIT Harapan Umat memiliki 6 rombongan belajar dan menyediakan 4 kelas ditiap rombongan belajar. 
+            Masing-masing kelas juga dilengkapi dengan sarana prasana yang lengkap untuk mendukung dan menjamin 
+            kondusivitas kelas saat kegiatan belajar mengajar, Untuk menunjang kualitas pembelajaran  SDIT Harapan Umat 
+            juga memiliki 83 Guru dan 6 Tenaga Pendidik.
           </p>
-          <h6 class="mb-3 mt-5 text-alternate">Sesame Snaps Lollipop Macaroon</h6>
           <p>
-            Jelly-o jelly oat cake cheesecake halvah. Cupcake sweet roll donut. Sesame snaps lollipop macaroon.
-            <a href="#">Icing tiramisu</a>
-            oat cake chocolate cake marzipan pudding danish gummies. Dragée liquorice jelly beans jelly jelly sesame snaps brownie. Cheesecake
-            chocolate cake sweet roll cupcake dragée croissant muffin. Lemon drops cupcake croissant liquorice donut cookie cake. Gingerbread
-            biscuit bear claw marzipan tiramisu topping. Jelly-o croissant chocolate bar gummi bears dessert lemon drops gingerbread croissant.
-            Donut candy jelly.
+            SDIT Harapan Umat ingin menjadi mitra orang tua dalam mendidik anak-anak untuk menjadi insan yang cerdas dan islami, 
+            maka SDIT Harapan Umat memiliki program unggulan seperti Seminar Parenting, Family Gathering hingga Haflah Akhir Tahun. 
+            Kemudian untuk mewadahi dan mengembangkan minat dan bakat SDIT Harapan Umat memiliki 21 Ekstrakurikuler dan program-program 
+            untuk membentuk karakter islami hingga mengembangkan minat wirausaha siswa.
           </p>
-          <ul class="list-unstyled">
-            <li>Croissant</li>
-            <li>Sesame snaps</li>
-            <li>Ice cream</li>
-            <li>Candy canes</li>
-            <li>Lemon drops</li>
+          <h6 class="mb-3 mt-5 text-alternate font-weight-bold text-center">VISI</h6>
+          <p>
+            <blockquote class="m-auto">
+              Menjadi sekolah dasar yang unggul dalam membina generasi shalih, cerdas, mandiri, kreatif dan tangguh dalam menghadapi tantangan global
+            </blockquote>
+          </p>
+          <h6 class="mb-3 mt-5 text-alternate text-center font-weight-bold">MISI</h6>
+          <ul class="" style="list-style: decimal; margin-left: 250px;">
+            <li>Menyelenggarakan pendidikan yang mampu membentuk kepribadian Islami.</li>
+            <li>Memberikan bekal pengetahuan dan ketrampilan untuk tumbuh dan berkembang secara optimal.</li>
+            <li>Mengembangkan minat dan bakat di bidang akademik dan non akademik.</li>
+            <li>Menjadikan lingkungan sekolah yang bersih, rapi,tertib, indah dan asri.</li>
           </ul>
-          <h6 class="mb-3 mt-5 text-alternate">Muffin Sweet Roll Apple Pie</h6>
-          <p>
-            Carrot cake gummi bears wafer sesame snaps soufflé cheesecake cheesecake cake. Sweet roll apple pie tiramisu bonbon sugar plum
-            muffin sesame snaps chocolate. Lollipop sweet roll gingerbread halvah sesame snaps powder. Wafer halvah chocolate soufflé icing.
-            Cotton candy danish lollipop jelly-o candy caramels.
-          </p>
+          <!-- <h6 class="mb-3 mt-5 text-alternate">Muffin Sweet Roll Apple Pie</h6> -->
         </div>
       </div>
     </div>
-    <div class="card-footer border-0 pt-0">
+    <!-- <div class="card-footer border-0 pt-0">
       <div class="row align-items-center">
         <div class="col-6">
           <div class="d-flex align-items-center">
@@ -255,7 +264,7 @@ Dashboard
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
 <!-- Carousel End -->

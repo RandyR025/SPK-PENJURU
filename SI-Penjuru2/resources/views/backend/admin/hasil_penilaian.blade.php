@@ -19,9 +19,9 @@ Kelola Data
 <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 mb-1" style="">
     <div class="d-inline-block me-0 me-sm-3 float-start float-md-none" style="margin-left: 300px;">
         <!-- Add Button Start -->
-        <a href="#" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-datatable" data-bs-toggle="modal" data-bs-placement="top" type="button" data-bs-delay="0" titte data-bs-original-title="Add" data-bs-target="#AddKriteriaModal">
+        <!-- <a href="#" class="btn btn-icon btn-icon-only btn-foreground-alternate shadow add-datatable" data-bs-toggle="modal" data-bs-placement="top" type="button" data-bs-delay="0" titte data-bs-original-title="Add" data-bs-target="#AddKriteriaModal">
             <i data-cs-icon="plus"></i>
-        </a>
+        </a> -->
         <!-- Add Button End -->
 
 
@@ -40,7 +40,7 @@ Kelola Data
                     </span>
                 </button>
                 <div class="dropdown-menu shadow dropdown-menu-end">
-                    <button class="dropdown-item export-copy" type="button">Copy</button>
+                    <!-- <button class="dropdown-item export-copy" type="button">Copy</button> -->
                     <a href="{{route('hasilpenilaiancetakexcel',$penilaian[0]->id_penilaian)}}" class="dropdown-item export-excel" type="button">Excel</a>
                     <a href="{{route('hasilpenilaiancetakpdf',$penilaian[0]->id_penilaian)}}" class="dropdown-item export-cvs" type="button">PDF</a>
                 </div>
@@ -76,6 +76,9 @@ Kelola Data
                         <a href="{{ route('hasilpenilaiancek', [$item->user_id,$item->id_penilaian]) }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
                             <i class="fa-regular fa-eye"></i>
                         </a>
+                        <button value="{{$item->user_id}}" onclick="handleClick(this,'<?=$item->id_penilaian;?>');" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_cekjawaban" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+                        <i class="fa-solid fa-trash-can"></i>
+                        </button>
                     </td>
                 </tr>
                 @endforeach
@@ -114,5 +117,6 @@ Kelola Data
     });
 </script>
 <!-- <script src="{{asset('js/Subkriteria.js')}}"></script> -->
+<script src="{{asset('js/hasilcek.js')}}"></script>
 @endsection
 @endsection

@@ -152,7 +152,7 @@ Perhitungan
                     </div>
                 </div>
             </section>
-            <a href="bobot.php?c=1">
+            <a href="{{route('perbandingansubkriteria')}}">
                 <div class="col-12 text-center">
                     <button class="btn btn-outline-primary btn-icon btn-icon-end sw-25">
                         <span>Lanjut</span>
