@@ -20,7 +20,7 @@ Penilaian
 
     <div class="row mb-4">
         <div class="col">
-            <select style="cursor:pointer;" class="form-control" id="tag_select1" name="firstmonth">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select1" data-width="100%" name="firstmonth">
                 <option value="0" selected disabled> Pilih Bulan Awal</option>
                 <option value="01"> Januari</option>
                 <option value="02"> Februari</option>
@@ -37,7 +37,7 @@ Penilaian
             </select>
         </div>
         <div class="col">
-            <select style="cursor:pointer;" class="form-control" id="tag_select2" name="lastmonth">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select2" data-width="100%" name="lastmonth">
                 <option value="0" selected disabled> Pilih Bulan Akhir</option>
                 <option value="01"> Januari</option>
                 <option value="02"> Februari</option>
@@ -57,7 +57,7 @@ Penilaian
 
     <div class="row mb-4">
         <div class="col">
-            <select style="cursor:pointer;" class="form-control" id="tag_select1" name="firstyear">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select3" data-width="100%" name="firstyear">
                 <option value="0" selected disabled> Pilih Tahun Awal</option>
                 <?php
                 $year = date('Y');
@@ -70,7 +70,7 @@ Penilaian
             </select>
         </div>
         <div class="col">
-            <select style="cursor:pointer;" class="form-control" id="tag_select2" name="lastyear">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select4" data-width="100%" name="lastyear">
                 <option value="0" selected disabled> Pilih Tahun Akhir</option>
                 <?php
                 $year = date('Y');

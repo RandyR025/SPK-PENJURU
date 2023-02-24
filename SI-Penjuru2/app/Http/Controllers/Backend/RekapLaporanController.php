@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Exports\HasilRekapExcelExport;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -98,7 +99,11 @@ class RekapLaporanController extends Controller
         $firstyear = $request->get('firstyear');
         $lastyear = $request->get('lastyear');
         $opsi = $request->get('opsi');
-        if ($opsi == "pdf") {
+        $laporan = $request->get('laporan');
+        $waktu = Carbon::now('Asia/Jakarta');
+        $now = $waktu->format('Y');
+        // dd($oke);
+        if ($opsi == "pdf" && $laporan=="jawaban") {
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
                 $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
@@ -110,43 +115,245 @@ class RekapLaporanController extends Controller
                     $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
-                $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
-                return $pdf->stream('rekap-laporan-hasil-penilaian');
+                if (isset($coba)) {
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstyear) && isset($lastyear)) {
-                
+                $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstmonth) && isset($lastmonth)) {
-                
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstmonth)) {
-                
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($lastmonth)) {
-                
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstyear)) {
-                
+                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$firstyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($lastyear)) {
-                
+                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$lastyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    return $pdf->stream('rekap-laporan-hasil-penilaian');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } else {
-                
+                return redirect()->route('rekaplaporan');
             }
-        } elseif ($opsi == "excel") {
+        } elseif ($opsi == "excel" && $laporan=="jawaban") {
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
-                return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {      
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstyear) && isset($lastyear)) {
-                
+                $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstmonth) && isset($lastmonth)) {
-                
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {                 
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstmonth)) {
-                
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($lastmonth)) {
-                
+                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($firstyear)) {
-                
+                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$firstyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } elseif (isset($lastyear)) {
-                
+                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$lastyear)->get();
+                $no = 1;
+                foreach ($penilaian as $keyval => $val) {
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    foreach ($coba1[$keyval] as $key => $value) {
+                        $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                    }
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                // dd($coba);
+                if (isset($coba)) {
+                    return Excel::download(new HasilRekapExcelExport($firstmonth,$lastmonth,$firstyear,$lastyear),'RekapLaporan.xlsx');
+                }else {
+                    return back()->with('rekapError', 'Tidak Ada Laporan !!!');
+                }
             } else {
-                
+                return redirect()->route('rekaplaporan');
             }
-        }else {
-            return redirect()->route('rekaplaporan');
+        }elseif ($opsi=="pdf" && $laporan=="hasil") {
+            # code...
+        }elseif ($opsi=="excel" && $laporan=="hasil") {
+            # code...
+        }elseif ($opsi=="pdf") {
+            return redirect()->route('rekaplaporan')->with('rekapError', 'Silahkan Pilih Laporan !!!');
+        }elseif ($opsi=="excel") {
+            return redirect()->route('rekaplaporan')->with('rekapError', 'Silahkan Pilih Laporan !!!');
+        }
+        else {
+            return redirect()->route('rekaplaporan')->with('rekapError', 'Silahkan Pilih Opsi !!!');
         }
     }
 }

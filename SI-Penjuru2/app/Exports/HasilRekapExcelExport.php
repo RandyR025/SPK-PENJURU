@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Models\Hasilpilihan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -29,6 +30,8 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     // }
     public function __construct($firstmonth,$lastmonth,$firstyear,$lastyear)
     {
+        $waktu = Carbon::now('Asia/Jakarta');
+        $this->now = $waktu->format('Y');
         $this->firstmonth = $firstmonth;
         $this->lastmonth = $lastmonth;
         $this->firstyear = $firstyear;
@@ -36,23 +39,133 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     }
     public function view(): View
     {
-        $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
-        $no = 1;
-        foreach ($penilaian as $keyval => $val) {
-            $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
-            foreach ($coba1[$keyval] as $key => $value) {
-                $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+        if (isset($this->firstmonth) && isset($this->lastmonth) && isset($this->firstyear) && isset($this->lastyear)) {
+            $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
             }
-            $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif (isset($this->firstyear) && isset($this->lastyear)) {
+            $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            }
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif (isset($this->firstmonth) && isset($this->lastmonth)) {
+            $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->whereYear('tanggal','=',$this->now)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            }
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif (isset($this->firstmonth)) {
+            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->now)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            }
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif (isset($this->lastmonth)) {
+            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            }
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif (isset($this->firstyear)) {
+            $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$this->firstyear)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            }
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif (isset($this->lastyear)) {
+            $penilaian = DB::table('penilaian')->whereYear('tanggal','<=',$this->lastyear)->get();
+            $no = 1;
+            foreach ($penilaian as $keyval => $val) {
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                foreach ($coba1[$keyval] as $key => $value) {
+                    $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
+                }
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+            }
+            return view('backend/admin.hasilrekap_excel',[
+                'coba1'=>$coba1,
+                'coba' => $coba,
+                'pengisian'=>$pengisian,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
         }
-        return view('backend/admin.hasilrekap_excel',[
-            'coba1'=>$coba1,
-            'coba' => $coba,
-            'pengisian'=>$pengisian,
-            'penilaian'=>$penilaian,
-            'no'=>$no,
-
-        ]);
     }
     public function registerEvents(): array
 {

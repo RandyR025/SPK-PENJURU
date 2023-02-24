@@ -11,8 +11,8 @@ Cetak Laporan
 <div class="alert alert-primary" role="alert">{{ session('success')}}</div>
 @endif
 
-@if(session()->has('loginError'))
-<div class="alert alert-danger" role="alert">{{ session('loginError')}}</div>
+@if(session()->has('rekapError'))
+<div class="alert alert-danger" role="alert">{{ session('rekapError')}}</div>
 @endif
 <div id="success_message"></div>
 
@@ -20,7 +20,7 @@ Cetak Laporan
 
     <div class="row mb-4">
         <div class="col">
-            <select style="cursor:pointer;" class="form-control text-center" id="tag_select1" name="firstmonth">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select1" data-width="100%" name="firstmonth">
                 <option value="0" selected disabled> Pilih Bulan Awal</option>
                 <option value="01"> Januari</option>
                 <option value="02"> Februari</option>
@@ -37,7 +37,7 @@ Cetak Laporan
             </select>
         </div>
         <div class="col">
-            <select style="cursor:pointer;" class="form-control text-center" id="tag_select2" name="lastmonth">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select2" data-width="100%" name="lastmonth">
                 <option value="0" selected disabled> Pilih Bulan Akhir</option>
                 <option value="01"> Januari</option>
                 <option value="02"> Februari</option>
@@ -57,7 +57,7 @@ Cetak Laporan
 
     <div class="row mb-4">
         <div class="col">
-            <select style="cursor:pointer;" class="form-control text-center" id="tag_select1" name="firstyear">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select3" data-width="100%" name="firstyear">
                 <option value="0" selected disabled> Pilih Tahun Awal</option>
                 <?php
                 $year = date('Y');
@@ -70,7 +70,7 @@ Cetak Laporan
             </select>
         </div>
         <div class="col">
-            <select style="cursor:pointer;" class="form-control text-center" id="tag_select2" name="lastyear">
+            <select style="cursor:pointer;" class="select-single-no-search" id="tag_select4" data-width="100%" name="lastyear">
                 <option value="0" selected disabled> Pilih Tahun Akhir</option>
                 <?php
                 $year = date('Y');
@@ -84,11 +84,18 @@ Cetak Laporan
         </div>
     </div>
     <div class="row mb-4">
-        <div class="col-5 m-auto">
-            <select name="opsi" id="opsi" class="form-control text-center">
+        <div class="col">
+            <select name="opsi" id="opsi" class="select-single-no-search" data-width="100%">
                 <option value="0" selected disabled> Pilih Opsi</option>
                 <option value="pdf">Cetak PDF</option>
                 <option value="excel">Cetak Excel</option>
+            </select>
+        </div>
+        <div class="col">
+            <select name="laporan" id="laporan" class="select-single-no-search" data-width="100%">
+                <option value="0" selected disabled> Pilih Laporan</option>
+                <option value="jawaban">Laporan Jawaban</option>
+                <option value="hasil">Laporan Hasil</option>
             </select>
         </div>
     </div>
