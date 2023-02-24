@@ -1,0 +1,36 @@
+<table class="table table-bordered" id="datatable">
+    @foreach($penilaian as $valkey => $val)
+    <thead>
+        <tr>
+            <th>Laporan:</th>
+            <th>{{$val->nama_penilaian}}</th>
+        </tr>
+        <tr>
+            <th>Tanggal:</th>
+            <th>{{$val->tanggal}}</th>
+        </tr>
+        <tr>
+        <th>No</th>
+        <th>Nama</th>
+        @foreach($pengisian[$valkey] as $data)
+        <th>{{$data->nama_subkriteria}}</th>
+        @endforeach
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        $nomor =1;
+        ?>
+        @foreach ($coba1[$valkey] as $key => $item)
+        <tr>
+            <td>{{ $nomor }}</td>
+            <td>{{ $item->name }}</td>
+            @foreach ($coba[$key] as $keycoba => $p)
+            <td>{{$p->nama_pilihan}} ({{ $p->points }})</td>
+            @endforeach
+            {{$nomor++}}
+        </tr>
+        @endforeach
+    </tbody>
+    @endforeach
+</table>

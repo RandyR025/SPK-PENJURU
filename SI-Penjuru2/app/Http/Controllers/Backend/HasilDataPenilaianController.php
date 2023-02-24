@@ -22,9 +22,29 @@ class HasilDataPenilaianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->groupBy('id_penilaian')->get();
+        $firstmonth = $request->get('firstmonth');
+        $lastmonth = $request->get('lastmonth');
+        $firstyear = $request->get('firstyear');
+        $lastyear = $request->get('lastyear');
+        if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->groupBy('id_penilaian')->get();
+        }elseif (isset($firstyear) && isset($lastyear)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->groupBy('id_penilaian')->get();
+        }elseif (isset($firstmonth) && isset($lastmonth)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->groupBy('id_penilaian')->get();
+        }elseif (isset($firstmonth)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('tanggal','=',$firstmonth)->groupBy('id_penilaian')->get();
+        }elseif (isset($lastmonth)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('tanggal','=',$lastmonth)->groupBy('id_penilaian')->get();
+        }elseif (isset($firstyear)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
+        }elseif (isset($lastyear)) {
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
+        }else{
+            $penilaian = DB::table('hasil')->join('penilaian', 'hasil.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->groupBy('id_penilaian')->get();
+        }
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);

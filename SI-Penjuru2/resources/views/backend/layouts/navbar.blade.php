@@ -93,13 +93,13 @@
           <li>
             <a href="#">
               <i data-cs-icon="help" class="me-2" data-cs-size="17"></i>
-              <span class="align-middle">Help</span>
+              <span class="align-middle">Sandi</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="{{route('rekaplaporan')}}">
               <i data-cs-icon="document-full" class="me-2" data-cs-size="17"></i>
-              <span class="align-middle">Docs</span>
+              <span class="align-middle">Laporan</span>
             </a>
           </li>
         </ul>

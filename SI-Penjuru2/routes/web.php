@@ -15,6 +15,7 @@ use App\Http\Controllers\Backend\PerbandingankriteriaController;
 use App\Http\Controllers\Backend\PerbandingansubkriteriaController;
 use App\Http\Controllers\Backend\PilihanController;
 use App\Http\Controllers\Backend\ProfileController;
+use App\Http\Controllers\Backend\RekapLaporanController;
 use App\Http\Controllers\Backend\SubkriteriaController;
 use Illuminate\Support\Facades\Route;
 
@@ -135,6 +136,11 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/hasilpenilaian/cetakpdf/{id}', [HasilDataPenilaianController::class, 'cetak_pdf'])->name('hasilpenilaiancetakpdf');
         Route::get('/hasilpenilaian/cetakxlsx/{id}', [HasilDataPenilaianController::class, 'eksport_excel'])->name('hasilpenilaiancetakexcel');
         /* End Cetak */
+
+        /* Start Rekap Laporan */
+        Route::get('/rekaplaporan', [RekapLaporanController::class, 'index'])->name('rekaplaporan');
+        Route::get('/rekaplaporancetak', [RekapLaporanController::class, 'cetak'])->name('rekaplaporancetak');
+        /* End Rekap Laporan */
     });
     Route::group(['middleware' => ['cek_login:guru']], function () {
         Route::get('/dashboardguru', [DashboardController::class, 'index'])->name('dashboardguru');

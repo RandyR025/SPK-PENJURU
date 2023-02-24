@@ -16,8 +16,81 @@ Penilaian
 @endif
 <div id="success_message"></div>
 
+<form action="{{route('daftarpenilaian')}}" method="get" class="mb-6" class="form-group">
+
+    <div class="row mb-4">
+        <div class="col">
+            <select style="cursor:pointer;" class="form-control" id="tag_select1" name="firstmonth">
+                <option value="0" selected disabled> Pilih Bulan Awal</option>
+                <option value="01"> Januari</option>
+                <option value="02"> Februari</option>
+                <option value="03"> Maret</option>
+                <option value="04"> April</option>
+                <option value="05"> Mei</option>
+                <option value="06"> Juni</option>
+                <option value="07"> Juli</option>
+                <option value="08"> Agustus</option>
+                <option value="09"> September</option>
+                <option value="10"> Oktober</option>
+                <option value="11"> November</option>
+                <option value="12"> Desember</option>
+            </select>
+        </div>
+        <div class="col">
+            <select style="cursor:pointer;" class="form-control" id="tag_select2" name="lastmonth">
+                <option value="0" selected disabled> Pilih Bulan Akhir</option>
+                <option value="01"> Januari</option>
+                <option value="02"> Februari</option>
+                <option value="03"> Maret</option>
+                <option value="04"> April</option>
+                <option value="05"> Mei</option>
+                <option value="06"> Juni</option>
+                <option value="07"> Juli</option>
+                <option value="08"> Agustus</option>
+                <option value="09"> September</option>
+                <option value="10"> Oktober</option>
+                <option value="11"> November</option>
+                <option value="12"> Desember</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col">
+            <select style="cursor:pointer;" class="form-control" id="tag_select1" name="firstyear">
+                <option value="0" selected disabled> Pilih Tahun Awal</option>
+                <?php
+                $year = date('Y');
+                $min = $year - 60;
+                $max = $year;
+                for ($i = $max; $i >= $min; $i--) {
+                    echo '<option value=' . $i . '>' . $i . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+        <div class="col">
+            <select style="cursor:pointer;" class="form-control" id="tag_select2" name="lastyear">
+                <option value="0" selected disabled> Pilih Tahun Akhir</option>
+                <?php
+                $year = date('Y');
+                $min = $year - 60;
+                $max = $year;
+                for ($i = $max; $i >= $min; $i--) {
+                    echo '<option value=' . $i . '>' . $i . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-outline-primary w-100 me-1 btn-sm">Filter</button>
+</form>
+
 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-5 g-4">
-@foreach ($penilaian as $item)
+    @foreach ($penilaian as $item)
     <div class="col penilaian">
         <div class="card h-100">
             @if($item->image == null)
@@ -75,20 +148,20 @@ Penilaian
                         </div>
                     </div>
                 </div> -->
- 
-                    <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
-                        <a href="{{ route('hasilpenilaian', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Cek</a>
-                    </div>
+
+                <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
+                    <a href="{{ route('hasilpenilaian', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Cek</a>
+                </div>
             </div>
         </div>
     </div>
-@endforeach
+    @endforeach
 </div>
 
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->
 <!-- <script src="cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script> -->
 <script src="{{asset('js/Guru.js')}}">
-// <script src = "//cdn.jsdelivr.net/npm/sweetalert2@11" >
+    // <script src = "//cdn.jsdelivr.net/npm/sweetalert2@11" >
 </script>
 @endsection
