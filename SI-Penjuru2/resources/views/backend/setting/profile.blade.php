@@ -330,19 +330,32 @@ Setting
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Tanggal Lahir</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input type="date" class="form-control date-picker-close" id="birthday" value="{{ $wali->tanggal_lahir }}" />
+        @if(isset($wali->tanggal_lahir))
+          <input id="edit_tanggallahir" name="tanggal_lahir" type="date" class="form-control date-picker-close" id="birthday" value="{{ $wali->tanggal_lahir }}" />
+          <span class="text-danger error-text tanggal_lahir__error"></span>
+          @else
+          <input id="edit_tanggallahir" name="tanggal_lahir" type="date" class="form-control date-picker-close" id="birthday" value="" />
+          <span class="text-danger error-text tanggal_lahir__error"></span>
+          @endif
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Tempat Lahir</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input type="text" class="form-control" value="{{ $wali->tempat_lahir }}" />
+        @if(isset($wali->tempat_lahir))
+          <input id="edit_tempatlahir" name="tempat_lahir" type="text" class="form-control" value="{{ $wali->tempat_lahir }}" />
+          <span class="text-danger error-text tempat_lahir__error"></span>
+          @else
+          <input id="edit_tempatlahir" name="tempat_lahir" type="text" class="form-control" value="" />
+          <span class="text-danger error-text tempat_lahir_error"></span>
+          @endif
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Jenis Kelamin</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <select class="select-single-no-search" data-width="100%" id="genderSelect">
+          @if(isset($wali->jenis_kelamin))
+          <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
             @if($wali->jenis_kelamin == "laki-laki")
             <option value="{{ $wali->jenis_kelamin }}" label="&nbsp;">{{ $wali->jenis_kelamin }}</option>
             <option value="perempuan">perempuan</option>
@@ -351,24 +364,42 @@ Setting
             <option value="laki-laki">laki-laki</option>
             @endif
           </select>
+          @else
+          <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
+            <option value="perempuan">perempuan</option>
+            <option value="laki-laki">laki-laki</option>
+          </select>
+          @endif
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Alamat</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <textarea class="form-control" rows="3">{{ $wali->alamat }}</textarea>
+          @if(isset($wali->alamat))
+          <textarea class="form-control" rows="3" name="alamat" id="edit_alamat">{{ $wali->alamat }}</textarea>
+          <span class="text-danger error-text alamat_error"></span>
+          @else
+          <textarea class="form-control" rows="3" name="alamat" id="edit_alamat"></textarea>
+          <span class="text-danger error-text alamat_error"></span>
+          @endif
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">No Telp</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input type="text" class="form-control" value="{{ $wali->no_telp }}" />
+          @if(isset($wali->no_telp))
+          <input id="edit_notelp" type="text" class="form-control" value="{{ $wali->no_telp }}" name="no_telp" />
+          <span class="text-danger error-text no_telp_error"></span>
+          @else
+          <input id="edit_notelp" type="text" class="form-control" value="" name="no_telp" />
+          <span class="text-danger error-text no_telp_error"></span>
+          @endif
         </div>
       </div>
       <div class="position-relative d-inline-block" id="singleImageUploadExample">
         <div class="img-holder-update">
           <label for="" style="margin-right:100px;"> Foto Profil</label>
-          @if (isset($admin->image))
+          @if (isset($wali->image))
           <img src="{{asset('images/'.$wali->image)}}" alt="user" class="rounded-xl border border-separator-light border-4 sw-11 sh-11" />
           @else
           <img src="backend/img/profile/profile-11.jpg" alt="user" class="rounded-xl border border-separator-light border-4 sw-11 sh-11" />

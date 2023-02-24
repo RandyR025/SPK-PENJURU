@@ -96,6 +96,7 @@
               <span class="align-middle">Sandi</span>
             </a>
           </li>
+          @if (auth()->user()->level == "admin")
           <li>
             <a href="{{route('rekaplaporan')}}">
               <i data-cs-icon="document-full" class="me-2" data-cs-size="17"></i>
@@ -106,7 +107,6 @@
       </div>
       <div class="col-6 pe-1 ps-1">
         <ul class="list-unstyled">
-        @if (auth()->user()->level == "admin")
           <li>
             <a href="{{route('profile')}}">
               <i data-cs-icon="gear" class="me-2" data-cs-size="17"></i>
@@ -122,14 +122,14 @@
             </a>
           </li>
         @endif
-        <!-- @if (auth()->user()->level == "wali")
+        @if (auth()->user()->level == "wali")
           <li>
             <a href="{{route('profilewali')}}">
               <i data-cs-icon="gear" class="me-2" data-cs-size="17"></i>
               <span class="align-middle">Settings</span>
             </a>
           </li>
-        @endif -->
+        @endif
           <li>
             <a href="{{route('keluarlogout')}}" onclick="event.preventDefault();
                       document.getElementById('logout-form').submit();">

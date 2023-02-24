@@ -100,6 +100,8 @@ class LoginController extends Controller
                 return redirect()->intended('dashboard');
             }elseif ($user->level == 'guru') {
                 return redirect()->intended('dashboardguru');
+            }elseif ($user->level == 'wali') {
+                return redirect()->intended('dashboardwali');
             }
             return redirect()->intended('masuklogin');
             # code...

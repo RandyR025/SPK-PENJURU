@@ -14,7 +14,14 @@
         <i data-cs-icon="home" class="icon" data-cs-size="18"></i>
         <span class="label">Dashboards</span>
       </a>
-    @endif    
+    @endif
+    
+    @if (auth()->user()->level == "wali")
+      <a href="{{route('dashboardwali')}}" data-href="Dashboards.html" class="{{ Route::is('dashboardwali') ? 'active' : '' }}">
+        <i data-cs-icon="home" class="icon" data-cs-size="18"></i>
+        <span class="label">Dashboards</span>
+      </a>
+    @endif
       <!-- <ul id="dashboards">
                   <li>
                     <a href="Dashboards.Default.html">
@@ -112,6 +119,21 @@
   </ul>
   @endif
   @if (auth()->user()->level == "guru")
+  <li>
+      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
+        <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>
+        <span class="label">Kelola Data</span>
+      </a>
+      <ul id="keloladata">
+        <li>
+          <a href="{{route('penilaiankinerjaguru')}}" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
+            <span class="label">Penilaian Kinerja Guru</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    @endif
+    @if (auth()->user()->level == "wali")
   <li>
       <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
         <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>

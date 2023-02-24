@@ -142,6 +142,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/rekaplaporancetak', [RekapLaporanController::class, 'cetak'])->name('rekaplaporancetak');
         /* End Rekap Laporan */
     });
+
     Route::group(['middleware' => ['cek_login:guru']], function () {
         Route::get('/dashboardguru', [DashboardController::class, 'index'])->name('dashboardguru');
         Route::get('/profileguru', [ProfileController::class, 'index'])->name('profileguru');
@@ -150,6 +151,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/detailkinerjaguru/{id}',[PenilaianKinerjaGuruController::class, 'show'])->name('detailkinerjaguru');
         Route::post('/gethasilpenilaian', [PenilaianKinerjaGuruController::class, 'hasilpilihan'])->name('gethasilpenilaian');
         Route::get('/gettotalnilai/{id}', [PenilaianKinerjaGuruController::class, 'totalnilai'])->name('gettotalnilai');
+    });
+
+    Route::group(['middleware' => ['cek_login:wali']], function () {
+        Route::get('/dashboardwali', [DashboardController::class, 'index'])->name('dashboardwali');
+        Route::get('/profilewali', [ProfileController::class, 'index'])->name('profilewali');
+        Route::post('/profilewali/{id}',[ProfileController::class, 'update'])->name('updateprofilewali');
     });
 });
 Route::get('/masukLogin', [LoginController::class, 'index'])->name('masuklogin');
