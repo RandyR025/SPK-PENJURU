@@ -18,5 +18,6 @@ class Wali extends Model
         'jenis_kelamin',
         'no_telp',
         'alamat',
+        'image',
     ];
 }

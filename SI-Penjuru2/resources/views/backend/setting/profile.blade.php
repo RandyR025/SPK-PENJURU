@@ -17,7 +17,7 @@ Setting
 <div id="success_message"></div>
 @if (auth()->user()->level == "admin")
 <!-- Public Info Start -->
-<h2 class="small-title">Public Info</h2>
+<h2 class="small-title">Setting</h2>
 <div class="card mb-5">
   <div class="card-body">
     <form method="post" id="profile_form" enctype="multipart/form-data" action="">
@@ -189,7 +189,7 @@ Setting
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Email</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input id="edit_email" name="email" type="email" class="form-control" value="{{ Auth::user()->email }}" />
-          <span class="text-danger error-text name_error"></span>
+          <span class="text-danger error-text email_error"></span>
         </div>
       </div>
       <div class="mb-3 row">
@@ -308,23 +308,49 @@ Setting
 <h2 class="small-title">Public Info</h2>
 <div class="card mb-5">
   <div class="card-body">
-    <form>
+    <form method="post" id="profilewali_form" enctype="multipart/form-data" action="">
+      <div class="mb-3 row">
+        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>id</label>
+        <div class="col-sm-8 col-md-9 col-lg-10">
+          <input id="edit_id" type="text" class="id form-control" value="{{ Auth::user()->id }}" name="edit_id" hidden />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>Name</label>
+        <div class="col-sm-8 col-md-9 col-lg-10">
+          <input id="edit_level" name="level" type="text" class="form-control" value="{{ Auth::user()->level }}" hidden />
+        </div>
+      </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Name</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input type="text" class="form-control" value="{{ Auth::user()->name }}" />
+          <input id="edit_name" name="name" type="text" class="form-control" value="{{ Auth::user()->name }}" />
+          <span class="text-danger error-text name_error"></span>
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Email</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input type="email" class="form-control" value="{{ Auth::user()->email }}" />
+          <span class="text-danger error-text email_error"></span>
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Password</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input type="password" class="form-control" value="password" />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">NIK</label>
+        <div class="col-sm-8 col-md-9 col-lg-10">
+          @if(isset($wali->nik))
+          <input id="edit_nik" name="nik" type="text" class="form-control" value="{{ $wali->nik }}" />
+          <span class="text-danger error-text nik_error"></span>
+          @else
+          <input id="edit_nik" name="nik" type="text" class="form-control" value="" />
+          <span class="text-danger error-text nik_error"></span>
+          @endif
         </div>
       </div>
       <div class="mb-3 row">
@@ -412,7 +438,7 @@ Setting
       </div>
       <div class="mb-3 row mt-5">
         <div class="col-sm-8 col-md-9 col-lg-10 ms-auto">
-          <button type="submit" class="btn btn-primary">Update</button>
+          <button type="submit" class="btn btn-primary admin_update">Update</button>
         </div>
       </div>
     </form>
