@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\RegisterController ;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DataGuruController;
 use App\Http\Controllers\Backend\DataPenggunaController;
+use App\Http\Controllers\Backend\DataWaliController;
 use App\Http\Controllers\Backend\HasilController;
 use App\Http\Controllers\Backend\HasilDataPenilaianController;
 use App\Http\Controllers\Backend\KriteriaController;
@@ -56,6 +57,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/update-guru/{id}',[DataGuruController::class, 'update'])->name('update.guru');
         Route::delete('/delete-guru/{id}',[DataGuruController::class, 'destroy']);
         /* End Data Guru */
+
+        /* Start Data Wali */
+        Route::get('/datawali', [DataWaliController::class, 'index'])->name('datawali');
+        Route::get('/fetch-wali', [DataWaliController::class, 'fetchwali']);
+        Route::get('/edit-wali/{id}',[DataWaliController::class, 'edit']);
+        Route::post('/update-wali/{id}',[DataWaliController::class, 'update'])->name('update.wali');
+        Route::delete('/delete-wali/{id}',[DataWaliController::class, 'destroy']);
+        /* End Data Wali */
 
         /* Start Data Kriteria */
         Route::get('/datakriteria', [KriteriaController::class, 'index'])->name('datakriteria');

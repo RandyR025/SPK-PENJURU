@@ -58,7 +58,7 @@
           </a>
         </li>
         <li>
-          <a href="{{route('dataguru')}}" class="">
+          <a href="{{route('datawali')}}" class="">
             <span class="label">Data Wali</span>
           </a>
         </li>
