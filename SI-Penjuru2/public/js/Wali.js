@@ -268,7 +268,7 @@ $(document).on("click", ".edit_wali", function (e) {
                 $("#edit_id").val(wali_id);
                 $("#edit_tanggallahir").val(response.wali[0].tanggal_lahir);
                 $("#edit_tempatlahir").val(response.wali[0].tempat_lahir);
-                $("#edit_jeniskelamin").val(response.wali[0].jenis_kelamin);
+                $("#edit_jeniskelamin").val(response.wali[0].jenis_kelamin).trigger('change');;
                 $("#edit_alamat").val(response.wali[0].alamat);
                 $("#edit_notelp").val(response.wali[0].no_telp);
                 if (response.wali[0].image == null) {

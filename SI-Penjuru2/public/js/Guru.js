@@ -268,7 +268,8 @@ $(document).on("click", ".edit_guru", function (e) {
                 $("#edit_id").val(guru_id);
                 $("#edit_tanggallahir").val(response.guru[0].tanggal_lahir);
                 $("#edit_tempatlahir").val(response.guru[0].tempat_lahir);
-                $("#edit_jeniskelamin").val(response.guru[0].jenis_kelamin);
+                $("#edit_jeniskelamin").val(response.guru[0].jenis_kelamin).trigger('change');;
+                // $('#edit_jeniskelamin').trigger('change');
                 $("#edit_alamat").val(response.guru[0].alamat);
                 $("#edit_notelp").val(response.guru[0].no_telp);
                 if (response.guru[0].image == null) {

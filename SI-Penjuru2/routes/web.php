@@ -3,8 +3,10 @@
 use App\Http\Controllers\Backend\RegisterController ;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\DataGuruController;
+use App\Http\Controllers\Backend\DataKelasController;
 use App\Http\Controllers\Backend\DataPenggunaController;
 use App\Http\Controllers\Backend\DataWaliController;
+use App\Http\Controllers\Backend\DetailKelasController;
 use App\Http\Controllers\Backend\HasilController;
 use App\Http\Controllers\Backend\HasilDataPenilaianController;
 use App\Http\Controllers\Backend\KriteriaController;
@@ -65,6 +67,26 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/update-wali/{id}',[DataWaliController::class, 'update'])->name('update.wali');
         Route::delete('/delete-wali/{id}',[DataWaliController::class, 'destroy']);
         /* End Data Wali */
+
+        /* Start Data Kelas */
+        Route::get('/datakelas', [DataKelasController::class, 'index'])->name('datakelas');
+        Route::post('/datakelas', [DataKelasController::class, 'store'])->name('kelas.store');
+        Route::get('/fetch-kelas', [DataKelasController::class, 'fetchkelas']);
+        Route::get('/edit-kelas/{id}',[DataKelasController::class, 'edit'])->name('editkelas');
+        Route::post('/update-kelas/{id}',[DataKelasController::class, 'update'])->name('update.kelas');
+        Route::get('/show-kelas/{id}',[DataKelasController::class, 'show'])->name('showkelas');
+        Route::delete('/delete-kelas/{id}',[DataKelasController::class, 'destroy']);
+        /* End Data Kelas */
+
+        /* Start Data Detail Kelas */
+        Route::get('/datadetailkelas', [DetailKelasController::class, 'index'])->name('datadetailkelas');
+        Route::post('/datadetailkelas', [DetailKelasController::class, 'store'])->name('detailkelas.store');
+        Route::get('/fetch-detailkelas', [DetailKelasController::class, 'fetchkelas']);
+        Route::get('/edit-detailkelas/{id}',[DetailKelasController::class, 'edit'])->name('editdetailkelas');
+        Route::post('/update-detailkelas/{id}',[DetailKelasController::class, 'update'])->name('update.detailkelas');
+        Route::get('/show-detailkelas/{id}',[DetailKelasController::class, 'show'])->name('showdetailkelas');
+        Route::delete('/delete-detailkelas/{id}',[DetailKelasController::class, 'destroy']);
+        /* End Data Detail Kelas */
 
         /* Start Data Kriteria */
         Route::get('/datakriteria', [KriteriaController::class, 'index'])->name('datakriteria');

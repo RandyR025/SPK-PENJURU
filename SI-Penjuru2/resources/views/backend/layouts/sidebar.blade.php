@@ -63,6 +63,11 @@
           </a>
         </li>
         <li>
+          <a href="{{route('datakelas')}}" class="">
+            <span class="label">Data Kelas</span>
+          </a>
+        </li>
+        <li>
           <a href="{{route('datakriteria')}}" class="{{ Route::is('datakriteria') || Route::is('showkriteria') ? 'active' : '' }}">
             <span class="label">Data Kriteria</span>
           </a>

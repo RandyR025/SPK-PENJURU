@@ -185,20 +185,25 @@ $newID = $char . sprintf("%02s", $noUrut);
             </div> -->
             <div class="mb-3">
               <label class="form-label">Kriteria</label>
-              <div>
-                <select name="kode_kriteria" class="kode_kriteria form-control" id="kode_kriteria">
-                @foreach ($kriteria as $item)
-                  <option value="{{ $item->kode_kriteria }}">{{ $item->nama_kriteria }}</option>
-                @endforeach
-                </select>
+              <div class="w-100">
+                <div class="w-100">
+                  <select name="kode_kriteria" class="kode_kriteria theSelect" id="kode_kriteria">
+                    <option selected disabled>Pilih Kriteria</option>
+                  @foreach ($kriteria as $item)
+                    <option value="{{ $item->kode_kriteria }}">{{ $item->nama_kriteria }}</option>
+                  @endforeach
+                  </select>
+                </div>
               </div>
               <span class="text-danger error-text kriteria_error"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">Nama Subkriteria</label>
-              <div>
-                <select name="kode_subkriteria" class="kode_subkriteria form-control" id="kode_subkriteria">
-                </select>
+              <div class="w-100">
+                <div class="w-100">
+                  <select name="kode_subkriteria" class="kode_subkriteria theSelect" id="kode_subkriteria">
+                  </select>
+                </div>
               </div>
               <span class="text-danger error-text kode_subkriteria_error"></span>
             </div>
@@ -275,5 +280,10 @@ $newID = $char . sprintf("%02s", $noUrut);
   });
 </script>
 <script src="{{asset('js/Pengisian.js')}}"></script>
+<script>
+		$(".theSelect").select2({
+      theme: 'bootstrap4',
+    });
+	</script>
 @endsection
 @endsection

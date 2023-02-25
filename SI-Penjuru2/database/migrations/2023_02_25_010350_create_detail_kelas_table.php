@@ -14,7 +14,16 @@ class CreateDetailKelasTable extends Migration
     public function up()
     {
         Schema::create('detail_kelas', function (Blueprint $table) {
-            $table->id();
+            $table->string('kode_detail_kelas')->primary();
+            $table->string('kode_kelas');
+            $table->foreign('kode_kelas')
+            ->references('kode_kelas')
+            ->on('kelas')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -337,7 +337,7 @@
                {
                  if(response){
                     $('#kode_subkriteria').empty();
-                    $('#kode_subkriteria').append('<option hidden>Choose Course</option>'); 
+                    $('#kode_subkriteria').append('<option hidden>Pilih Subkriteria</option>'); 
                     $.each(response, function(key, subkriteria){
                       // console.log(subkriteria);
                       $.each(subkriteria, function (key, value) {

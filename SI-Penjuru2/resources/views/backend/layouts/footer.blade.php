@@ -340,6 +340,7 @@
 <script src="{{asset('backend/js/forms/controls.dropzone.js')}}"></script>
 <script src="{{asset('backend/js/common.js')}}"></script>
 <script src="{{asset('backend/js/scripts.js')}}"></script>
+<script src="{{asset('backend/js/forms/controls.select2.js')}}"></script>
 
 <!-- Font Awesome -->
 <script src="https://kit.fontawesome.com/207ca6be0a.js" crossorigin="anonymous"></script>
