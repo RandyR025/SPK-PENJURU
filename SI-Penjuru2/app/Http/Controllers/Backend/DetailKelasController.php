@@ -110,7 +110,35 @@ class DetailKelasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'kode_detail_kelas' => 'required',
+            'user_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages(),
+            ]);
+        } else {
+            $kelas = DB::table('detail_kelas')->where('kode_detail_kelas',$id);
+            if ($kelas) {
+                    $kelas->update([
+                        'kode_detail_kelas' => $request->kode_detail_kelas,
+                        'user_id' => $request->user_id,
+                    ]);
+                return response()->json([
+                    'status' => 200,
+                    'message' => "Data Berhasil Di Perbarui !!!",
+                    'id' => $id,
+                    'detail_kelas' => $kelas
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'User Not Found',
+                ]);
+            }
+        }
     }
 
     /**
@@ -121,6 +149,10 @@ class DetailKelasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('detail_kelas')->where('kode_detail_kelas',$id)->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Data Berhasil Di Hapus !!!',
+        ]);
     }
 }

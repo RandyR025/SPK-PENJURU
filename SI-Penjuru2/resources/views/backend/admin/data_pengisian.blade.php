@@ -73,7 +73,7 @@ Kelola Data
           <td>{{ $data->nama_subkriteria }}</td>
           <td>{{ $data->id_penilaian }}</td>
           <td>
-          <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_pengisian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+          <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_pengisian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip" onclick="pengisian_edit()">
           <i class="fa-solid fa-pen-to-square"></i>
           </button>
             <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_pengisian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
@@ -285,5 +285,17 @@ $newID = $char . sprintf("%02s", $noUrut);
       theme: 'bootstrap4',
     });
 	</script>
+  <script type="text/javascript">
+    function pengisian_edit() {
+      $("#edit_kode_kriteria").select2({
+        theme: 'bootstrap4',
+        dropdownParent: $('#editModal')
+      });
+      $("#edit_kode_subkriteria").select2({
+        theme: 'bootstrap4',
+        dropdownParent: $('#editModal')
+      });
+    }
+  </script>
 @endsection
 @endsection
