@@ -77,7 +77,7 @@ class DataKelasController extends Controller
      */
     public function show($id)
     {
-        $detailkelas = DB::table('detail_kelas')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->where('kelas.kode_kelas',$id)->join('users', 'detail_kelas.user_id', '=', 'users.id')->get();
+        $detailkelas = DB::table('detail_kelas')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->where('kelas.kode_kelas',$id)->join('users', 'detail_kelas.user_id', '=', 'users.id')->join('guru', 'users.id', '=', 'guru.user_id')->get();
         $kelas = DB::table('kelas')->where('kode_kelas', $id)->get();
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);

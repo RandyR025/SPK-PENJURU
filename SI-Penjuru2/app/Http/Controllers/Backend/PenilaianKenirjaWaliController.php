@@ -20,14 +20,15 @@ class PenilaianKenirjaWaliController extends Controller
         $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.deadline','penilaian.image')->groupBy('id_penilaian')->get();
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
-        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->find(Auth::user()->id);
         $no = 1; 
         $tanggal = Carbon::now('Asia/Jakarta');
         $dt = $tanggal->toDateString();
         $future = $tanggal->addWeek();
         $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
+        $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->where('detail_kelas.kode_kelas', $wali->kode_kelas)->get();
         /* dd($future); */
-        return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii'));
+        return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','dataguru'));
     }
 
     /**
