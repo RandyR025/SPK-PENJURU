@@ -23,7 +23,7 @@ class PenilaianKinerjaGuruController extends Controller
      */
     public function index()
     {
-        $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.deadline','penilaian.image')->groupBy('id_penilaian')->get();
+        $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.deadline','penilaian.image')->where('pengisian.level','=','guru')->groupBy('id_penilaian')->get();
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
@@ -82,7 +82,7 @@ class PenilaianKinerjaGuruController extends Controller
         $penilaian = Penilaian::where('id_penilaian','=',$id)->first();
         $coba = [];
         foreach ($kriteria as $keykriteria => $data) {
-            $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$id], ['kode_kriteria','=',$data->kode_kriteria]])->get();
+            $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$id], ['kode_kriteria','=',$data->kode_kriteria],['level','=','guru']])->get();
             // dd($coba1);
             foreach ($coba1[$keykriteria] as $key => $value) {
                 $cek = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
@@ -167,7 +167,7 @@ class PenilaianKinerjaGuruController extends Controller
         //     dd($nilaipengisian);
         // }
 
-            $coba = DB::table('pengisian')->where('id_penilaian','=',$id)->get();
+            $coba = DB::table('pengisian')->where('id_penilaian','=',$id)->where('pengisian.level','=','guru')->get();
             $nilai = 0;
             foreach ($coba as $key => $value) {
                 $coba1[$key] = DB::table('hasilpilihan')

@@ -29,6 +29,7 @@ class CreatePengisianTable extends Migration
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->timestamps();
+            $table->string('level');
         });
     }
 

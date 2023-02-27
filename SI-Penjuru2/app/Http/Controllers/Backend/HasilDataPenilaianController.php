@@ -98,7 +98,7 @@ class HasilDataPenilaianController extends Controller
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $id)->get();
         }
-        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$id)->get();
+        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$id)->where('level','=','guru')->get();
         // dd($coba);
         return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba1','coba','pengisian'));
     }
@@ -153,7 +153,7 @@ class HasilDataPenilaianController extends Controller
         $penilaian = Penilaian::where('id_penilaian','=',$id)->first();
         $coba = [];
         foreach ($kriteria as $keykriteria => $data) {
-            $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$pen], ['kode_kriteria','=',$data->kode_kriteria]])->get();
+            $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$pen], ['kode_kriteria','=',$data->kode_kriteria],['level','=','guru']])->get();
             foreach ($coba1[$keykriteria] as $key => $value) {
                 $cek = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
                 if (isset($cek)) {
