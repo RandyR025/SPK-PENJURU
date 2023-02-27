@@ -140,13 +140,13 @@
     @endif
     @if (auth()->user()->level == "wali")
   <li>
-      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
+      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('penilaiankinerjawali') ? 'active' : '' }}">
         <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>
         <span class="label">Kelola Data</span>
       </a>
       <ul id="keloladata">
         <li>
-          <a href="{{route('penilaiankinerjaguru')}}" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
+          <a href="{{route('penilaiankinerjawali')}}" class="{{ Route::is('penilaiankinerjawali') ? 'active' : '' }}">
             <span class="label">Penilaian Kinerja Guru</span>
           </a>
         </li>

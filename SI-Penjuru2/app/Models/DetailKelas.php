@@ -11,8 +11,8 @@ class DetailKelas extends Model
     protected $table = 'detail_kelas';
     protected $PrimaryKey = 'kode_detail_kelas';
     protected $fillable = [
+        'kode_detail_kelas',
         'kode_kelas',
-        'nama_kelas',
         'user_id',
     ];
 }

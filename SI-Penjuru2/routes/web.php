@@ -13,6 +13,7 @@ use App\Http\Controllers\Backend\KriteriaController;
 use App\Http\Controllers\Backend\LoginController;
 use App\Http\Controllers\Backend\PengisianController;
 use App\Http\Controllers\Backend\PenilaianController;
+use App\Http\Controllers\Backend\PenilaianKenirjaWaliController;
 use App\Http\Controllers\Backend\PenilaianKinerjaGuruController;
 use App\Http\Controllers\Backend\PerbandingankriteriaController;
 use App\Http\Controllers\Backend\PerbandingansubkriteriaController;
@@ -188,6 +189,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/dashboardwali', [DashboardController::class, 'index'])->name('dashboardwali');
         Route::get('/profilewali', [ProfileController::class, 'index'])->name('profilewali');
         Route::post('/profilewali/{id}',[ProfileController::class, 'update'])->name('updateprofilewali');
+        Route::get('/penilaiankinerjawali',[PenilaianKenirjaWaliController::class, 'index'])->name('penilaiankinerjawali');
     });
 });
 Route::get('/masukLogin', [LoginController::class, 'index'])->name('masuklogin');
