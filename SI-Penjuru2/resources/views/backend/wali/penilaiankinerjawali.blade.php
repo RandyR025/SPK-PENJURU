@@ -23,7 +23,7 @@ if (count($walii) < 1) {
 <?php
 } else {
     ?>
-    <form action="">
+    <form action="{{route('nilaiguru')}}" method="get">
         <div class="row">
             <div class="mb-3">
                 <label class="form-label">Nama Guru</label>
@@ -40,6 +40,7 @@ if (count($walii) < 1) {
                 <span class="text-danger error-text user_id_error"></span>
             </div>
         </div>
+        <button type="submit" class="btn btn-outline-primary w-100 me-1 btn-sm">Nilai</button>
     </form>
 <?php
 }

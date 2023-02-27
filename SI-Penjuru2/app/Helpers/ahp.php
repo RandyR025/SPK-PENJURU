@@ -2,6 +2,8 @@
 
 use App\Models\Hasil;
 use App\Models\Hasilpilihan;
+use App\Models\HasilPilihanWali;
+use App\Models\HasilWali;
 use App\Models\Perbandingankriteria;
 use App\Models\Perbandingansubkriteria;
 use App\Models\Pvkriteria;
@@ -451,10 +453,36 @@ function hasilPilihan($pilihan,$user){
     }
 }
 
+function hasilPilihanWali($pilihan,$guru,$wali){
+    $query = HasilPilihanWali::where([
+        ['user_id_guru','=',$guru],
+        ['user_id_wali','=',$wali],
+        ['kode_pilihan','=',$pilihan],
+    ])->count();
+    if ($query == 1) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
 
 function cekPenilaian($penilaian, $user){
     $query = Hasil::where([
         ['user_id','=',$user],
+        ['id_penilaian','=',$penilaian],
+    ])->count();
+    if ($query == 1) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
+function cekPenilaianWali($penilaian, $wali, $guru){
+    $query = HasilWali::where([
+        ['user_id_wali','=',$wali],
+        ['user_id_guru','=',$guru],
         ['id_penilaian','=',$penilaian],
     ])->count();
     if ($query == 1) {

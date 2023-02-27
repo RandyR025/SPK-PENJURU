@@ -8,6 +8,7 @@ use App\Models\Hasilpilihan;
 use App\Models\Pengisian;
 use App\Models\Penilaian;
 use App\Models\Pilihan;
+use App\Models\JumlahTotal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -197,6 +198,26 @@ class PenilaianKinerjaGuruController extends Controller
                 $total->user_id = Auth::user()->id;
                 $total->id_penilaian = $id;
                 $total->save();
+                $queryt = JumlahTotal::where([
+                    ['user_id_guru','=',Auth::user()->id],
+                    ['id_penilaian','=',$id],
+                ])->count();
+                $data = JumlahTotal::where([
+                    ['user_id_guru','=',Auth::user()->id],
+                    ['id_penilaian','=',$id],
+                ])->get();
+                if ($queryt == 0) {     
+                    $total = new JumlahTotal;
+                    $total->totals = round($nilai,5);
+                    $total->user_id_guru = Auth::user()->id;
+                    $total->id_penilaian = $id;
+                    $total->save();
+                }else {
+                    JumlahTotal::where([
+                        ['user_id_guru','=',Auth::user()->id],
+                        ['id_penilaian','=',$id],
+                    ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                }
             }else {
                 Hasil::where([
                     ['user_id','=',Auth::user()->id],

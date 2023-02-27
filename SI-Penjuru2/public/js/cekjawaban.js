@@ -47,4 +47,30 @@ function handleClick(myRadio, myPengisian, myUser) {
           },
       });
   }
+
+  function handleClickWali(myRadio, myPengisian, myUser) {
+    //  alert(myPengisian);
+    
+    $.ajaxSetup({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+      },
+    });
+    var optionID = myRadio.value;
+    var pengisianID = myPengisian;
+    var userID = myUser;
+    var s = {
+      "option_id":optionID,
+      "pengisian_id":pengisianID,
+      "user_id":userID
+    }
+    $.ajax({
+          url: "/gethasilpenilaianwali",
+          type: "POST",
+          data: s,
+          success: function (data) {
+              console.log(data);
+          },
+      });
+  }
   

@@ -190,6 +190,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/profilewali', [ProfileController::class, 'index'])->name('profilewali');
         Route::post('/profilewali/{id}',[ProfileController::class, 'update'])->name('updateprofilewali');
         Route::get('/penilaiankinerjawali',[PenilaianKenirjaWaliController::class, 'index'])->name('penilaiankinerjawali');
+        Route::get('/nilaiguru',[PenilaianKenirjaWaliController::class, 'cari'])->name('nilaiguru');
+        Route::get('/detailkinerjawali/{id}/guru/{user}',[PenilaianKenirjaWaliController::class, 'show'])->name('detailkinerjawali');
+        Route::post('/gethasilpenilaianwali', [PenilaianKenirjaWaliController::class, 'hasilpilihanwali'])->name('gethasilpenilaianwali');
+        Route::get('/gettotalnilaiwali/{id}/total/{user}', [PenilaianKenirjaWaliController::class, 'totalnilaiwali'])->name('gettotalnilaiwali');
     });
 });
 Route::get('/masukLogin', [LoginController::class, 'index'])->name('masuklogin');

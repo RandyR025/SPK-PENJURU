@@ -9,6 +9,7 @@ use App\Models\Hasilpilihan;
 use App\Models\Pengisian;
 use App\Models\Pilihan;
 use App\Models\Penilaian;
+use App\Models\JumlahTotal;
 // use Barryvdh\DomPDF\PDF;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
@@ -204,7 +205,7 @@ class HasilDataPenilaianController extends Controller
         //     dd($nilaipengisian);
         // }
 
-            $coba = DB::table('pengisian')->where('id_penilaian','=',$id)->get();
+            $coba = DB::table('pengisian')->where('id_penilaian','=',$id)->where('pengisian.level','=','guru')->get();
             $nilai = 0;
             foreach ($coba as $key => $value) {
                 $coba1[$key] = DB::table('hasilpilihan')
@@ -231,6 +232,20 @@ class HasilDataPenilaianController extends Controller
                 $total->id_penilaian = $id;
                 $total->save();
             }else {
+                $data = JumlahTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                ])->get();
+                $dataa = Hasil::where([
+                    ['user_id','=',$user_id],
+                    ['id_penilaian','=',$id],
+                ])->get();
+                
+                    JumlahTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                    ])->update(['totals'=> round(($nilai + ($data[0]->totals - $dataa[0]->totals)),5)]);
+                
                 Hasil::where([
                     ['user_id','=',$user_id],
                     ['id_penilaian','=',$id],
