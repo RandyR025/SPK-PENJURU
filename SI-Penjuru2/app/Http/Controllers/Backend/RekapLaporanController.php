@@ -415,12 +415,13 @@ class RekapLaporanController extends Controller
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
                 $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
                     $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                // dd($coba);
+                // dd($guru);
                 if (isset($coba1)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporanrangking_pdf', ['penilaian' => $penilaian, 'coba1' => $coba1, 'no' => $no, 'data' => 'Rekap Laporan Hasil Rangking']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporanrangking_pdf', ['penilaian' => $penilaian, 'coba1' => $coba1, 'no' => $no, 'data' => 'Rekap Laporan Hasil Rangking', 'guru'=>$guru]);
                     return $pdf->stream('rekap-laporan-hasil-rangking');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');

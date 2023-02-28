@@ -43,5 +43,29 @@
             </tbody>
         </table>
     @endforeach
+
+	<table class="table table-bordered" id="datatable">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Totals</th>
+                    <th>Rangking</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $nomor = 1;
+                ?>
+                @foreach ($guru as $item)
+                <tr>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->jumlah_nilai }}</td>
+                    <td>{{ $nomor }}</td>
+                    {{$nomor++}}
+                </tr>
+                @endforeach
+                
+            </tbody>
+        </table>
 </body>
 </html>
