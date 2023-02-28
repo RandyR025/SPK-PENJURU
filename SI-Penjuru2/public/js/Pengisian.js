@@ -55,6 +55,7 @@
         $('#edit_kodepengisian').val(response.pengisian[0].kode_pengisian);
         $('#edit_namapengisian').val(response.pengisian[0].nama_pengisian);
         $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria);
+        $('#edit_level').val(response.pengisian[0].level).trigger('change');
         // $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
         $.ajax({
           url: '/getsubkriteria/'+response.pengisian[0].kode_kriteria,

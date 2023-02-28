@@ -44,7 +44,10 @@ class PengisianController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id_penilaian' => 'required|max:10',
-            'kode_pengisian' => 'required|max:10|unique:pengisian'
+            'kode_pengisian' => 'required|max:10|unique:pengisian',
+            'nama_pengisian' => 'required',
+            'kode_subkriteria' => 'required',
+            'level' => 'required',
             
         ]);
         if ($validator->fails()) {
@@ -58,6 +61,7 @@ class PengisianController extends Controller
             $pengisian->kode_pengisian = $request->input('kode_pengisian');
             $pengisian->nama_pengisian = $request->input('nama_pengisian');
             $pengisian->kode_subkriteria = $request->input('kode_subkriteria');
+            $pengisian->level = $request->input('level');
             $pengisian->save();
 
             return response()->json([
@@ -125,6 +129,7 @@ class PengisianController extends Controller
             'nama_pengisian' => 'required',
             'edit_kode_kriteria' => 'required',
             'edit_kode_subkriteria' => 'required',
+            'edit_level' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -138,6 +143,7 @@ class PengisianController extends Controller
                     'kode_pengisian' => $request->kode_pengisian,
                     'nama_pengisian' => $request->nama_pengisian,
                     'kode_subkriteria' => $request->edit_kode_subkriteria,
+                    'level' => $request->edit_level,
                 
                 
                 ]);

@@ -61,6 +61,7 @@ Kelola Data
           <th>Nama Pengisian</th>
           <th>Nama Subkriteria</th>
           <th>Id Penilaian</th>
+          <th>Level</th>
           <th class="#"></th>
         </tr>
       </thead>
@@ -72,6 +73,7 @@ Kelola Data
           <td>{{ $data->nama_pengisian }}</td>
           <td>{{ $data->nama_subkriteria }}</td>
           <td>{{ $data->id_penilaian }}</td>
+          <td>{{ $data->level }}</td>
           <td>
           <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_pengisian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip" onclick="pengisian_edit()">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -138,6 +140,17 @@ Kelola Data
               <label class="form-label">Nama Pengisian</label>
               <input id="edit_namapengisian" type="text" class="namapengisian form-control" value="" name="nama_pengisian" />
               <span class="text-danger error-text nama_pengisian_error"></span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Level</label>
+              <div>
+                <select name="edit_level" class="level form-control select-single-no-search" id="edit_level">
+                  <option value="0" label="&nbsp;" selected disabled>Pilih Level</option>
+                  <option value="guru">guru</option>
+                  <option value="wali">wali</option>
+                </select>
+              </div>
+              <span class="text-danger error-text level_error"></span>
             </div>
         </div>
       </div>
@@ -211,6 +224,17 @@ $newID = $char . sprintf("%02s", $noUrut);
               <label class="form-label">Name Pengisian</label>
               <input name="nama_pengisian" type="text" class="nama_pengisian form-control" />
               <span class="text-danger error-text nama_pengisian_error"></span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Level</label>
+              <div>
+                <select name="level" class="level form-control select-single-no-search" id="level">
+                  <option value="0" label="&nbsp;" selected disabled>Pilih Level</option>
+                  <option value="guru">guru</option>
+                  <option value="wali">wali</option>
+                </select>
+              </div>
+              <span class="text-danger error-text level_error"></span>
             </div>
 
 

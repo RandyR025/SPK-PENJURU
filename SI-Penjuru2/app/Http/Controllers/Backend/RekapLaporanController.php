@@ -112,7 +112,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -129,7 +129,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -146,7 +146,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -163,7 +163,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -181,7 +181,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -198,7 +198,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -215,7 +215,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -236,7 +236,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {      
@@ -252,7 +252,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -268,7 +268,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {                 
@@ -284,7 +284,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -300,7 +300,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -316,7 +316,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -332,7 +332,7 @@ class RekapLaporanController extends Controller
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
                 }
                 // dd($coba);
                 if (isset($coba)) {
