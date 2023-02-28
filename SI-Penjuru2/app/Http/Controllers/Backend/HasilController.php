@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class HasilController extends Controller
 {
@@ -93,9 +94,10 @@ class HasilController extends Controller
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
         $hasil = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('guru', 'users.id', '=', 'guru.user_id')->where('id_penilaian','=',$id)->orderBy('totals','desc')->get();
+        $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
         // dd($hasil);
         $no = 1;
-        return view('backend/admin.hasil_rangking', compact('admin','guru', 'wali','hasil','no'));
+        return view('backend/admin.hasil_rangking', compact('admin','guru', 'wali','hasil','no','penilaian'));
     }
 
     /**
@@ -130,5 +132,13 @@ class HasilController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function cetak_pdf($id){
+        $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
+        $no = 1;
+        $jumlah_total = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->get();
+        $pdf = PDF::loadview('backend/admin.hasilpenilaianrangking_pdf',['jumlah_total'=>$jumlah_total,'data'=>'Laporan Hasil Rangking','penilaian'=>$penilaian, 'no'=>$no]);
+        return $pdf->stream('laporan-hasil-rangking');
     }
 }

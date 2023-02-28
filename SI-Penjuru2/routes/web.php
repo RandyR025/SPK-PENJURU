@@ -167,6 +167,7 @@ Route::group(['middleware' => ['auth']], function () {
         /* Start Cetak */
         Route::get('/hasilpenilaian/cetakpdf/{id}', [HasilDataPenilaianController::class, 'cetak_pdf'])->name('hasilpenilaiancetakpdf');
         Route::get('/hasilpenilaian/cetakxlsx/{id}', [HasilDataPenilaianController::class, 'eksport_excel'])->name('hasilpenilaiancetakexcel');
+        Route::get('/hasilpenilaianrangking/cetakpdf/{id}', [HasilController::class, 'cetak_pdf'])->name('hasilpenilaianrangkingcetakpdf');
         /* End Cetak */
 
         /* Start Rekap Laporan */
