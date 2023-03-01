@@ -171,6 +171,10 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/hasilpenilaianrangking/cetakxlsx/{id}', [HasilController::class, 'eksport_excel'])->name('hasilpenilaianrangkingcetakexcel');
         /* End Cetak */
 
+        /* Start Import */
+        Route::post('/datapenggunaimportexcel', [DataPenggunaController::class, 'import'])->name('datapenggunaimportexcel');
+        /* End Import */
+
         /* Start Rekap Laporan */
         Route::get('/rekaplaporan', [RekapLaporanController::class, 'index'])->name('rekaplaporan');
         Route::get('/rekaplaporancetak', [RekapLaporanController::class, 'cetak'])->name('rekaplaporancetak');

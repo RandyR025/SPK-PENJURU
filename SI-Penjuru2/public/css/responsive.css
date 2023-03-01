@@ -26,6 +26,17 @@
     .dataTables_filter{
        width: 50%;
    }
+   li.paginate_button.previous {
+        display: inline;
+    }
+ 
+    li.paginate_button.next {
+        display: inline;
+    }
+ 
+    li.paginate_button {
+        display: none;
+    }
 }
 .penilaian{
     width: 300px;

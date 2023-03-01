@@ -15,6 +15,13 @@ Kelola Data
 <div class="alert alert-danger" role="alert">{{ session('loginError')}}</div>
 @endif
 <div id="success_message"></div>
+<form action="{{route('datapenggunaimportexcel')}}" method="post" enctype="multipart/form-data">
+  @csrf
+  <div class="input-group mb-4">
+    <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file" />
+    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Button</button>
+  </div>
+</form>
 
 <div class="col-sm-12 col-md-7 col-lg-9 col-xxl-10 mb-1" style="">
   <div class="d-inline-block me-0 me-sm-3 float-start float-md-none" style="margin-left: 300px;">

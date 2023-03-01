@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Imports\UserExcelImport;
 use App\Models\Admin;
 use App\Models\Guru;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class DataPenggunaController extends Controller
@@ -235,4 +237,11 @@ class DataPenggunaController extends Controller
     //         'user' => $user,
     //     ]);
     // }
+
+    public function import(Request $request) {
+        // dd($request);
+        $import = new UserExcelImport;
+        Excel::import($import, $request->file('file'));
+        return back()->with('success', 'Excel Data Imported successfully.');
+        }
 }
