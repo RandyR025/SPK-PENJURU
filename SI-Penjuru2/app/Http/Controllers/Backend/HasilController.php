@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\HasilPenilaianRangkingExcelExport;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HasilController extends Controller
 {
@@ -140,5 +142,9 @@ class HasilController extends Controller
         $jumlah_total = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->get();
         $pdf = PDF::loadview('backend/admin.hasilpenilaianrangking_pdf',['jumlah_total'=>$jumlah_total,'data'=>'Laporan Hasil Rangking','penilaian'=>$penilaian, 'no'=>$no]);
         return $pdf->stream('laporan-hasil-rangking');
+    }
+
+    public function eksport_excel($id){
+        return Excel::download(new HasilPenilaianRangkingExcelExport($id),'penilaian.xlsx');
     }
 }

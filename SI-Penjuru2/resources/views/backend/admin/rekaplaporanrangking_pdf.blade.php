@@ -58,6 +58,14 @@
     <p>
         Jumlah Total Penilaian Dari Bulan {{$firstmonth}}-{{$now}} Sampai dengan Bulan {{$lastmonth}}-{{$now}}
     </p>
+    @elseif(isset($firstyear))
+    <p>
+        Jumlah Total Penilaian Dari Tahun {{$firstyear}}
+    </p>
+    @elseif(isset($lastyear))
+    <p>
+        Jumlah Total Penilaian Dari Tahun {{$lastyear}}
+    </p>
     @endif
     <table class="table table-bordered" id="datatable">
         <thead>

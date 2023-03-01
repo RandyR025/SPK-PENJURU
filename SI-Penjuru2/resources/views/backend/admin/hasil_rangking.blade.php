@@ -17,7 +17,7 @@ Penilaian
 <div id="success_message"></div>
 
 <a href="{{route('hasilpenilaianrangkingcetakpdf',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">PDF</a>
-<a href=""class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">Excel</a>
+<a href="{{route('hasilpenilaianrangkingcetakexcel',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">Excel</a>
 
 <div class="col-xl-6 mb-5 h-100-card">
     <section class="scroll-section" id="additionalInfo">
