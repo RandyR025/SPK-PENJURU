@@ -94,6 +94,10 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
                     'guru' => $guru,
                     'penilaian'=>$penilaian,
                     'no'=>$no,
+                    'firstmonth'=>$this->firstmonth,
+                    'lastmonth'=>$this->lastmonth,
+                    'firstyear'=>$this->firstyear,
+                    'lastyear'=>$this->lastyear,
         
                 ]);
                 
@@ -121,6 +125,10 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
                     'guru' => $guru,
                     'penilaian'=>$penilaian,
                     'no'=>$no,
+                    'firstmonth'=>$this->firstmonth,
+                    'lastmonth'=>$this->lastmonth,
+                    'firstyear'=>$this->firstyear,
+                    'lastyear'=>$this->lastyear,
         
                 ]);
                 
