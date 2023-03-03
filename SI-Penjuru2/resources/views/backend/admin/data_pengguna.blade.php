@@ -14,10 +14,22 @@ Kelola Data
 @if(session()->has('loginError'))
 <div class="alert alert-danger" role="alert">{{ session('loginError')}}</div>
 @endif
+
+@if(isset($errors) && $errors->any())
+<div class="alert alert-danger" role="alert">
+  @foreach ($errors->all() as $error)
+  {{ $error }}
+  @endforeach
+</div>
+@endif
 <div id="success_message"></div>
 <form action="{{route('datapenggunaimportexcel')}}" method="post" enctype="multipart/form-data">
   @csrf
   <div class="input-group mb-4">
+  <select name="akses" class="level form-control" id="">
+        <option value="guru">guru</option>
+        <option value="wali">wali</option>
+    </select>
     <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file" />
     <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Button</button>
   </div>

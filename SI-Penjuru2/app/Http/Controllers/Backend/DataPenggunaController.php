@@ -240,7 +240,12 @@ class DataPenggunaController extends Controller
 
     public function import(Request $request) {
         // dd($request);
-        $import = new UserExcelImport;
+        $akses = $request->input('akses');
+        if (isset($akses)) {
+            $import = new UserExcelImport($request->input('akses'));
+        }else {
+            return back()->with('loginError', 'Silahkan Pilih Data');
+        }
         Excel::import($import, $request->file('file'));
         return back()->with('success', 'Excel Data Imported successfully.');
         }
