@@ -95,19 +95,15 @@ Setting
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($admin->jenis_kelamin))
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
-            @if($admin->jenis_kelamin == "laki-laki")
-            <option value="{{ $admin->jenis_kelamin }}" label="&nbsp;">{{ $admin->jenis_kelamin }}</option>
-            <option value="perempuan">perempuan</option>
-            @else
-            <option value="{{ $admin->jenis_kelamin }}" label="&nbsp;">{{ $admin->jenis_kelamin }}</option>
-            <option value="laki-laki">laki-laki</option>
-            @endif
+            <option value="0" label="&nbsp;" disabled>Pilih Jenis Kelamin</option>
+            <option value="Laki-laki" {{ $admin->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+            <option value="Perempuan" {{ $admin->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @else
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
-            <option value="perempuan">perempuan</option>
-            <option value="laki-laki">laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+            <option value="Laki-laki">Laki-laki</option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @endif
@@ -241,19 +237,15 @@ Setting
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($guru->jenis_kelamin))
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
-            @if($guru->jenis_kelamin == "laki-laki")
-            <option value="{{ $guru->jenis_kelamin }}" label="&nbsp;">{{ $guru->jenis_kelamin }}</option>
-            <option value="perempuan">perempuan</option>
-            @else
-            <option value="{{ $guru->jenis_kelamin }}" label="&nbsp;">{{ $guru->jenis_kelamin }}</option>
-            <option value="laki-laki">laki-laki</option>
-            @endif
+            <option value="0" label="&nbsp;" disabled>Pilih Jenis Kelamin</option>
+            <option value="Laki-laki" {{ $guru->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+            <option value="Perempuan"{{ $guru->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}></option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @else
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
-            <option value="perempuan">perempuan</option>
-            <option value="laki-laki">laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+            <option value="Laki-laki">Laki-laki</option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @endif
@@ -386,22 +378,16 @@ Setting
         <div class="col-sm-8 col-md-9 col-lg-10">
           @if(isset($wali->jenis_kelamin))
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
-            @if($wali->jenis_kelamin == "laki-laki")
             <option value="0" label="&nbsp;" disabled>Pilih Jenis Kelamin</option>
-            <option value="{{ $wali->jenis_kelamin }}" label="&nbsp;">{{ $wali->jenis_kelamin }}</option>
-            <option value="perempuan">perempuan</option>
-            @else
-            <option value="0" label="&nbsp;" disabled>Pilih Jenis Kelamin</option>
-            <option value="{{ $wali->jenis_kelamin }}" label="&nbsp;">{{ $wali->jenis_kelamin }}</option>
-            <option value="laki-laki">laki-laki</option>
-            @endif
+            <option value="Perempuan" {{ $wali->jenis_kelamin == 'Perempuan' ? 'selected' : '' }} >Perempuan</option>
+            <option value="Laki-laki" {{ $wali->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }} >Laki-laki</option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @else
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
             <option value="0" label="&nbsp;" selected disabled>Pilih Jenis Kelamin</option>
-            <option value="perempuan">perempuan</option>
-            <option value="laki-laki">laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+            <option value="Laki-laki">Laki-laki</option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @endif
@@ -434,8 +420,8 @@ Setting
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>kode_kelas</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          @if(isset($wali->kode_detail_kelas))
-          <input id="edit_kelas" type="text" class="id form-control" value="{{ $wali->kode_detail_kelas }}" name="edit_kelas" hidden />
+          @if(isset($kelas->kode_detail_kelas))
+          <input id="edit_kelas" type="text" class="id form-control" value="{{ $kelas->kode_detail_kelas }}" name="edit_kelas" hidden />
           @else
           <input id="edit_kelas" type="text" class="id form-control" value="" name="edit_kelas" hidden />
           @endif
@@ -444,19 +430,17 @@ Setting
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Kelas Wali Murid</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          @if(isset($wali->kode_detail_kelas))
+          @if(isset($kelas->kode_detail_kelas))
           <div class="" hidden>
             <select id="edit_walimurid" class="select-single-no-search" data-width="100%" id="waliSelect" name="wali_murid" hidden>
-              <!-- <option value="{{ $wali->kode_detail_kelas }}" label="&nbsp;">{{ $wali->nama_kelas }}</option> -->
               @foreach ($datakelas as $item)
-                <option value="{{ $item->kode_kelas }}" {{ $item->kode_kelas == $wali->kode_kelas ? 'selected' : '' }}>{{ $item->nama_kelas }}</option>
+                <option value="{{ $item->kode_kelas }}" {{ $item->kode_kelas == $kelas->kode_kelas ? 'selected' : '' }}>{{ $item->nama_kelas }}</option>
               @endforeach
             </select>
           </div>
           <select id="edit_walimurid_tampil" class="select-single-no-search" data-width="100%" id="waliSelect" name="wali_murid_tampil" disabled>
-            <!-- <option value="{{ $wali->kode_detail_kelas }}" label="&nbsp;">{{ $wali->nama_kelas }}</option> -->
             @foreach ($datakelas as $item)
-              <option value="{{ $item->kode_kelas }}" {{ $item->kode_kelas == $wali->kode_kelas ? 'selected' : '' }}>{{ $item->nama_kelas }}</option>
+              <option value="{{ $item->kode_kelas }}" {{ $item->kode_kelas == $kelas->kode_kelas ? 'selected' : '' }}>{{ $item->nama_kelas }}</option>
             @endforeach
           </select>
           @else

@@ -26,10 +26,11 @@ class ProfileController extends Controller
     {
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
-        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->find(Auth::user()->id);
+        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $kelas = DB::table('detail_kelas')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->where('detail_kelas.user_id','=',Auth::user()->id)->first();
         $datakelas = DB::table('kelas')->get();
-        // dd($wali);
-        return view('backend/setting.profile', compact('admin', 'guru', 'wali', 'datakelas'));
+        // dd($kelas);
+        return view('backend/setting.profile', compact('admin', 'guru', 'wali', 'datakelas','kelas'));
     }
 
     /**
@@ -282,7 +283,8 @@ class ProfileController extends Controller
             }
         } elseif ($user == "wali") {
             $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
-            if (count($walii) < 1) {
+            $kelas = DB::table('detail_kelas')->join('users', 'detail_kelas.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
+            if (count($walii) < 1 && count($kelas) < 1) {
                 $validator = Validator::make($request->all(), [
                     'nik' => 'required|unique:wali',
                     'tempat_lahir' => 'required',
@@ -338,6 +340,68 @@ class ProfileController extends Controller
                         $detail_kelas->user_id = $request->edit_id;
                         $detail_kelas->save();
                     }
+                    return response()->json([
+                        'status' => 200,
+                        'message' => "Data Berhasil Di Perbarui !!!",
+                    ]);
+                }
+            }elseif(count($kelas) < 1) {
+                $validator = Validator::make($request->all(), [
+                    'name' => 'required|max:32',
+                ]);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => 400,
+                        'errors' => $validator->messages(),
+                    ]);
+                } else {
+                    $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id);
+                    $detail_kelas = new DetailKelas;
+                    $maxdetailkelas = DetailKelas::max('kode_detail_kelas');
+                    $noUrut = (int) substr($maxdetailkelas, 1, 2);
+                    $noUrut++;
+                    $char = "D";
+                    $newID = $char . sprintf("%02s", $noUrut);
+                    if ($wali) {
+                        if ($request->hasFile('image')) {
+                            $gambar = DB::table('wali')->where('user_id', Auth::user()->id)->first();
+                            File::delete('images/' . $gambar->image);
+                            $file = $request->file('image');
+                            $extension = $file->getClientOriginalExtension();
+                            $filename = time() . '.' . $extension;
+                            $file->move(public_path('images'), $filename);
+                            $wali->update([
+                                'name' => $request->name,
+                                'nik' => $request->nik,
+                                'tanggal_lahir' => $request->tanggal_lahir,
+                                'tempat_lahir' => $request->tempat_lahir,
+                                'jenis_kelamin' => $request->jenis_kelamin,
+                                'alamat' => $request->alamat,
+                                'no_telp' => $request->no_telp,
+                                'image' => $filename,
+
+                            ]);
+                        $detail_kelas->kode_detail_kelas = $newID;
+                        $detail_kelas->kode_kelas = $request->wali_murid;
+                        $detail_kelas->user_id = $request->edit_id;
+                        $detail_kelas->save();
+                        } else {
+                            $wali->update([
+                                'name' => $request->name,
+                                'nik' => $request->nik,
+                                'tanggal_lahir' => $request->tanggal_lahir,
+                                'tempat_lahir' => $request->tempat_lahir,
+                                'jenis_kelamin' => $request->jenis_kelamin,
+                                'alamat' => $request->alamat,
+                                'no_telp' => $request->no_telp,
+                            ]);
+                        $detail_kelas->kode_detail_kelas = $newID;
+                        $detail_kelas->kode_kelas = $request->wali_murid;
+                        $detail_kelas->user_id = $request->edit_id;
+                        $detail_kelas->save();
+                        }
+                    }
+
                     return response()->json([
                         'status' => 200,
                         'message' => "Data Berhasil Di Perbarui !!!",

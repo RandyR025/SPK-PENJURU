@@ -33,9 +33,14 @@ class PenilaianKenirjaWaliController extends Controller
         $dt = $tanggal->toDateString();
         $future = $tanggal->addWeek();
         $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
-        $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->where('detail_kelas.kode_kelas', $wali->kode_kelas)->get();
+        $kelas = DB::table('detail_kelas')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->where('detail_kelas.user_id','=',Auth::user()->id)->get();
+        if (isset($wali->kode_kelas)) {
+            $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->where('detail_kelas.kode_kelas', $wali->kode_kelas)->get();
+            return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','dataguru','kelas'));
+            
+        }
         /* dd($future); */
-        return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','dataguru'));
+        return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','kelas'));
     }
 
     /**

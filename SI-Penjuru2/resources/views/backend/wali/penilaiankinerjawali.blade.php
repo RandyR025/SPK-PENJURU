@@ -17,11 +17,11 @@ Penilaian
 <div id="success_message"></div>
 
 <?php
-if (count($walii) < 1) {
+if (count($walii) < 1 || count($kelas) < 1) {
     ?>
     <h1 class="text-danger">Silahkan Isi Identitas Diri Anda !!!!</h1>
-<?php
-} else {
+<?php 
+}else {
     ?>
     <form action="{{route('nilaiguru')}}" method="get">
         <div class="row">
@@ -31,9 +31,11 @@ if (count($walii) < 1) {
                     <div class="w-100">
                         <select name="user_id" class="user_id form-control theSelect" id="user_id">
                             <option selected disabled>Pilih Guru</option>
+                            @if(isset($dataguru))
                             @foreach ($dataguru as $item)
                             <option value="{{ $item->user_id }}">{{ $item->name }}</option>
                             @endforeach
+                            @endif
                         </select>
                     </div>
                 </div>
