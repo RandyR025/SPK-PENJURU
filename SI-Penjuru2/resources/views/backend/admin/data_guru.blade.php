@@ -127,7 +127,7 @@ Kelola Data
       <div class="modal-body">
         <div class="modal-body">
           <form id="guru_form" enctype="multipart/form-data" method="post" action="">
-            <div class="mb-3">
+            <div class="mb-3" hidden>
               <input id="edit_id" type="text" class="id form-control" value="" name="edit_id" />
             </div>
             <div class="mb-3">
@@ -143,12 +143,12 @@ Kelola Data
             <div class="mb-3">
               <label class="form-label">Tanggal Lahir</label>
               <input id="edit_tanggallahir" type="date" class="tanggallahir form-control" value="" name="tanggal_lahir" />
-              <span class="text-danger error-text tanggallahir_error"></span>
+              <span class="text-danger error-text tanggal_lahir_error"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">Tempat Lahir</label>
               <input id="edit_tempatlahir" type="text" class="tempatlahir form-control" value="" name="tempat_lahir" />
-              <span class="text-danger error-text tempatlahir_error"></span>
+              <span class="text-danger error-text tempat_lahir_error"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">Jenis Kelamin</label>
@@ -158,7 +158,7 @@ Kelola Data
                   <option value="perempuan">perempuan</option>
                 </select>
               </div>
-              <span class="text-danger error-text jeniskelamin_error"></span>
+              <span class="text-danger error-text jenis_kelamin_error"></span>
             </div>
             <!-- <div class="mb-3">
               <label class="form-label">Alamat</label>
@@ -174,7 +174,7 @@ Kelola Data
             <div class="mb-3">
               <label class="form-label">No Telp</label>
               <input id="edit_notelp" type="text" class="notelp form-control" value="" name="no_telp" />
-              <span class="text-danger error-text notelp_error"></span>
+              <span class="text-danger error-text no_telp_error"></span>
             </div>
             <div class="position-relative d-inline-block" id="singleImageUploadExample">
               <div class="img-holder-update">

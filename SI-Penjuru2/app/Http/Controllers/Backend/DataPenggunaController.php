@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Validation\Rule;
 
 
 class DataPenggunaController extends Controller
@@ -57,13 +58,13 @@ class DataPenggunaController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:4|max:8',
             'level' => 'required',
-            'nik' => 'required|unique:guru',
+            'nik' => 'required|unique:guru|unique:admin|unique:wali',
             'tempat_lahir' => 'required',
             'tanggal_lahir' => 'required',
             'jenis_kelamin' => 'required',
             'no_telp' => 'required',
             'alamat' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'image' => 'image|mimes:jpeg,png,jpg',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -183,7 +184,7 @@ class DataPenggunaController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:32',
-            'email' => 'required|email',
+            'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
             'level' => 'required',
         ]);
         if ($validator->fails()) {

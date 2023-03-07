@@ -190,7 +190,7 @@ $(document).on('click', '.edit_user', function(e){
       $('#edit_email').val(response.user.email);
       $('#edit_id').val(user_id);
       $('#edit_password').val(response.user.password);
-      $('#edit_level').val(response.user.level);
+      $('#edit_level').val(response.user.level).trigger('change');
     }
   }
  });

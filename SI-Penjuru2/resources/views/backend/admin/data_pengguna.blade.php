@@ -135,7 +135,7 @@ Kelola Data
             <div class="mb-3">
               <label class="form-label">Level User</label>
               <div>
-                <select name="level" class="level form-control" id="edit_level">
+                <select name="level" class="level form-control select-single-no-search" id="edit_level">
                   <option value="admin">admin</option>
                   <option value="guru">guru</option>
                   <option value="wali">wali</option>
@@ -184,7 +184,8 @@ Kelola Data
             <div class="mb-3">
               <label class="form-label">Level User</label>
               <div>
-                <select name="level" id="" class="level form-control">
+                <select name="level" id="" class="level form-control select-single-no-search">
+                  <option value="0" label="&nbsp;" selected disabled>Pilih Level</option>
                   <option value="admin">admin</option>
                   <option value="guru">guru</option>
                   <option value="wali">wali</option>
@@ -195,12 +196,12 @@ Kelola Data
             <div class="mb-3">
               <label class="form-label">Tempat Lahir</label>
               <input name="tempat_lahir" type="text" class="tempat_lahir form-control" />
-              <span class="text-danger error-text tempatlahir_error"></span>
+              <span class="text-danger error-text tempat_lahir_error"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">Tanggal Lahir</label>
               <input name="tanggal_lahir" type="date" class="tanggal_lahir form-control" />
-              <span class="text-danger error-text tanggallahir_error"></span>
+              <span class="text-danger error-text tanggal_lahir_error"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">NIK</label>
@@ -220,7 +221,8 @@ Kelola Data
             <div class="mb-3">
               <label class="form-label">Jenis Kelamin</label>
               <div>
-                <select name="jenis_kelamin" id="" class="jenis_kelamin form-control">
+                <select name="jenis_kelamin" id="" class="jenis_kelamin form-control select-single-no-search">
+                  <option value="0" label="&nbsp;" selected disabled>Pilih Jenis Kelamin</option>
                   <option value="laki-laki">laki-laki</option>
                   <option value="perempuan">perempuan</option>
                 </select>

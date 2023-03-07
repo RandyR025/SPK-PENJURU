@@ -158,6 +158,12 @@ class DataGuruController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:32',
+            'nik' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'jenis_kelamin' => 'required',
+            'no_telp' => 'required',
+            'alamat' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([

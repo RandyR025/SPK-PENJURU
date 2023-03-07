@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProfileController extends Controller
 {
@@ -91,7 +92,9 @@ class ProfileController extends Controller
             $adminn = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
             if (count($adminn) < 1) {
                 $validator = Validator::make($request->all(), [
-                    'nik' => 'required|unique:guru',
+                    'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required|unique:guru|unique:admin|unique:wali',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
@@ -138,6 +141,13 @@ class ProfileController extends Controller
             } else {
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'no_telp' => 'required',
+                    'alamat' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
@@ -188,7 +198,9 @@ class ProfileController extends Controller
             $guruu = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
             if (count($guruu) < 1) {
                 $validator = Validator::make($request->all(), [
-                    'nik' => 'required|unique:guru',
+                    'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required|unique:guru|unique:admin|unique:wali',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
@@ -235,6 +247,13 @@ class ProfileController extends Controller
             } else {
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'no_telp' => 'required',
+                    'alamat' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
@@ -286,13 +305,14 @@ class ProfileController extends Controller
             $kelas = DB::table('detail_kelas')->join('users', 'detail_kelas.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
             if (count($walii) < 1 && count($kelas) < 1) {
                 $validator = Validator::make($request->all(), [
-                    'nik' => 'required|unique:wali',
+                    'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required|unique:guru|unique:admin|unique:wali',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
                     'no_telp' => 'required',
                     'alamat' => 'required',
-                    'wali_murid' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
@@ -348,6 +368,13 @@ class ProfileController extends Controller
             }elseif(count($kelas) < 1) {
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'no_telp' => 'required',
+                    'alamat' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
@@ -410,6 +437,13 @@ class ProfileController extends Controller
             } else {
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
+                    'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
+                    'nik' => 'required',
+                    'tempat_lahir' => 'required',
+                    'tanggal_lahir' => 'required',
+                    'jenis_kelamin' => 'required',
+                    'no_telp' => 'required',
+                    'alamat' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([

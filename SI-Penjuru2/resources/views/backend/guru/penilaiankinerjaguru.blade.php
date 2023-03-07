@@ -18,6 +18,7 @@ Penilaian
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-5 g-4">
 @foreach ($penilaian as $item)
+@if($dt <= manipulasiTanggal($item->tanggal,'+1','months'))
     <div class="col penilaian">
         <div class="card h-100">
             @if($item->image == null)
@@ -122,6 +123,7 @@ Penilaian
             </div>
         </div>
     </div>
+    @endif
 @endforeach
 </div>
 

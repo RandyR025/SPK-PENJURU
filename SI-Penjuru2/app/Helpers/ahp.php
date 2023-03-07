@@ -491,3 +491,8 @@ function cekPenilaianWali($penilaian, $wali, $guru){
         return false;
     }
 }
+
+function manipulasiTanggal($tgl,$jumlah=1,$format='days'){
+	$currentDate = $tgl;
+	return date('Y-m-d', strtotime($jumlah.' '.$format, strtotime($currentDate)));
+}
