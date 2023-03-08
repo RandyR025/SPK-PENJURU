@@ -313,6 +313,7 @@ class ProfileController extends Controller
                     'jenis_kelamin' => 'required',
                     'no_telp' => 'required',
                     'alamat' => 'required',
+                    'wali_murid' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([
@@ -375,6 +376,7 @@ class ProfileController extends Controller
                     'jenis_kelamin' => 'required',
                     'no_telp' => 'required',
                     'alamat' => 'required',
+                    'wali_murid' => 'required',
                 ]);
                 if ($validator->fails()) {
                     return response()->json([

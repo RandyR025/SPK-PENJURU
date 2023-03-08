@@ -312,7 +312,7 @@ Setting
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>Name</label>
+        <label class="col-lg-2 col-md-3 col-sm-4 col-form-label" hidden>Level</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input id="edit_level" name="level" type="text" class="form-control" value="{{ Auth::user()->level }}" hidden />
         </div>
@@ -327,7 +327,7 @@ Setting
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Email</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input type="email" class="form-control" value="{{ Auth::user()->email }}" />
+          <input type="email" name="email" class="form-control" value="{{ Auth::user()->email }}" />
           <span class="text-danger error-text email_error"></span>
         </div>
       </div>
