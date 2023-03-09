@@ -29,7 +29,7 @@ class UserExcelImport implements ToCollection, WithHeadingRow, WithValidation
                 $user = User::create([
                     'name' => $row['name'],
                     'email'    => $row['email'],
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make($row['password']),
                     'level' => 'guru',
                 ]);
                 Guru::create([

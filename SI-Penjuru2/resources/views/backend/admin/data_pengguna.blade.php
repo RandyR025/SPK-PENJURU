@@ -25,13 +25,19 @@ Kelola Data
 <div id="success_message"></div>
 <form action="{{route('datapenggunaimportexcel')}}" method="post" enctype="multipart/form-data">
   @csrf
-  <div class="input-group mb-4">
-  <select name="akses" class="level form-control" id="">
-        <option value="guru">guru</option>
-        <option value="wali">wali</option>
-    </select>
-    <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file" />
-    <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Button</button>
+  <div class="input-group mb-4 row">
+    <div class="col mb-2">
+      <select name="akses" class="level form-control select-single-no-search" id="">
+            <option value="guru">guru</option>
+            <option value="wali">wali</option>
+      </select>
+    </div>
+      <div class="row-10 mb-2">
+        <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="file" />
+      </div>
+      <div class="row">
+        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Uploud</button>
+      </div>
   </div>
 </form>
 
