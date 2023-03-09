@@ -123,10 +123,20 @@ Kelola Data
   </div>
 </div>
 <?php
-$noUrut = (int) substr($maxkriteria, 1, 2);
-$noUrut++;
-$char = "A";
-$newID = $char . sprintf("%02s", $noUrut);
+// $noUrut = (int) substr($maxkriteria, 1, 2);
+// $noUrut++;
+// $char = "A";
+// $newID = $char . sprintf("%02s", $noUrut);
+?>
+<?php
+if (isset($maxkriteria)) {
+  $noUrut = $maxkriteria;
+  $noUrut++;
+  $newID =  $noUrut;
+}else {
+  $char = "A";
+  $newID = $char;
+}
 ?>
 
 <div class="modal fade modal-close-out" id="AddKriteriaModal" role="dialog" aria-hidden="true">

@@ -126,7 +126,7 @@ Kelola Data
 <?php
 $noUrut = (int) substr($maxsubkriteria, 1, 2);
 $noUrut++;
-$char = "B";
+$char = $kriteria[0]->kode_kriteria;
 $newID = $char . sprintf("%02s", $noUrut);
 ?>
 
