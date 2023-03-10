@@ -26,6 +26,9 @@
     .dataTables_filter{
        width: 50%;
    }
+   .misi{
+    margin-left: 0px !important;
+   }
    /* li.paginate_button.previous {
         display: inline;
     }

@@ -81,7 +81,7 @@ Dashboard
             <i class="fa-solid fa-bars text-white"></i>
           </div>
           <div class="heading text-center mb-0 d-flex align-items-center lh-1">Kriteria</div>
-          <div class="text-small text-primary">{{$totalkriteria}}</div>
+          <div class="text-small text-primary">{{$totalkriteria}} Kriteria</div>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@ Dashboard
           <i class="fa-solid fa-bars-staggered text-white"></i>
           </div>
           <div class="heading text-center mb-0 d-flex align-items-center lh-1">Sub Kriteria</div>
-          <div class="text-small text-primary">{{$totalsubkriteria}}</div>
+          <div class="text-small text-primary">{{$totalsubkriteria}} Subkriteria</div>
         </div>
       </div>
     </div>
@@ -103,7 +103,7 @@ Dashboard
           <i class="fa-solid fa-file-pen text-white"></i>
           </div>
           <div class="heading text-center mb-0 d-flex align-items-center lh-1">Penilaian</div>
-          <div class="text-small text-primary">{{$totalpenilaian}}</div>
+          <div class="text-small text-primary">{{$totalpenilaian}} Penilaian</div>
         </div>
       </div>
     </div>
@@ -228,7 +228,7 @@ Dashboard
             </blockquote>
           </p>
           <h6 class="mb-3 mt-5 text-alternate text-center font-weight-bold">MISI</h6>
-          <ul class="" style="list-style: decimal; margin-left: 250px;">
+          <ul class="misi" style="list-style: decimal; margin-left: 250px;">
             <li>Menyelenggarakan pendidikan yang mampu membentuk kepribadian Islami.</li>
             <li>Memberikan bekal pengetahuan dan ketrampilan untuk tumbuh dan berkembang secara optimal.</li>
             <li>Mengembangkan minat dan bakat di bidang akademik dan non akademik.</li>
