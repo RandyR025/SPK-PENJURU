@@ -239,7 +239,7 @@ Setting
           <select id="edit_jeniskelamin" class="select-single-no-search" data-width="100%" id="genderSelect" name="jenis_kelamin">
             <option value="0" label="&nbsp;" disabled>Pilih Jenis Kelamin</option>
             <option value="Laki-laki" {{ $guru->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-            <option value="Perempuan"{{ $guru->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}></option>
+            <option value="Perempuan"{{ $guru->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
           </select>
           <span class="text-danger error-text jenis_kelamin_error"></span>
           @else
