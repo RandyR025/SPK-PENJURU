@@ -22,7 +22,7 @@
 //     });
 //     });
 
-function handleClick(myRadio, myPengisian) {
+function handleClick(myRadio, myPengisian, myTanggal) {
   //  alert(myPengisian);
   
   $.ajaxSetup({
@@ -32,9 +32,11 @@ function handleClick(myRadio, myPengisian) {
   });
   var optionID = myRadio.value;
   var pengisianID = myPengisian;
+  var tanggalID = myTanggal;
   var s = {
     "option_id":optionID,
-    "pengisian_id":pengisianID
+    "pengisian_id":pengisianID,
+    "tanggal_id":tanggalID
   }
   $.ajax({
         url: "/gethasilpenilaian",

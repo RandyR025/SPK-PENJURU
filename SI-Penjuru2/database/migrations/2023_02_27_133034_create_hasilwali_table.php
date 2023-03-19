@@ -16,6 +16,7 @@ class CreateHasilwaliTable extends Migration
         Schema::create('hasilwali', function (Blueprint $table) {
             $table->id();
             $table->string('totals');
+            $table->bigInteger('tanggal_id')->unsigned();
             $table->foreignId('user_id_wali')->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
@@ -26,6 +27,11 @@ class CreateHasilwaliTable extends Migration
             $table->foreign('id_penilaian')
             ->references('id_penilaian')
             ->on('penilaian')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('tanggal_id')
+            ->references('id')
+            ->on('tanggal')
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->timestamps();

@@ -150,7 +150,7 @@ Penilaian
                 </div> -->
 
                 <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
-                    <a href="{{ route('hasilpenilaian', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Cek</a>
+                    <a href="{{ route('hasilpenilaian', [$item->id_penilaian, $item->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Cek</a>
                 </div>
             </div>
         </div>

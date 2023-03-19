@@ -22,7 +22,7 @@
 //     });
 //     });
 
-function handleClick(myRadio, myPengisian, myUser) {
+function handleClick(myRadio, myPengisian, myUser, myTanggal) {
     //  alert(myPengisian);
     
     $.ajaxSetup({
@@ -33,10 +33,12 @@ function handleClick(myRadio, myPengisian, myUser) {
     var optionID = myRadio.value;
     var pengisianID = myPengisian;
     var userID = myUser;
+    var tanggalID = myTanggal;
     var s = {
       "option_id":optionID,
       "pengisian_id":pengisianID,
-      "user_id":userID
+      "user_id":userID,
+      "tanggal_id":tanggalID
     }
     $.ajax({
           url: "/penilaiancek",
@@ -48,7 +50,7 @@ function handleClick(myRadio, myPengisian, myUser) {
       });
   }
 
-  function handleClickWali(myRadio, myPengisian, myUser) {
+  function handleClickWali(myRadio, myPengisian, myUser, myTanggal) {
     //  alert(myPengisian);
     
     $.ajaxSetup({
@@ -59,10 +61,12 @@ function handleClick(myRadio, myPengisian, myUser) {
     var optionID = myRadio.value;
     var pengisianID = myPengisian;
     var userID = myUser;
+    var tanggalID = myTanggal;
     var s = {
       "option_id":optionID,
       "pengisian_id":pengisianID,
-      "user_id":userID
+      "user_id":userID,
+      "tanggal_id":tanggalID
     }
     $.ajax({
           url: "/gethasilpenilaianwali",

@@ -24,7 +24,7 @@ class PenilaianKenirjaWaliController extends Controller
      */
     public function index()
     {
-        $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.deadline','penilaian.image')->where('pengisian.level','=','wali')->groupBy('id_penilaian')->get();
+        $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->join('tanggal', 'penilaian.id_penilaian', '=', 'tanggal.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','tanggal.deadline','penilaian.image','tanggal.id')->where('pengisian.level','=','wali')->groupBy('tanggal.id')->get();
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
         $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->find(Auth::user()->id);
@@ -70,7 +70,7 @@ class PenilaianKenirjaWaliController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id,$user_id)
+    public function show($id,$user_id,$tgl)
     {
         // $pengisian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->get();
         // foreach ($pengisian as $key => $value) {
@@ -88,6 +88,7 @@ class PenilaianKenirjaWaliController extends Controller
         // $jumlah = DB::table('kriteria')->get()->count();
         $jumlah = DB::table('kriteria')->join('subkriteria','kriteria.kode_kriteria','=','subkriteria.kode_kriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->join('penilaian','pengisian.id_penilaian','=','penilaian.id_penilaian')->groupBy('kriteria.kode_kriteria')->where('penilaian.id_penilaian','=',$id)->where('pengisian.level','=','wali')->get()->count();
         $penilaian = Penilaian::where('id_penilaian','=',$id)->first();
+        $tanggal = DB::table('tanggal')->where('id','=',$tgl)->first();
         $coba = [];
         foreach ($kriteria as $keykriteria => $data) {
             $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$id], ['kode_kriteria','=',$data->kode_kriteria],['level','=','wali']])->get();
@@ -104,7 +105,7 @@ class PenilaianKenirjaWaliController extends Controller
         $user = DB::table('users')->where('id','=',$user_id)->get();
         $hasilpilihan = DB::table('hasilpilihan')->where('user_id','=',Auth::user()->id)->get();
         // dd($hasilpilihan);
-        return view('backend/wali.detailpenilaiankinerjawali', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','kriteria','penilaian','user'));
+        return view('backend/wali.detailpenilaiankinerjawali', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','kriteria','penilaian','user','tanggal'));
     }
 
     /**
@@ -145,7 +146,7 @@ class PenilaianKenirjaWaliController extends Controller
         $user_id = $request->get('user_id');
         if (isset($user_id)) {
             $user = DB::table('users')->where('id','=',$user_id)->get();
-            $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.deadline','penilaian.image')->where('pengisian.level','=','wali')->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->join('tanggal', 'penilaian.id_penilaian', '=', 'tanggal.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','tanggal.deadline','penilaian.image','tanggal.id')->where('pengisian.level','=','wali')->groupBy('tanggal.id')->get();
             $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
             $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
             $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->find(Auth::user()->id);
@@ -167,6 +168,7 @@ class PenilaianKenirjaWaliController extends Controller
             ['user_id_wali','=',Auth::user()->id],
             ['kode_pengisian','=',$request->pengisian_id],
             ['user_id_guru','=',$request->user_id],
+            ['tanggal_id','=',$request->tanggal_id],
         ])->count();
 
         if ($query == 0) {
@@ -177,17 +179,19 @@ class PenilaianKenirjaWaliController extends Controller
             $hasilpilihan->kode_pengisian = $request->pengisian_id;
             $hasilpilihan->user_id_wali = Auth::user()->id;
             $hasilpilihan->user_id_guru = $request->user_id;
+            $hasilpilihan->tanggal_id = $request->tanggal_id;
             $hasilpilihan->save();   
         }else {
             HasilPilihanWali::where([
             ['user_id_wali','=',Auth::user()->id],
             ['kode_pengisian','=',$request->pengisian_id],
             ['user_id_guru','=',$request->user_id],
+            ['tanggal_id','=',$request->tanggal_id],
         ])->update(['kode_pilihan'=> $request->option_id]);
         }
     }
 
-    public function totalnilaiwali($id,$user_id){
+    public function totalnilaiwali($id,$user_id,$tgl){
         // $nilaikriteria = DB::table('kriteria')->join('pv_kriteria', 'kriteria.kode_kriteria','=','pv_kriteria.id_kriteria')->get();
         // foreach ($nilaikriteria as $keykriteria => $valuekriteria) {
         //     $nilaisubkriteria[$keykriteria] = DB::table('subkriteria')->join('pv_subkriteria','subkriteria.kode_subkriteria','=','pv_subkriteria.id_subkriteria')->where('subkriteria.kode_kriteria','=',$valuekriteria->kode_kriteria)->get();
@@ -206,6 +210,7 @@ class PenilaianKenirjaWaliController extends Controller
                 ->where('hasilpilihanwali.kode_pengisian','=',$value->kode_pengisian)
                 ->where('user_id_wali','=',Auth::user()->id)
                 ->where('user_id_guru','=',$user_id)
+                ->where('tanggal_id','=',$tgl)
                 ->join('pilihan','hasilpilihanwali.kode_pilihan','=','pilihan.kode_pilihan')
                 ->join('pengisian','hasilpilihanwali.kode_pengisian','=','pengisian.kode_pengisian')
                 ->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')
@@ -224,22 +229,26 @@ class PenilaianKenirjaWaliController extends Controller
                 ['user_id_wali','=',Auth::user()->id],
                 ['user_id_guru','=',$user_id],
                 ['id_penilaian','=',$id],
+                ['tanggal_id','=',$tgl],
             ])->count();
             if ($query == 0) {     
                 $total = new HasilWali;
                 $total->totals = round($nilai,5);
                 $total->user_id_wali = Auth::user()->id;
                 $total->user_id_guru = $user_id;
+                $total->tanggal_id = $tgl;
                 $total->id_penilaian = $id;
                 $total->save();
 
                 $queryt = JumlahTotal::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
                 ])->count();
                 $data = JumlahTotal::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
                 ])->get();
                 if ($queryt == 0) {     
                     $total = new JumlahTotal;
@@ -251,6 +260,7 @@ class PenilaianKenirjaWaliController extends Controller
                     JumlahTotal::where([
                         ['user_id_guru','=',$user_id],
                         ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
                     ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
                 }
             }else {
@@ -258,6 +268,7 @@ class PenilaianKenirjaWaliController extends Controller
                     ['user_id_wali','=',Auth::user()->id],
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
                 ])->update(['totals'=> round($nilai,5)]);
             }
             

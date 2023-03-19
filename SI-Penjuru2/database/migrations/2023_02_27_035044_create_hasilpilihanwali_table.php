@@ -17,6 +17,7 @@ class CreateHasilpilihanwaliTable extends Migration
             $table->id();
             $table->string('kode_pilihan');
             $table->string('kode_pengisian');
+            $table->bigInteger('tanggal_id')->unsigned();
             $table->foreignId('user_id_wali')->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
@@ -31,6 +32,11 @@ class CreateHasilpilihanwaliTable extends Migration
             $table->foreign('kode_pengisian')
             ->references('kode_pengisian')
             ->on('pengisian')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('tanggal_id')
+            ->references('id')
+            ->on('tanggal')
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->timestamps();

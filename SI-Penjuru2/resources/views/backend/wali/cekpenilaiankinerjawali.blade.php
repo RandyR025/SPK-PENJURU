@@ -116,7 +116,7 @@ if (count($walii) < 1) {
                 </div> -->
                 <?php
                 
-                if (cekPenilaianWali($item->id_penilaian, Auth::user()->id,$user[0]->id)) {
+                if (cekPenilaianWali($item->id_penilaian, Auth::user()->id,$user[0]->id, $item->id)) {
                     ?>
                 <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
                     <a href="{{ route('detailkinerjaguru', [$item->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Di Isi</a>
@@ -137,7 +137,7 @@ if (count($walii) < 1) {
                             <?php
                         }elseif($dt >= $item->tanggal && $dt <= $item->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjawali', [$item->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
+                            <a href="{{ route('detailkinerjawali', [$item->id_penilaian,$user[0]->id,$item->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
                         <?php
                         }
                         ?>

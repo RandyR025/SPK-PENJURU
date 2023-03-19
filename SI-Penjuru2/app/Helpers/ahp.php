@@ -441,10 +441,11 @@ function bantuan($matrik)
 }
 
 
-function hasilPilihan($pilihan,$user){
+function hasilPilihan($pilihan,$user,$tanggal){
     $query = Hasilpilihan::where([
         ['user_id','=',$user],
         ['kode_pilihan','=',$pilihan],
+        ['tanggal_id','=',$tanggal],
     ])->count();
     if ($query == 1) {
         return true;
@@ -453,11 +454,12 @@ function hasilPilihan($pilihan,$user){
     }
 }
 
-function hasilPilihanWali($pilihan,$guru,$wali){
+function hasilPilihanWali($pilihan,$guru,$wali,$tanggal){
     $query = HasilPilihanWali::where([
         ['user_id_guru','=',$guru],
         ['user_id_wali','=',$wali],
         ['kode_pilihan','=',$pilihan],
+        ['tanggal_id','=',$tanggal],
     ])->count();
     if ($query == 1) {
         return true;
@@ -467,10 +469,11 @@ function hasilPilihanWali($pilihan,$guru,$wali){
 }
 
 
-function cekPenilaian($penilaian, $user){
+function cekPenilaian($penilaian, $user, $tgl){
     $query = Hasil::where([
         ['user_id','=',$user],
         ['id_penilaian','=',$penilaian],
+        ['tanggal_id','=',$tgl],
     ])->count();
     if ($query == 1) {
         return true;
@@ -479,11 +482,12 @@ function cekPenilaian($penilaian, $user){
     }
 }
 
-function cekPenilaianWali($penilaian, $wali, $guru){
+function cekPenilaianWali($penilaian, $wali, $guru, $tgl){
     $query = HasilWali::where([
         ['user_id_wali','=',$wali],
         ['user_id_guru','=',$guru],
         ['id_penilaian','=',$penilaian],
+        ['tanggal_id','=',$tgl],
     ])->count();
     if ($query == 1) {
         return true;

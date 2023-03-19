@@ -153,10 +153,10 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* Start Hasil Penilaian */
         Route::get('/daftarpenilaian', [HasilDataPenilaianController::class, 'index'])->name('daftarpenilaian');
-        Route::get('/hasilpenilaian/{id}', [HasilDataPenilaianController::class, 'show'])->name('hasilpenilaian');
-        Route::get('/hasilpenilaiancek/{id}/cek/{pen}', [HasilDataPenilaianController::class, 'cek'])->name('hasilpenilaiancek');
+        Route::get('/hasilpenilaian/{id}/tanggal/{tgl}', [HasilDataPenilaianController::class, 'show'])->name('hasilpenilaian');
+        Route::get('/hasilpenilaiancek/{id}/cek/{pen}/{tgl}', [HasilDataPenilaianController::class, 'cek'])->name('hasilpenilaiancek');
         Route::post('/penilaiancek', [HasilDataPenilaianController::class, 'hasilcek'])->name('penilaiancek');
-        Route::get('/gettotalnilaicek/{id}/total/{user}', [HasilDataPenilaianController::class, 'totalnilai'])->name('gettotalnilaicek');
+        Route::get('/gettotalnilaicek/{id}/total/{user}/{tgl}', [HasilDataPenilaianController::class, 'totalnilai'])->name('gettotalnilaicek');
         Route::delete('/delete-cekjawaban/{id}/penilaian/{penilaian}',[HasilDataPenilaianController::class, 'destroy']);
 
         Route::get('/daftarpenilaianrangking', [HasilController::class, 'index'])->name('daftarpenilaianrangking');
@@ -186,9 +186,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/profileguru', [ProfileController::class, 'index'])->name('profileguru');
         Route::post('/profileguru/{id}',[ProfileController::class, 'update'])->name('updateprofileguru');
         Route::get('/penilaiankinerjaguru',[PenilaianKinerjaGuruController::class, 'index'])->name('penilaiankinerjaguru');
-        Route::get('/detailkinerjaguru/{id}',[PenilaianKinerjaGuruController::class, 'show'])->name('detailkinerjaguru');
+        Route::get('/detailkinerjaguru/{id}/tanggal/{tgl}',[PenilaianKinerjaGuruController::class, 'show'])->name('detailkinerjaguru');
         Route::post('/gethasilpenilaian', [PenilaianKinerjaGuruController::class, 'hasilpilihan'])->name('gethasilpenilaian');
-        Route::get('/gettotalnilai/{id}', [PenilaianKinerjaGuruController::class, 'totalnilai'])->name('gettotalnilai');
+        Route::get('/gettotalnilai/{id}/tanggal/{tgl}', [PenilaianKinerjaGuruController::class, 'totalnilai'])->name('gettotalnilai');
     });
 
     Route::group(['middleware' => ['cek_login:wali']], function () {
@@ -197,9 +197,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/profilewali/{id}',[ProfileController::class, 'update'])->name('updateprofilewali');
         Route::get('/penilaiankinerjawali',[PenilaianKenirjaWaliController::class, 'index'])->name('penilaiankinerjawali');
         Route::get('/nilaiguru',[PenilaianKenirjaWaliController::class, 'cari'])->name('nilaiguru');
-        Route::get('/detailkinerjawali/{id}/guru/{user}',[PenilaianKenirjaWaliController::class, 'show'])->name('detailkinerjawali');
+        Route::get('/detailkinerjawali/{id}/guru/{user}/{tgl}',[PenilaianKenirjaWaliController::class, 'show'])->name('detailkinerjawali');
         Route::post('/gethasilpenilaianwali', [PenilaianKenirjaWaliController::class, 'hasilpilihanwali'])->name('gethasilpenilaianwali');
-        Route::get('/gettotalnilaiwali/{id}/total/{user}', [PenilaianKenirjaWaliController::class, 'totalnilaiwali'])->name('gettotalnilaiwali');
+        Route::get('/gettotalnilaiwali/{id}/total/{user}/tanggal/{tgl}', [PenilaianKenirjaWaliController::class, 'totalnilaiwali'])->name('gettotalnilaiwali');
     });
 });
 Route::get('/masukLogin', [LoginController::class, 'index'])->name('masuklogin');

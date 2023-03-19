@@ -90,10 +90,10 @@ Penilaian
                 </div> -->
                 <?php
                 
-                if (cekPenilaian($item->id_penilaian, Auth::user()->id)) {
+                if (cekPenilaian($item->id_penilaian, Auth::user()->id,$item->id)) {
                     ?>
                 <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
-                    <a href="{{ route('detailkinerjaguru', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Di Isi</a>
+                    <a href="" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Di Isi</a>
                 </div>
                     <?php
                     
@@ -103,15 +103,15 @@ Penilaian
                         <?php
                         if($dt < $item->tanggal){
                             ?>
-                        <a href="{{ route('detailkinerjaguru', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Belum Boleh</a>
+                        <a href="" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Belum Boleh</a>
                         <?php
                         }elseif($dt > $item->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjaguru', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Lewat</a>
+                            <a href="" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Lewat</a>
                             <?php
                         }elseif($dt >= $item->tanggal && $dt <= $item->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjaguru', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
+                            <a href="{{ route('detailkinerjaguru', [$item->id_penilaian,$item->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
                         <?php
                         }
                         ?>

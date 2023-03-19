@@ -17,12 +17,18 @@ class CreateHasilpilihanTable extends Migration
             $table->id();
             $table->string('kode_pilihan');
             $table->string('kode_pengisian');
+            $table->bigInteger('tanggal_id')->unsigned();
             $table->foreignId('user_id')->constrained()
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->foreign('kode_pilihan')
             ->references('kode_pilihan')
             ->on('pilihan')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('tanggal_id')
+            ->references('id')
+            ->on('tanggal')
             ->onUpdate('cascade')
             ->onDelete('cascade');
             $table->foreign('kode_pengisian')

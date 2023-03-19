@@ -47,7 +47,7 @@ Penilaian
                         <label class="btn btn-foreground sw-4 sh-4 p-0 rounded-xl stretched-link" for="mc_c{{ $choicenum }}">
                             <input type="text" id="question" name="question" value="{{$questionNum}}" hidden>
                             <!-- <input type="text" name="kode_pengisian" id="kode_pengisian" value="{{ $p->kode_pengisian}}" hidden> -->
-                            <input type="radio" class="option form-check-input" id="mc_c{{ $choicenum++ }}" name="answer[{{ $questionNum }}]" value="{{ $p->kode_pilihan}}" onclick="handleClick(this,'<?=$p->kode_pengisian;?>','<?=$user[0]->id;?>');" <?php if(hasilPilihan($p['kode_pilihan'],$user[0]->id)) echo 'checked'?>>
+                            <input type="radio" class="option form-check-input" id="mc_c{{ $choicenum++ }}" name="answer[{{ $questionNum }}]" value="{{ $p->kode_pilihan}}" onclick="handleClick(this,'<?=$p->kode_pengisian;?>','<?=$user[0]->id;?>','<?=$tanggal->id;?>');" <?php if(hasilPilihan($p['kode_pilihan'],$user[0]->id,$tanggal->id)) echo 'checked'?>>
                         </label>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ Penilaian
             @if($jumlah == $keykriteria + $kriteria->firstItem())
             <div class="row" style="margin-top: 100px;">
         <div class="col-12 text-center">
-            <a href="{{ route('gettotalnilaicek', [$item->id_penilaian,$user[0]->id])}}">
+            <a href="{{ route('gettotalnilaicek', [$item->id_penilaian,$user[0]->id,$tanggal->id])}}">
                 <button class="btn btn-outline-primary btn-icon btn-icon-end sw-25">
                     <span>Done</span>
                     <i data-acorn-icon="check"></i>
