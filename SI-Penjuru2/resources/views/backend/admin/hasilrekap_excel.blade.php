@@ -13,7 +13,12 @@
         <th>No</th>
         <th>Nama</th>
         @foreach($pengisian[$valkey] as $data)
+        <?php
+        $tes = json_decode($data->level);
+        ?>
+        @if (property_exists( $tes, 'guru'))
         <th>{{$data->nama_subkriteria}}</th>
+        @endif
         @endforeach
         </tr>
     </thead>

@@ -16,14 +16,7 @@ Penilaian
 @endif
 <div id="success_message"></div>
 
-<?php
-if (count($walii) < 1) {
-    ?>
-    <h1 class="text-danger">Silahkan Isi Identitas Diri Anda !!!!</h1>
-<?php
-} else {
-    ?>
-    <form action="{{route('nilaiguru')}}" method="get" class="mb-4" >
+    <form action="{{route('nilaiguruu')}}" method="get" class="mb-4" >
         <div class="row">
             <div class="mb-3">
                 <label class="form-label">Nama Guru</label>
@@ -137,7 +130,7 @@ if (count($walii) < 1) {
                             <?php
                         }elseif($dt >= $data[0]->tanggal && $dt <= $data[0]->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
+                            <a href="{{ route('detailkinerjakepalasekolah', [$data[0]->id_penilaian,$user[0]->id,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
                         <?php
                         }
                         ?>
@@ -152,9 +145,6 @@ if (count($walii) < 1) {
     @endif
 @endforeach
 </div>
-<?php
-}
-?>
 @section('js')
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <script>

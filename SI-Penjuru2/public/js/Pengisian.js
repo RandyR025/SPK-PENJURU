@@ -55,7 +55,15 @@
         $('#edit_kodepengisian').val(response.pengisian[0].kode_pengisian);
         $('#edit_namapengisian').val(response.pengisian[0].nama_pengisian);
         $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria);
-        $('#edit_level').val(response.pengisian[0].level).trigger('change');
+        $('#guru').prop("checked", false)
+        $('#wali').prop("checked", false)
+        if (JSON.parse(response.pengisian[0].level).guru) {
+          $('#guru').prop("checked", true)
+        }
+        if(JSON.parse(response.pengisian[0].level).wali) {
+          $('#wali').prop("checked", true)
+        }
+        // $('#edit_level').val(JSON.parse(response.pengisian[0].level).guru);
         // $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
         $.ajax({
           url: '/getsubkriteria/'+response.pengisian[0].kode_kriteria,

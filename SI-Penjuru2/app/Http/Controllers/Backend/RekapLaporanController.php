@@ -106,7 +106,7 @@ class RekapLaporanController extends Controller
         // dd($oke);
         if ($opsi == "pdf" && $laporan=="jawaban") {
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal.tanggal','>=',$firstmonth)->whereMonth('tanggal.tanggal','<=',$lastmonth)->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
                     $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
@@ -298,7 +298,7 @@ class RekapLaporanController extends Controller
             }
         } elseif ($opsi == "excel" && $laporan=="jawaban") {
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal.tanggal','>=',$firstmonth)->whereMonth('tanggal.tanggal','<=',$lastmonth)->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
                     $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();

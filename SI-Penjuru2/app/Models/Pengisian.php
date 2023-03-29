@@ -15,6 +15,11 @@ class Pengisian extends Model
         'kode_pengisian',
         'nama_pengisian',
         'kode_subkriteria',
+        'level',
+    ];
+
+    protected $casts = [
+        'level' => 'array',
     ];
 
     public function penilaian(){

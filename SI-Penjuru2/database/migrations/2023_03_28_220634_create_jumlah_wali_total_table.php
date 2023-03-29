@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePengisianTable extends Migration
+class CreateJumlahWaliTotalTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,25 @@ class CreatePengisianTable extends Migration
      */
     public function up()
     {
-        Schema::create('pengisian', function (Blueprint $table) {
-            $table->string('kode_pengisian')->primary();
-            $table->string('nama_pengisian');
-            $table->string('kode_subkriteria');
-            $table->foreign('kode_subkriteria')
-            ->references('kode_subkriteria')
-            ->on('subkriteria')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
+        Schema::create('jumlah_wali_total', function (Blueprint $table) {
+            $table->id();
+            $table->string('totals');
             $table->string('id_penilaian');
+            $table->bigInteger('tanggal_id')->unsigned();
             $table->foreign('id_penilaian')
             ->references('id_penilaian')
             ->on('penilaian')
             ->onUpdate('cascade')
             ->onDelete('cascade');
+            $table->foreignId('user_id_guru')->constrained()
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
+            $table->foreign('tanggal_id')
+            ->references('id')
+            ->on('tanggal')
+            ->onUpdate('cascade')
+            ->onDelete('cascade');
             $table->timestamps();
-            $table->string('level');
         });
     }
 
@@ -40,6 +42,6 @@ class CreatePengisianTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengisian');
+        Schema::dropIfExists('jumlah_wali_total');
     }
 }

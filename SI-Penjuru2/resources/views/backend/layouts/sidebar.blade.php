@@ -42,7 +42,7 @@
     </li>
     @if (auth()->user()->level == "admin")
     <li>
-      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('datapengguna')||Route::is('dataguru')||Route::is('datakriteria')||Route::is('showkriteria')||Route::is('datapenilaian') ? 'active' : '' }}">
+      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('datapengguna')||Route::is('dataguru')||Route::is('datakriteria')||Route::is('showkriteria')||Route::is('datapenilaian')||Route::is('tanggalpenilaian') ? 'active' : '' }}">
         <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>
         <span class="label">Kelola Data</span>
       </a>
@@ -83,6 +83,11 @@
             <span class="label">Data Penilaian</span>
           </a>
         </li>
+        <li>
+          <a href="{{route('tanggalpenilaian')}}" class="{{ Route::is('tanggalpenilaian') ? 'active' : '' }}">
+            <span class="label">Tanggal Penilaian</span>
+          </a>
+        </li>
       </ul>
     </li>
     <li>
@@ -99,6 +104,11 @@
         <li>
           <a href="{{route('perbandingansubkriteria')}}" class="{{ Route::is('perbandingansubkriteria') || Route::is('showperbandingansubkriteria') || Route::is('subperbandinganproses') ? 'active' : '' }}" data-href="Pages.Authentication.html">
             <span class="label">Perbandingan Sub Kriteria</span>
+          </a>
+        </li>
+        <li>
+          <a href="{{route('penilaiankinerjakepalasekolah')}}" class="{{ Route::is('penilaiankinerjakepalasekolah')}}">
+            <span class="label">Penilaian Kinerja</span>
           </a>
         </li>
       </ul>

@@ -77,4 +77,32 @@ function handleClick(myRadio, myPengisian, myUser, myTanggal) {
           },
       });
   }
+
+  function handleClickKepalaSekolah(myRadio, myPengisian, myUser, myTanggal) {
+    //  alert(myPengisian);
+    
+    $.ajaxSetup({
+      headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+      },
+    });
+    var optionID = myRadio.value;
+    var pengisianID = myPengisian;
+    var userID = myUser;
+    var tanggalID = myTanggal;
+    var s = {
+      "option_id":optionID,
+      "pengisian_id":pengisianID,
+      "user_id":userID,
+      "tanggal_id":tanggalID
+    }
+    $.ajax({
+          url: "/gethasilpenilaiankepalasekolah",
+          type: "POST",
+          data: s,
+          success: function (data) {
+              console.log(data);
+          },
+      });
+  }
   

@@ -58,30 +58,28 @@ Kelola Data
         <tr>
           <th>No</th>
           <th>Id Penilaian</th>
-          <th>Nama Penilaian</th>
-          <!-- <th>Tangal Pelaksanaan</th>
-          <th>Deadline</th> -->
+          <th>Tangal Pelaksanaan</th>
+          <th>Deadline</th>
           <th class="#"></th>
         </tr>
       </thead>
       <tbody>
-      @foreach($penilaian as $data)
+      @foreach($tanggalpenilaian as $data)
       <tr>
       <td>{{$no++}}</td>
           <td>{{$data->id_penilaian}}</td>
-          <td>{{$data->nama_penilaian}}</td>
-          <!-- <td>{{$data->tanggal}}</td>
-          <td>{{$data->deadline}}</td> -->
+          <td>{{$data->tanggal}}</td>
+          <td>{{$data->deadline}}</td>
           <td>
           <button value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
           <i class="fa-solid fa-pen-to-square"></i>
           </button>
-            <button value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_penilaian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+            <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_penilaian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
             <i class="fa-solid fa-trash-can"></i>
             </button>
-            <a href="/show-pengisian/{{$data->id_penilaian}}" value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_penilaian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
+            <!-- <a href="/show-pengisian/{{$data->id_penilaian}}" value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 view_penilaian" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="View">
             <i class="fa-regular fa-eye"></i>
-            </a>
+            </a> -->
           </td>
       </tr>
       @endforeach
@@ -116,7 +114,7 @@ Kelola Data
               <span class="text-danger error-text nama_penilaian_error"></span>
 
             </div>
-            <!-- <div class="mb-3">
+            <div class="mb-3">
               <label class="form-label">Tanggal Pelaksanaan</label>
               <input id="edit_tanggalpelaksanaan" type="date" class="tanggalpelaksanaan form-control" value="" name="tanggal_pelaksanaan" />
               <span class="text-danger error-text tanggalpelaksanaan_error"></span>
@@ -125,7 +123,7 @@ Kelola Data
               <label class="form-label">Deadline</label>
               <input id="edit_deadline" type="date" class="deadline form-control" value="" name="deadline" />
               <span class="text-danger error-text deadline_error"></span>
-            </div> -->
+            </div>
             <div class="position-relative d-inline-block" id="singleImageUploadExample">
               <div class="img-holder-update">
               </div>
@@ -148,10 +146,10 @@ Kelola Data
 
 
 <?php
-$noUrut = (int) substr($maxpenilaian, 1, 2);
-$noUrut++;
-$char = "P";
-$newID = $char . sprintf("%02s", $noUrut);
+// $noUrut = (int) substr($maxpenilaian, 1, 2);
+// $noUrut++;
+// $char = "P";
+// $newID = $char . sprintf("%02s", $noUrut);
 ?>
 
 <div class="modal fade modal-close-out" id="AddPenilaianModal" role="dialog" aria-hidden="true">
@@ -163,19 +161,23 @@ $newID = $char . sprintf("%02s", $noUrut);
       </div>
       <div class="modal-body">
         <div class="modal-body">
-          <form action="{{ route('penilaian.store') }}" method="post" id="main_form">
+          <form action="{{ route('tanggalpenilaian.store') }}" method="post" id="main_form">
             @csrf
             <div class="mb-3">
-              <label class="form-label">Kode Penilaian</label>
-              <input name="id_penilaian" type="text" class="id_penilaian form-control" value="<?= $newID?>" />
-              <span class="text-danger error-text id_penilaian_error"></span>
+              <label class="form-label">Id Penilaian</label>
+              <div class="w-100">
+                <div class="w-100">
+                    <select name="penilaian_id" class="user_id form-control theSelect" id="penilaian_id">
+                      <option selected disabled>Pilih Penilaian</option>
+                    @foreach ($penilaian as $item)
+                      <option value="{{ $item->id_penilaian }}">{{ $item->id_penilaian }}</option>
+                    @endforeach
+                    </select>
+                </div>
+              </div>
+              <span class="text-danger error-text user_id_error"></span>
             </div>
             <div class="mb-3">
-              <label class="form-label">Nama Penilaian</label>
-              <input name="nama_penilaian" type="text" class="nama_penilaian form-control" />
-              <span class="text-danger error-text nama_penilaian_error"></span>
-            </div>
-            <!-- <div class="mb-3">
               <label class="form-label">Tanggal Pelaksanaan</label>
               <input name="tanggal_pelaksanaan" type="date" class="tanggal_pelaksanaan form-control" />
               <span class="text-danger error-text tanggalpelaksanaan_error"></span>
@@ -184,13 +186,7 @@ $newID = $char . sprintf("%02s", $noUrut);
               <label class="form-label">Deadline</label>
               <input name="deadline" type="date" class="deadline form-control" />
               <span class="text-danger error-text deadline_error"></span>
-            </div> -->
-            <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02" name="image" />
-                <label class="input-group-text" for="inputGroupFile02">Upload</label>
             </div>
-
-
         </div>
       </div>
       <div class="modal-footer">
@@ -255,6 +251,19 @@ $newID = $char . sprintf("%02s", $noUrut);
     new $.fn.dataTable.FixedHeader(table);
   });
 </script>
-<script src="{{asset('js/Penilaian.js')}}"></script>
+<script>
+		$(".theSelect").select2({
+      theme: 'bootstrap4',
+    });
+	</script>
+  <script type="text/javascript">
+    function guru_edit() {
+      $(".edit_user_id").select2({
+        theme: 'bootstrap4',
+        dropdownParent: $('#editModal')
+      });
+    }
+  </script>
+<script src="{{asset('js/TanggalPenilaian.js')}}"></script>
 @endsection
 @endsection

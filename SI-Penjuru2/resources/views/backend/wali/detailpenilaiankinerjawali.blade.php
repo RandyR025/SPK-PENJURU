@@ -24,23 +24,23 @@ Penilaian
         @php
             $choicenum = 1;
         @endphp
-        @foreach ($kriteria as $keykriteria => $data)
-        <h1 hidden>
-            {{ $keykriteria + $kriteria->firstItem() }}
-        </h1>
+        @foreach ($data_with_paginate as $keykriteria => $data)
         <h2 class="small-title">
-            {{$data->nama_kriteria}}
+            {{$data[0]->nama_kriteria}}
         </h2>
-        @foreach ($coba1[$keykriteria] as $key => $item)
+        <h1 hidden>
+            {{ $data_with_paginate->firstItem() }}
+        </h1>
+        @foreach ($data as $keykriteriaa => $value)
             <div class="d-flex flex-row align-content-center align-items-center mb-5">
                 <div class="sw-5 me-4">
                     <div class="border border-1 border-primary rounded-xl sw-5 sh-5 text-primary d-flex justify-content-center align-items-center">{{$questionNum++}}</div>
                 </div>
                 <div class="heading mb-0">
-                    {{$item['nama_pengisian']}}
+                    {{$value->nama_pengisian}}
                 </div>
             </div>
-            @foreach ($coba[$key] as $keycoba => $p)
+            @foreach ($coba[$keykriteriaa] as $keycoba => $p)
             <div class="d-flex flex-row align-content-center align-items-center position-relative mb-3">
                 <div class="sw-5 me-4 d-flex justify-content-center flex-grow-0 flex-shrink-0">
                     <div class="d-flex justify-content-center align-items-center">
@@ -69,10 +69,10 @@ Penilaian
                 </div>
             </div> -->
             @endforeach
-            @if($jumlah == $keykriteria + $kriteria->firstItem())
+            @if($jumlah == $data_with_paginate->firstItem())
             <div class="row" style="margin-top: 100px;">
         <div class="col-12 text-center">
-            <a href="{{ route('gettotalnilaiwali', [$item->id_penilaian,$user[0]->id,$tanggal->id])}}">
+            <a href="{{ route('gettotalnilaiwali', [$value->id_penilaian,$user[0]->id,$tanggal->id])}}">
                 <button class="btn btn-outline-primary btn-icon btn-icon-end sw-25">
                     <span>Done</span>
                     <i data-acorn-icon="check"></i>
@@ -80,12 +80,12 @@ Penilaian
             </a>
         </div>
     </div>
-            @endif
-
+    @endif
+            
             @endforeach
         </div>
     </div>
-    {{$kriteria->onEachSide(1)->links('vendor.pagination.bootstrap-4')}}
+    {{$data_with_paginate->onEachSide(1)->links('vendor.pagination.bootstrap-4')}}
 
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="{{asset('backend/js/vendor/jquery-3.5.1.min.js')}}"></script> -->

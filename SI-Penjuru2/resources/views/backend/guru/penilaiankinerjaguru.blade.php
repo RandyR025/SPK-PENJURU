@@ -17,19 +17,19 @@ Penilaian
 <div id="success_message"></div>
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 row-cols-xxl-5 g-4">
-@foreach ($penilaian as $item)
-@if($dt <= manipulasiTanggal($item->deadline,'+1','months'))
+@foreach ($oke as $item => $data)
+@if($dt <= manipulasiTanggal($data[0]->deadline,'+1','months'))
     <div class="col penilaian">
         <div class="card h-100">
-            @if($item->image == null)
+            @if($data[0]->image == null)
             <img src="{{asset('backend/img/background/sekolah2.jpeg')}}" class="card-img-top sh-25" alt="card image">
             @else
-            <img src="images/{{$item->image}}" class="card-img-top sh-25" alt="card image">
+            <img src="images/{{$data[0]->image}}" class="card-img-top sh-25" alt="card image">
             @endif
             <div class="card-body">
                 <h5 class="heading mb-2">
                     <a href="Quiz.Detail.html" class="body-link">
-                        <span class="clamp-line sh-6 lh-1-5" data-line="2">{{$item->nama_penilaian}}</span>
+                        <span class="clamp-line sh-6 lh-1-5" data-line="2">{{$data[0]->nama_penilaian}}</span>
                     </a>
                 </h5>
                 <!-- <div class="mb-3 text-muted sh-8 clamp-line" data-line="3">
@@ -42,7 +42,7 @@ Penilaian
                                 <div class="text-alternate sh-4 d-flex align-items-center lh-1-25">Jumlah</div>
                             </div>
                             <div class="col-auto">
-                                <div class="sh-4 d-flex align-items-center text-alternate">{{$item->jumlah}}</div>
+                                <div class="sh-4 d-flex align-items-center text-alternate"><?php $jumlah = count($data); echo $jumlah ?></div>
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@ Penilaian
                                 <div class="text-alternate sh-4 d-flex align-items-center lh-1-25">Tanggal</div>
                             </div>
                             <div class="col-auto">
-                                <div class="sh-4 d-flex align-items-center text-alternate">{{$item->tanggal}}</div>
+                                <div class="sh-4 d-flex align-items-center text-alternate">{{$data[0]->tanggal}}</div>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@ Penilaian
                                 <div class="text-alternate sh-4 d-flex align-items-center lh-1-25">Deadline</div>
                             </div>
                             <div class="col-auto">
-                                <div class="sh-4 d-flex align-items-center text-alternate">{{$item->deadline}}</div>
+                                <div class="sh-4 d-flex align-items-center text-alternate">{{$data[0]->deadline}}</div>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,7 @@ Penilaian
                 </div> -->
                 <?php
                 
-                if (cekPenilaian($item->id_penilaian, Auth::user()->id,$item->id)) {
+                if (cekPenilaian($data[0]->id_penilaian, Auth::user()->id,$data[0]->id)) {
                     ?>
                 <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
                     <a href="" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Di Isi</a>
@@ -101,17 +101,17 @@ Penilaian
                     ?>
                     <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
                         <?php
-                        if($dt < $item->tanggal){
+                        if($dt < $data[0]->tanggal){
                             ?>
                         <a href="" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Belum Boleh</a>
                         <?php
-                        }elseif($dt > $item->deadline){
+                        }elseif($dt > $data[0]->deadline){
                             ?>
                             <a href="" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Lewat</a>
                             <?php
-                        }elseif($dt >= $item->tanggal && $dt <= $item->deadline){
+                        }elseif($dt >= $data[0]->tanggal && $dt <= $data[0]->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjaguru', [$item->id_penilaian,$item->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
+                            <a href="{{ route('detailkinerjaguru', [$data[0]->id_penilaian,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
                         <?php
                         }
                         ?>

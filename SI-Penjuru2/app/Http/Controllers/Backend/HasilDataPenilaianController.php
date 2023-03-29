@@ -16,6 +16,9 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class HasilDataPenilaianController extends Controller
 {
@@ -103,12 +106,13 @@ class HasilDataPenilaianController extends Controller
         // foreach ($coba1 as $key => $value) {
         //     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.kode_pengisian','=',$value->kode_pengisian)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->get();
         // }
+        $coba = [];
         $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$id)->where('hasil.tanggal_id','=',$tgl)->get();
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihan.tanggal_id', '=', $tgl)->get();
         }
-        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$id)->where('level','=','guru')->get();
-        // dd($coba);
+        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$id)->get();
+        // dd($coba1);
         return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba1','coba','pengisian'));
     }
 
@@ -156,15 +160,28 @@ class HasilDataPenilaianController extends Controller
         $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
 
         // $pengisian = collect(DB::table('pilihan')->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->join('subkriteria', 'pengisian.kode_subkriteria', '=', 'subkriteria.kode_subkriteria')->join('kriteria', 'subkriteria.kode_kriteria', '=', 'kriteria.kode_kriteria')->get()->groupBy('kode_pengisian'));
-        $kriteria = DB::table('kriteria')->join('subkriteria','kriteria.kode_kriteria','=','subkriteria.kode_kriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->join('penilaian','pengisian.id_penilaian','=','penilaian.id_penilaian')->groupBy('kriteria.kode_kriteria')->where('penilaian.id_penilaian','=',$pen)->paginate(1);
+        $kriteria = DB::table('kriteria')->join('subkriteria','kriteria.kode_kriteria','=','subkriteria.kode_kriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->join('penilaian','pengisian.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$pen)->get()->groupBy('kode_kriteria');
+        $kriteriatelahdifilter = [];
+        foreach ($kriteria as $key => $data) {
+            foreach ($data as $key => $value) {
+                $tes = json_decode($value->level);
+                if (property_exists( $tes, 'guru') ) {
+                    array_push($kriteriatelahdifilter, $value);
+                }
+            }
+        }
+        $oke = collect($kriteriatelahdifilter)->groupBy('kode_kriteria');
+        // dd($oke);
+        $data_with_paginate = $this->paginate($oke);
+        //set path of pagination
+        $data_with_paginate->withPath($tgl);
         $jumlah = DB::table('kriteria')->join('subkriteria','kriteria.kode_kriteria','=','subkriteria.kode_kriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->join('penilaian','pengisian.id_penilaian','=','penilaian.id_penilaian')->groupBy('kriteria.kode_kriteria')->where('penilaian.id_penilaian','=',$pen)->get()->count();
         // $jumlah = Pengisian::with('penilaian')->where('id_penilaian','=',$pen)->get()->count();
         $penilaian = Penilaian::where('id_penilaian','=',$id)->first();
         $tanggal = DB::table('tanggal')->where('id','=',$tgl)->first();
         $coba = [];
-        foreach ($kriteria as $keykriteria => $data) {
-            $coba1[$keykriteria] = Pengisian::with('penilaian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where([['id_penilaian','=',$pen], ['kode_kriteria','=',$data->kode_kriteria],['level','=','guru']])->get();
-            foreach ($coba1[$keykriteria] as $key => $value) {
+        foreach ($data_with_paginate as $keykriteria => $data) {
+            foreach ($data as $key => $value) {
                 $cek = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
                 if (isset($cek)) {
                     $coba[$key] = Pilihan::with('pengisian')->where('kode_pengisian','=',$value->kode_pengisian)->get();
@@ -175,7 +192,14 @@ class HasilDataPenilaianController extends Controller
         $user = DB::table('users')->where('id','=',$id)->get();
         $hasilpilihan = DB::table('hasilpilihan')->where('user_id','=',$id)->get();
         // dd($hasilpilihan);
-        return view('backend/admin.hasil_cek', compact('admin','guru', 'wali','coba','coba1','hasilpilihan','jumlah','user','kriteria','penilaian','tanggal'));   
+        return view('backend/admin.hasil_cek', compact('admin','guru', 'wali','coba','hasilpilihan','jumlah','user','kriteria','penilaian','tanggal','data_with_paginate'));   
+    }
+
+    public function paginate($items, $perPage = 1, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
     }
 
 
@@ -217,9 +241,16 @@ class HasilDataPenilaianController extends Controller
         //     dd($nilaipengisian);
         // }
 
-            $coba = DB::table('pengisian')->where('id_penilaian','=',$id)->where('pengisian.level','=','guru')->get();
+            $coba = DB::table('pengisian')->get();
             $nilai = 0;
+            $cobatelahdifilter = [];
             foreach ($coba as $key => $value) {
+                $tes = json_decode($value->level);
+                if (property_exists( $tes, 'guru') && $value->id_penilaian == $id ) {
+                    array_push($cobatelahdifilter, $value);
+                }
+            }
+            foreach ($cobatelahdifilter as $key => $value) {
                 $coba1[$key] = DB::table('hasilpilihan')
                 ->where('hasilpilihan.kode_pengisian','=',$value->kode_pengisian)
                 ->where('user_id','=',$user_id)

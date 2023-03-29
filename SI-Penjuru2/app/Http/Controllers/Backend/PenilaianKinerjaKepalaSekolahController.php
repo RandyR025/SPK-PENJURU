@@ -4,22 +4,24 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hasil;
+use App\Models\Hasilpilihan;
 use App\Models\HasilPilihanWali;
 use App\Models\HasilWali;
+use App\Models\Pengisian;
+use App\Models\Penilaian;
+use App\Models\Pilihan;
 use App\Models\JumlahTotal;
 use App\Models\JumlahWaliTotal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Penilaian;
-use App\Models\Pengisian;
-use App\Models\Pilihan;
+use PHPUnit\Framework\Constraint\Count;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class PenilaianKenirjaWaliController extends Controller
+class PenilaianKinerjaKepalaSekolahController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,15 +38,15 @@ class PenilaianKenirjaWaliController extends Controller
         $tanggal = Carbon::now('Asia/Jakarta');
         $dt = $tanggal->toDateString();
         $future = $tanggal->addWeek();
-        $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
-        $kelas = DB::table('detail_kelas')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->where('detail_kelas.user_id','=',Auth::user()->id)->get();
-        if (isset($wali->kode_kelas)) {
-            $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->where('detail_kelas.kode_kelas', $wali->kode_kelas)->get();
-            return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','dataguru','kelas'));
+        // $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
+        // $kelas = DB::table('detail_kelas')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->where('detail_kelas.user_id','=',Auth::user()->id)->get();
+        // if (isset($wali->kode_kelas)) {
+        //     $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->where('detail_kelas.kode_kelas', $wali->kode_kelas)->get();
             
-        }
+        // }
+        $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->get();
         /* dd($future); */
-        return view('backend/wali.penilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','kelas'));
+        return view('backend/perhitungan.penilaiankinerjakepalasekolah', compact('admin','guru', 'wali', 'penilaian','dt','future','dataguru'));
     }
 
     /**
@@ -134,14 +136,49 @@ class PenilaianKenirjaWaliController extends Controller
         $user = DB::table('users')->where('id','=',$user_id)->get();
         $hasilpilihan = DB::table('hasilpilihan')->where('user_id','=',Auth::user()->id)->get();
         // dd($hasilpilihan);
-        return view('backend/wali.detailpenilaiankinerjawali', compact('admin','guru', 'wali','coba','hasilpilihan','jumlah','kriteria','penilaian','user','tanggal','data_with_paginate','oke'));
+        return view('backend/perhitungan.detailpenilaiankinerjakepalasekolah', compact('admin','guru', 'wali','coba','hasilpilihan','jumlah','kriteria','penilaian','user','tanggal','data_with_paginate','oke'));
     }
-
     public function paginate($items, $perPage = 1, $page = null, $options = [])
     {
         $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
         $items = $items instanceof Collection ? $items : Collection::make($items);
         return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
+
+    public function cari(Request $request){
+        $user_id = $request->get('user_id');
+        if (isset($user_id)) {
+            $user = DB::table('users')->where('id','=',$user_id)->get();
+            $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->join('tanggal', 'penilaian.id_penilaian', '=', 'tanggal.id_penilaian')->get();
+            // dd($penilaian);
+            $penilaianfilter = [];
+            foreach ($penilaian as $key => $data) {
+                    $tes = json_decode($data->level);
+                    if (property_exists( $tes, 'wali') ) {
+                        array_push($penilaianfilter, $data);
+                    }
+                }
+            $oke = collect($penilaianfilter)->groupBy('id');
+            
+            
+            // dd($oke);
+            
+            
+            
+            $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
+            $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->find(Auth::user()->id);
+            $no = 1; 
+            $tanggal = Carbon::now('Asia/Jakarta');
+            $dt = $tanggal->toDateString();
+            $future = $tanggal->addWeek();
+            $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
+            $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->get();
+            /* dd($future); */
+            return view('backend/perhitungan.cekpenilaiankinerjakepalasekolah', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','dataguru','user','oke'));
+        }else {
+            return redirect()->route('penilaiankinerjakepalasekolah');
+        }
     }
 
     /**
@@ -178,43 +215,7 @@ class PenilaianKenirjaWaliController extends Controller
         //
     }
 
-    public function cari(Request $request){
-        $user_id = $request->get('user_id');
-        if (isset($user_id)) {
-            $user = DB::table('users')->where('id','=',$user_id)->get();
-            $penilaian = DB::table('pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->join('tanggal', 'penilaian.id_penilaian', '=', 'tanggal.id_penilaian')->get();
-            // dd($penilaian);
-            $penilaianfilter = [];
-            foreach ($penilaian as $key => $data) {
-                    $tes = json_decode($data->level);
-                    if (property_exists( $tes, 'wali') ) {
-                        array_push($penilaianfilter, $data);
-                    }
-                }
-            $oke = collect($penilaianfilter)->groupBy('id');
-            
-            
-            // dd($oke);
-            
-            
-            
-            $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
-            $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->join('kelas', 'detail_kelas.kode_kelas', '=', 'kelas.kode_kelas')->find(Auth::user()->id);
-            $no = 1; 
-            $tanggal = Carbon::now('Asia/Jakarta');
-            $dt = $tanggal->toDateString();
-            $future = $tanggal->addWeek();
-            $walii = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->where('user_id', Auth::user()->id)->get();
-            $dataguru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('detail_kelas', 'users.id', '=', 'detail_kelas.user_id')->where('detail_kelas.kode_kelas', $wali->kode_kelas)->get();
-            /* dd($future); */
-            return view('backend/wali.cekpenilaiankinerjawali', compact('admin','guru', 'wali', 'penilaian','dt','future','walii','dataguru','user','oke'));
-        }else {
-            return redirect()->route('penilaiankinerjawali');
-        }
-    }
-
-    public function hasilpilihanwali(Request $request){
+    public function hasilpilihankepalasekolah(Request $request){
         $query = HasilPilihanWali::where([
             ['user_id_wali','=',Auth::user()->id],
             ['kode_pengisian','=',$request->pengisian_id],
@@ -242,7 +243,7 @@ class PenilaianKenirjaWaliController extends Controller
         }
     }
 
-    public function totalnilaiwali($id,$user_id,$tgl){
+    public function totalnilaikepalasekolah($id,$user_id,$tgl){
         // $nilaikriteria = DB::table('kriteria')->join('pv_kriteria', 'kriteria.kode_kriteria','=','pv_kriteria.id_kriteria')->get();
         // foreach ($nilaikriteria as $keykriteria => $valuekriteria) {
         //     $nilaisubkriteria[$keykriteria] = DB::table('subkriteria')->join('pv_subkriteria','subkriteria.kode_subkriteria','=','pv_subkriteria.id_subkriteria')->where('subkriteria.kode_kriteria','=',$valuekriteria->kode_kriteria)->get();
@@ -298,29 +299,56 @@ class PenilaianKenirjaWaliController extends Controller
                 $total->id_penilaian = $id;
                 $total->save();
 
-                $queryt = JumlahWaliTotal::where([
+                $queryt = JumlahTotal::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
                 ])->count();
-                $data = JumlahWaliTotal::where([
+                $data = JumlahTotal::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
                 ])->get();
                 if ($queryt == 0) {     
-                    $total = new JumlahWaliTotal;
+                    $total = new JumlahTotal;
                     $total->totals = round($nilai,5);
                     $total->user_id_guru = $user_id;
                     $total->id_penilaian = $id;
                     $total->tanggal_id = $tgl;
                     $total->save();
                 }else {
-                    JumlahWaliTotal::where([
+                    JumlahTotal::where([
                         ['user_id_guru','=',$user_id],
                         ['id_penilaian','=',$id],
                         ['tanggal_id','=',$tgl],
                     ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                }
+                $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',$user_id)->get();
+                if (count($guru) > 0) {
+                    $queryt = JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->count();
+                    $data = JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->get();
+                    if ($queryt == 0) {     
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round($nilai,5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    }else {
+                        JumlahWaliTotal::where([
+                            ['user_id_guru','=',$user_id],
+                            ['id_penilaian','=',$id],
+                            ['tanggal_id','=',$tgl],
+                        ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                    }
                 }
             }else {
                 HasilWali::where([
@@ -332,6 +360,6 @@ class PenilaianKenirjaWaliController extends Controller
             }
             
             // dd($coba1);
-            return redirect()->route('penilaiankinerjawali');
+            return redirect()->route('penilaiankinerjakepalasekolah');
     }
 }

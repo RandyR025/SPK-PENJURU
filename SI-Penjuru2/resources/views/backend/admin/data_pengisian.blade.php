@@ -73,7 +73,11 @@ Kelola Data
           <td>{{ $data->nama_pengisian }}</td>
           <td>{{ $data->nama_subkriteria }}</td>
           <td>{{ $data->id_penilaian }}</td>
-          <td>{{ $data->level }}</td>
+          <td>
+            @foreach (json_decode($data->level,true) as $d)
+            <p>{{$d}}</p>
+            @endforeach
+          </td>
           <td>
           <button value="{{ $data->kode_pengisian }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_pengisian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip" onclick="pengisian_edit()">
           <i class="fa-solid fa-pen-to-square"></i>
@@ -143,13 +147,22 @@ Kelola Data
             </div>
             <div class="mb-3">
               <label class="form-label">Level</label>
-              <div>
+              <!-- <div>
                 <select name="edit_level" class="level form-control select-single-no-search" id="edit_level">
                   <option value="0" label="&nbsp;" selected disabled>Pilih Level</option>
                   <option value="guru">guru</option>
                   <option value="wali">wali</option>
                 </select>
-              </div>
+              </div> -->
+              <div class="form-check">
+                          <input name="level[guru]" class="form-check-input" type="checkbox" id="guru" value="guru" />
+                          <label class="form-check-label" for="guru">Guru</label>
+                        </div>
+                        <div class="form-check">
+                          <input name="level[wali]" class="form-check-input" type="checkbox" id="wali" value="wali" />
+                          <label class="form-check-label" for="wali">Wali</label>
+                        </div>
+              <span class="text-danger error-text level_error"></span>
               <span class="text-danger error-text level_error"></span>
             </div>
         </div>
@@ -227,13 +240,21 @@ $newID = $char . sprintf("%02s", $noUrut);
             </div>
             <div class="mb-3">
               <label class="form-label">Level</label>
-              <div>
-                <select name="level" class="level form-control select-single-no-search" id="level">
+              <!-- <div>
+                <select name="level[]" class="level form-control select-single-no-search" id="level" multiple="multiple">
                   <option value="0" label="&nbsp;" selected disabled>Pilih Level</option>
                   <option value="guru">guru</option>
                   <option value="wali">wali</option>
                 </select>
-              </div>
+              </div> -->
+              <div class="form-check">
+                          <input name="level[guru]" class="form-check-input" type="checkbox" id="guru" value="guru" />
+                          <label class="form-check-label" for="guru">Guru</label>
+                        </div>
+                        <div class="form-check">
+                          <input name="level[wali]" class="form-check-input" type="checkbox" id="wali" value="wali" />
+                          <label class="form-check-label" for="wali">Wali</label>
+                        </div>
               <span class="text-danger error-text level_error"></span>
             </div>
 

@@ -61,7 +61,8 @@ class PengisianController extends Controller
             $pengisian->kode_pengisian = $request->input('kode_pengisian');
             $pengisian->nama_pengisian = $request->input('nama_pengisian');
             $pengisian->kode_subkriteria = $request->input('kode_subkriteria');
-            $pengisian->level = $request->input('level');
+            $pengisian->level = array_filter($request->input('level'));
+            // dd($pengisian);
             $pengisian->save();
 
             return response()->json([
@@ -105,7 +106,6 @@ class PengisianController extends Controller
             return response()->json([
                 'status' => 200,
                 'pengisian' => $pengisian,
-                // 'kontol' => 'pokeh',
             ]);
         } else {
             return response()->json([
@@ -129,7 +129,7 @@ class PengisianController extends Controller
             'nama_pengisian' => 'required',
             'edit_kode_kriteria' => 'required',
             'edit_kode_subkriteria' => 'required',
-            'edit_level' => 'required',
+            'level' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -143,7 +143,7 @@ class PengisianController extends Controller
                     'kode_pengisian' => $request->kode_pengisian,
                     'nama_pengisian' => $request->nama_pengisian,
                     'kode_subkriteria' => $request->edit_kode_subkriteria,
-                    'level' => $request->edit_level,
+                    'level' => array_filter($request->level),
                 
                 
                 ]);

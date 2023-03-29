@@ -15,12 +15,14 @@ use App\Http\Controllers\Backend\PengisianController;
 use App\Http\Controllers\Backend\PenilaianController;
 use App\Http\Controllers\Backend\PenilaianKenirjaWaliController;
 use App\Http\Controllers\Backend\PenilaianKinerjaGuruController;
+use App\Http\Controllers\Backend\PenilaianKinerjaKepalaSekolahController;
 use App\Http\Controllers\Backend\PerbandingankriteriaController;
 use App\Http\Controllers\Backend\PerbandingansubkriteriaController;
 use App\Http\Controllers\Backend\PilihanController;
 use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\RekapLaporanController;
 use App\Http\Controllers\Backend\SubkriteriaController;
+use App\Http\Controllers\Backend\TanggalPenilaianController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -117,6 +119,15 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/delete-penilaian/{id}',[PenilaianController::class, 'destroy']);
         /* End Data Penilaian */
 
+        /* Start Data Penilaian */
+        Route::get('/tanggalpenilaian', [TanggalPenilaianController::class, 'index'])->name('tanggalpenilaian');
+        Route::post('/tanggalpenilaian', [TanggalPenilaianController::class, 'store'])->name('tanggalpenilaian.store');
+        Route::get('/fetch-tanggalpenilaian', [TanggalPenilaianController::class, 'fetchpenilaian']);
+        Route::get('/edit-tanggalpenilaian/{id}',[TanggalPenilaianController::class, 'edit'])->name('edittanggalpenilaian');
+        Route::post('/update-tanggalpenilaian/{id}',[TanggalPenilaianController::class, 'update'])->name('update.tanggalpenilaian');
+        Route::delete('/delete-tanggalpenilaian/{id}',[TanggalPenilaianController::class, 'destroy']);
+        /* End Data Penilaian */
+
         /* Start Data Pengisian */
         Route::get('/datapengisian', [PengisianController::class, 'index'])->name('datapengisian');
         Route::get('/show-pengisian/{id}',[PengisianController::class, 'show'])->name('showpengisian');
@@ -162,6 +173,14 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/daftarpenilaianrangking', [HasilController::class, 'index'])->name('daftarpenilaianrangking');
         Route::get('/hasilrangkingpenilaian/{id}', [HasilController::class, 'show'])->name('hasilrangkingpenilaian');
         /* End Hasil Penilaian */
+
+        /* Penilaian Kinerja Kepala Sekolah */
+        Route::get('/penilaiankinerjakepalasekolah',[PenilaianKinerjaKepalaSekolahController::class, 'index'])->name('penilaiankinerjakepalasekolah');
+        Route::get('/nilaiguruu',[PenilaianKinerjaKepalaSekolahController::class, 'cari'])->name('nilaiguruu');
+        Route::get('/detailkinerjakepalasekolah/{id}/guru/{user}/{tgl}',[PenilaianKinerjaKepalaSekolahController::class, 'show'])->name('detailkinerjakepalasekolah');
+        Route::post('/gethasilpenilaiankepalasekolah', [PenilaianKinerjaKepalaSekolahController::class, 'hasilpilihankepalasekolah'])->name('gethasilpenilaiankepalasekolah');
+        Route::get('/gettotalnilaikepalasekolah/{id}/total/{user}/tanggal/{tgl}', [PenilaianKinerjaKepalaSekolahController::class, 'totalnilaikepalasekolah'])->name('gettotalnilaikepalasekolah');
+        /* Penilaian Kinerja Kepala Sekolah */
 
 
         /* Start Cetak */

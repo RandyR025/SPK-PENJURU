@@ -59,7 +59,12 @@ Kelola Data
                     <th>No</th>
                     <th>Nama</th>
                     @foreach($pengisian as $data)
+                    <?php
+                    $tes = json_decode($data->level);
+                    ?>
+                    @if (property_exists( $tes, 'guru'))
                     <th>{{$data->nama_subkriteria}}</th>
+                    @endif
                     @endforeach
                     <th>Cek Jawaban</th>
                 </tr>
@@ -73,10 +78,10 @@ Kelola Data
                     <td>{{$p->nama_pilihan}} ({{ $p->points }})</td>
                     @endforeach
                     <td>
-                        <a href="{{ route('hasilpenilaiancek', [$item->user_id,$item->id_penilaian,$item->id]) }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+                        <a href="{{ route('hasilpenilaiancek', [$item->user_id,$item->id_penilaian,$item->tanggal_id]) }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
                             <i class="fa-regular fa-eye"></i>
                         </a>
-                        <button value="{{$item->user_id}}" onclick="handleClick(this,'<?=$item->id_penilaian;?>');" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_cekjawaban" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+                        <button value="{{$item->user_id}}" onclick="handleClick(this,'<?=$item->id_penilaian;?>','<?=$item->tanggal_id;?>');" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_cekjawaban" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
                         <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>

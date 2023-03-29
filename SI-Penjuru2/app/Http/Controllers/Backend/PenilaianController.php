@@ -60,8 +60,8 @@ class PenilaianController extends Controller
             $penilaian = new Penilaian;
             $penilaian->id_penilaian = $request->input('id_penilaian');
             $penilaian->nama_penilaian = $request->input('nama_penilaian');
-            $penilaian->tanggal = $request->input('tanggal_pelaksanaan');
-            $penilaian->deadline = $request->input('deadline');
+            // $penilaian->tanggal = $request->input('tanggal_pelaksanaan');
+            // $penilaian->deadline = $request->input('deadline');
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
@@ -142,8 +142,8 @@ class PenilaianController extends Controller
                     $penilaian->update([
                         'id_penilaian' => $request->id_penilaian,
                         'nama_penilaian' => $request->nama_penilaian,
-                        'tanggal' => $request->tanggal_pelaksanaan,
-                        'deadline' => $request->deadline,
+                        // 'tanggal' => $request->tanggal_pelaksanaan,
+                        // 'deadline' => $request->deadline,
                         'image' => $filename,
                         
                 ]);
@@ -151,8 +151,8 @@ class PenilaianController extends Controller
                     $penilaian->update([
                         'id_penilaian' => $request->id_penilaian,
                         'nama_penilaian' => $request->nama_penilaian,
-                        'tanggal' => $request->tanggal_pelaksanaan,
-                        'deadline' => $request->deadline,
+                        // 'tanggal' => $request->tanggal_pelaksanaan,
+                        // 'deadline' => $request->deadline,
                     ]);
                 }
                 // $penilaian->update([
