@@ -150,9 +150,12 @@ Penilaian
                     </div>
                 </div> -->
  
-                    <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
-                        <a href="{{ route('hasilrangkingpenilaian', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Start</a>
-                    </div>
+                <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100 mb-3">
+                        <a href="{{ route('hasilrangkingpenilaianwali', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Rangking Wali</a> 
+                </div>
+                <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
+                        <a href="{{ route('hasilrangkingpenilaian', $item->id_penilaian) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Rangking Guru</a>
+                </div>
             </div>
         </div>
     </div>

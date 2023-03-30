@@ -30,30 +30,30 @@ class HasilController extends Controller
         $lastyear = $request->get('lastyear');
         // dd($firstmonth);
         if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','>=',$firstmonth)->whereMonth('tanggal.tanggal','<=',$lastmonth)->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->groupBy('id_penilaian')->get();
         }elseif (isset($firstyear) && isset($lastyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->groupBy('id_penilaian')->get();
         }elseif (isset($firstmonth) && isset($lastmonth)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','>=',$firstmonth)->whereMonth('tanggal.tanggal','<=',$lastmonth)->groupBy('id_penilaian')->get();
         }elseif (isset($firstmonth) && isset($firstyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','=',$firstmonth)->whereYear('tanggal.tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
         }elseif (isset($firstmonth) && isset($lastyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','=',$firstmonth)->whereYear('tanggal.tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
         }elseif (isset($lastmonth) && isset($firstyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','=',$lastmonth)->whereYear('tanggal.tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
         }elseif (isset($lastmonth) && isset($lastyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','<=',$lastmonth)->whereYear('tanggal.tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
         }elseif (isset($firstmonth)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$nowTahun)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','=',$firstmonth)->whereYear('tanggal.tanggal','=',$nowTahun)->groupBy('id_penilaian')->get();
             // dd($penilaian);
         }elseif (isset($lastmonth)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$nowTahun)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','=',$lastmonth)->whereYear('tanggal.tanggal','=',$nowTahun)->groupBy('id_penilaian')->get();
         }elseif (isset($firstyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereYear('tanggal.tanggal','=',$firstyear)->groupBy('id_penilaian')->get();
         }elseif (isset($lastyear)) {
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereYear('tanggal.tanggal','=',$lastyear)->groupBy('id_penilaian')->get();
         }else{
-            $penilaian = DB::table('jumlah_total')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','penilaian.tanggal','penilaian.image')->whereMonth('penilaian.tanggal','=',$nowBulan)->whereYear('penilaian.tanggal','=',$nowTahun)->groupBy('id_penilaian')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'jumlah_total.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image')->whereMonth('tanggal.tanggal','=',$nowBulan)->whereYear('tanggal.tanggal','=',$nowTahun)->groupBy('id_penilaian')->get();
             // dd($penilaian);
         }
         $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
@@ -100,6 +100,18 @@ class HasilController extends Controller
         // dd($hasil);
         $no = 1;
         return view('backend/admin.hasil_rangking', compact('admin','guru', 'wali','hasil','no','penilaian'));
+    }
+    public function showwali($id)
+    {
+        $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $hasil = DB::table('jumlah_wali_total')->join('users', 'jumlah_wali_total.user_id_guru','=','users.id')->join('guru', 'users.id', '=', 'guru.user_id')->where('id_penilaian','=',$id)->orderBy('totals','desc')->get();
+        $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
+        // dd($hasil);
+        $cek = "walikelas";
+        $no = 1;
+        return view('backend/admin.hasil_rangking', compact('admin','guru', 'wali','hasil','no','penilaian','cek'));
     }
 
     /**

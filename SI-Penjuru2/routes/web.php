@@ -172,6 +172,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::get('/daftarpenilaianrangking', [HasilController::class, 'index'])->name('daftarpenilaianrangking');
         Route::get('/hasilrangkingpenilaian/{id}', [HasilController::class, 'show'])->name('hasilrangkingpenilaian');
+        Route::get('/hasilrangkingpenilaianwali/{id}', [HasilController::class, 'showwali'])->name('hasilrangkingpenilaianwali');
         /* End Hasil Penilaian */
 
         /* Penilaian Kinerja Kepala Sekolah */
@@ -188,6 +189,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/hasilpenilaian/cetakxlsx/{id}', [HasilDataPenilaianController::class, 'eksport_excel'])->name('hasilpenilaiancetakexcel');
         Route::get('/hasilpenilaianrangking/cetakpdf/{id}', [HasilController::class, 'cetak_pdf'])->name('hasilpenilaianrangkingcetakpdf');
         Route::get('/hasilpenilaianrangking/cetakxlsx/{id}', [HasilController::class, 'eksport_excel'])->name('hasilpenilaianrangkingcetakexcel');
+        Route::get('/hasilpenilaianrangkingwali/cetakpdf/{id}', [HasilController::class, 'cetak_pdf_wali'])->name('hasilpenilaianrangkingwalicetakpdf');
+        Route::get('/hasilpenilaianrangkingwali/cetakxlsx/{id}', [HasilController::class, 'eksport_excel_wali'])->name('hasilpenilaianrangkingwalicetakexcel');
         /* End Cetak */
 
         /* Start Import */

@@ -133,10 +133,10 @@ Kelola Data
 </div>
 
 <?php
-$noUrut = (int) substr($maxpilihan, 1, 2);
+$noUrut = (int) substr($maxpilihan, 1, 3);
 $noUrut++;
 $char = "O";
-$newID = $char . sprintf("%02s", $noUrut);
+$newID = $char . sprintf("%03s", $noUrut);
 ?>
 
 <div class="modal fade modal-close-out" id="AddPilihanModal" role="dialog" aria-hidden="true">

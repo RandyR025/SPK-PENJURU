@@ -104,7 +104,7 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
         foreach ($kriteria as $key => $data) {
             foreach ($data as $key => $value) {
                 $tes = json_decode($value->level);
-                if (property_exists( $tes, 'wali') ) {
+                if (property_exists( $tes, 'kepalasekolah') ) {
                     array_push($kriteriatelahdifilter, $value);
                 }
             }
@@ -154,7 +154,7 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
             $penilaianfilter = [];
             foreach ($penilaian as $key => $data) {
                     $tes = json_decode($data->level);
-                    if (property_exists( $tes, 'wali') ) {
+                    if (property_exists( $tes, 'kepalasekolah') ) {
                         array_push($penilaianfilter, $data);
                     }
                 }
@@ -260,7 +260,7 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
             $cobatelahdifilter = [];
             foreach ($coba as $key => $value) {
                 $tes = json_decode($value->level);
-                if (property_exists( $tes, 'wali') && $value->id_penilaian == $id ) {
+                if (property_exists( $tes, 'kepalasekolah') && $value->id_penilaian == $id ) {
                     array_push($cobatelahdifilter, $value);
                 }
             }

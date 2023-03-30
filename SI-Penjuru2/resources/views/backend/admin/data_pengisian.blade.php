@@ -154,13 +154,17 @@ Kelola Data
                   <option value="wali">wali</option>
                 </select>
               </div> -->
-              <div class="form-check">
+                        <div class="form-check">
                           <input name="level[guru]" class="form-check-input" type="checkbox" id="guru" value="guru" />
                           <label class="form-check-label" for="guru">Guru</label>
                         </div>
                         <div class="form-check">
                           <input name="level[wali]" class="form-check-input" type="checkbox" id="wali" value="wali" />
                           <label class="form-check-label" for="wali">Wali</label>
+                        </div>
+                        <div class="form-check">
+                          <input name="level[kepalasekolah]" class="form-check-input" type="checkbox" id="kepalasekolah" value="kepalasekolah" />
+                          <label class="form-check-label" for="kepalasekolah">Kepala Sekolah</label>
                         </div>
               <span class="text-danger error-text level_error"></span>
               <span class="text-danger error-text level_error"></span>
@@ -254,6 +258,10 @@ $newID = $char . sprintf("%02s", $noUrut);
                         <div class="form-check">
                           <input name="level[wali]" class="form-check-input" type="checkbox" id="wali" value="wali" />
                           <label class="form-check-label" for="wali">Wali</label>
+                        </div>
+                        <div class="form-check">
+                          <input name="level[kepalasekolah]" class="form-check-input" type="checkbox" id="kepalasekolah" value="kepalasekolah" />
+                          <label class="form-check-label" for="wali">kepalasekolah</label>
                         </div>
               <span class="text-danger error-text level_error"></span>
             </div>
