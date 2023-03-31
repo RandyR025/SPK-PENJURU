@@ -17,8 +17,8 @@ Penilaian
 <div id="success_message"></div>
 
 @if(isset($cek))
-<a href="{{route('hasilpenilaianrangkingcetakpdf',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">PDF</a>
-<a href="{{route('hasilpenilaianrangkingcetakexcel',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">Excel</a>
+<a href="{{route('hasilpenilaianrangkingwalicetakpdf',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">PDF</a>
+<a href="{{route('hasilpenilaianrangkingwalicetakexcel',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">Excel</a>
 @else
 <a href="{{route('hasilpenilaianrangkingcetakpdf',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">PDF</a>
 <a href="{{route('hasilpenilaianrangkingcetakexcel',$penilaian[0]->id_penilaian)}}"class="btn btn-outline-primary w-100 me-1 btn-sm mb-4">Excel</a>

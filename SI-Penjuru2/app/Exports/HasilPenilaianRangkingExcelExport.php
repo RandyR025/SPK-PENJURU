@@ -27,21 +27,33 @@ class HasilPenilaianRangkingExcelExport implements FromView, ShouldAutoSize, Wit
     // {
     //     //
     // }
-    public function __construct($id)
+    public function __construct($id,$cek)
     {
         $this->id = $id;
+        $this->cek = $cek;
     }
     public function view(): View
     {
-        $penilaian = DB::table('penilaian')->where('id_penilaian', $this->id)->get();
-        $no = 1;
-        $jumlah_total = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$this->id)->get();
-        return view('backend/admin.hasilrangking_excel',[
-            'jumlah_total'=>$jumlah_total,
-            'penilaian'=>$penilaian,
-            'no'=>$no,
-
-        ]);
+        if ($this->cek == "guru") {
+            $penilaian = DB::table('penilaian')->where('id_penilaian', $this->id)->get();
+            $no = 1;
+            $jumlah_total = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$this->id)->get();
+            return view('backend/admin.hasilrangking_excel',[
+                'jumlah_total'=>$jumlah_total,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+    
+            ]);
+        }elseif ($this->cek == "wali") {
+            $penilaian = DB::table('penilaian')->where('id_penilaian', $this->id)->get();
+            $no = 1;
+            $jumlah_total = DB::table('jumlah_wali_total')->join('users', 'jumlah_wali_total.user_id_guru','=','users.id')->join('penilaian','jumlah_wali_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$this->id)->get();
+            return view('backend/admin.hasilrangking_excel',[
+                'jumlah_total'=>$jumlah_total,
+                'penilaian'=>$penilaian,
+                'no'=>$no,
+            ]);
+        }
     }
     public function registerEvents(): array
 {

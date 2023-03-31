@@ -129,11 +129,11 @@ if (count($walii) < 1) {
                         <?php
                         if($dt < $data[0]->tanggal){
                             ?>
-                        <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Belum Boleh</a>
+                        <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Belum Boleh</a>
                         <?php
                         }elseif($dt > $data[0]->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Lewat</a>
+                            <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Lewat</a>
                             <?php
                         }elseif($dt >= $data[0]->tanggal && $dt <= $data[0]->deadline){
                             ?>
