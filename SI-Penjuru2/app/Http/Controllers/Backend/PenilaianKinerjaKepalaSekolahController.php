@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Hasil;
 use App\Models\Hasilpilihan;
+use App\Models\HasilPilihanKepsek;
 use App\Models\HasilPilihanWali;
-use App\Models\HasilWali;
+use App\Models\HasilKepsek;
 use App\Models\Pengisian;
 use App\Models\Penilaian;
 use App\Models\Pilihan;
@@ -216,26 +217,26 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
     }
 
     public function hasilpilihankepalasekolah(Request $request){
-        $query = HasilPilihanWali::where([
-            ['user_id_wali','=',Auth::user()->id],
+        $query = HasilPilihanKepsek::where([
+            ['user_id_kepsek','=',Auth::user()->id],
             ['kode_pengisian','=',$request->pengisian_id],
             ['user_id_guru','=',$request->user_id],
             ['tanggal_id','=',$request->tanggal_id],
         ])->count();
 
         if ($query == 0) {
-            $hasilpilihan = new HasilPilihanWali;
+            $hasilpilihan = new HasilPilihanKepsek;
             // return $request;
             // $pilihan = "answer".$request->input('question');
             $hasilpilihan->kode_pilihan = $request->option_id;
             $hasilpilihan->kode_pengisian = $request->pengisian_id;
-            $hasilpilihan->user_id_wali = Auth::user()->id;
+            $hasilpilihan->user_id_kepsek = Auth::user()->id;
             $hasilpilihan->user_id_guru = $request->user_id;
             $hasilpilihan->tanggal_id = $request->tanggal_id;
             $hasilpilihan->save();   
         }else {
             HasilPilihanWali::where([
-            ['user_id_wali','=',Auth::user()->id],
+            ['user_id_kepsek','=',Auth::user()->id],
             ['kode_pengisian','=',$request->pengisian_id],
             ['user_id_guru','=',$request->user_id],
             ['tanggal_id','=',$request->tanggal_id],
@@ -265,13 +266,13 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                 }
             }
             foreach ($cobatelahdifilter as $key => $value) {
-                $coba1[$key] = DB::table('hasilpilihanwali')
-                ->where('hasilpilihanwali.kode_pengisian','=',$value->kode_pengisian)
-                ->where('user_id_wali','=',Auth::user()->id)
+                $coba1[$key] = DB::table('hasilpilihankepsek')
+                ->where('hasilpilihankepsek.kode_pengisian','=',$value->kode_pengisian)
+                ->where('user_id_kepsek','=',Auth::user()->id)
                 ->where('user_id_guru','=',$user_id)
                 ->where('tanggal_id','=',$tgl)
-                ->join('pilihan','hasilpilihanwali.kode_pilihan','=','pilihan.kode_pilihan')
-                ->join('pengisian','hasilpilihanwali.kode_pengisian','=','pengisian.kode_pengisian')
+                ->join('pilihan','hasilpilihankepsek.kode_pilihan','=','pilihan.kode_pilihan')
+                ->join('pengisian','hasilpilihankepsek.kode_pengisian','=','pengisian.kode_pengisian')
                 ->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')
                 ->join('kriteria','subkriteria.kode_kriteria','=','kriteria.kode_kriteria')
                 ->join('pv_subkriteria','subkriteria.kode_subkriteria','=','pv_subkriteria.id_subkriteria')
@@ -282,18 +283,18 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                     $nilai = $nilai + $coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria ;   
                 }
             }
-            
-
-            $query = HasilWali::where([
-                ['user_id_wali','=',Auth::user()->id],
+            $bobot = 0.6;
+            $bobott = 0.5;
+            $query = HasilKepsek::where([
+                ['user_id_kepsek','=',Auth::user()->id],
                 ['user_id_guru','=',$user_id],
                 ['id_penilaian','=',$id],
                 ['tanggal_id','=',$tgl],
             ])->count();
             if ($query == 0) {     
-                $total = new HasilWali;
+                $total = new HasilKepsek;
                 $total->totals = round($nilai,5);
-                $total->user_id_wali = Auth::user()->id;
+                $total->user_id_kepsek = Auth::user()->id;
                 $total->user_id_guru = $user_id;
                 $total->tanggal_id = $tgl;
                 $total->id_penilaian = $id;
@@ -311,7 +312,7 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                 ])->get();
                 if ($queryt == 0) {     
                     $total = new JumlahTotal;
-                    $total->totals = round($nilai,5);
+                    $total->totals = round(($nilai*$bobot),5);
                     $total->user_id_guru = $user_id;
                     $total->id_penilaian = $id;
                     $total->tanggal_id = $tgl;
@@ -321,7 +322,7 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                         ['user_id_guru','=',$user_id],
                         ['id_penilaian','=',$id],
                         ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                    ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
                 }
                 $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',$user_id)->get();
                 if (count($guru) > 0) {
@@ -337,7 +338,7 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                     ])->get();
                     if ($queryt == 0) {     
                         $total = new JumlahWaliTotal;
-                        $total->totals = round($nilai,5);
+                        $total->totals = round(($nilai*$bobott),5);
                         $total->user_id_guru = $user_id;
                         $total->id_penilaian = $id;
                         $total->tanggal_id = $tgl;
@@ -347,12 +348,37 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                             ['user_id_guru','=',$user_id],
                             ['id_penilaian','=',$id],
                             ['tanggal_id','=',$tgl],
-                        ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                        ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
                     }
                 }
             }else {
-                HasilWali::where([
-                    ['user_id_wali','=',Auth::user()->id],
+                $data = JumlahTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                $dataa = HasilKepsek::where([
+                    ['user_id_kepsek','=',Auth::user()->id],
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                
+                    JumlahTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->update(['totals'=> round((($nilai*$bobot) + ($data[0]->totals - $dataa[0]->totals)),5)]);
+                $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',$user_id)->get();
+                if (count($guru) > 0) {
+                    JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->update(['totals'=> round((($nilai*$bobott) + ($data[0]->totals - $dataa[0]->totals)),5)]);
+                }
+                HasilKepsek::where([
+                    ['user_id_kepsek','=',Auth::user()->id],
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],

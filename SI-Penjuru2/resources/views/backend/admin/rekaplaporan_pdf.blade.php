@@ -16,20 +16,28 @@
 		<h6><a target="_blank" href="https://www.malasngoding.com/membuat-laporan-…n-dompdf-laravel/">www.malasngoding.com</a></h5>
 	</center>
     @foreach($penilaian as $valkey => $val)
+    @foreach ($coba1[$valkey] as $key => $item)
+    @if(isset($coba1[$valkey]))
     <p>
         Penilaian {{$val->nama_penilaian}}
         Tanggal {{$val->tanggal}}
     </p> 
+    @endif
+    @endforeach
 	<table class="table table-bordered" id="datatable">
+    @foreach ($coba1[$valkey] as $key => $item)
+    @if(isset($coba1[$valkey]))
             <thead>
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
-                    @foreach($pengisian[$valkey] as $data)
+                    @foreach($pengisian as $data)
                     <th>{{$data->nama_pengisian}}</th>
                     @endforeach
                 </tr>
             </thead>
+    @endif
+    @endforeach
             <tbody>
                 <?php
                 $nomor = 1;

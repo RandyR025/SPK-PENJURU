@@ -231,7 +231,7 @@ class PenilaianKinerjaGuruController extends Controller
                 }
             }
             
-
+            $bobot = 0.4;
             $query = Hasil::where([
                 ['user_id','=',Auth::user()->id],
                 ['id_penilaian','=',$id],
@@ -256,7 +256,7 @@ class PenilaianKinerjaGuruController extends Controller
                 ])->get();
                 if ($queryt == 0) {     
                     $total = new JumlahTotal;
-                    $total->totals = round($nilai,5);
+                    $total->totals = round(($nilai*$bobot),5);
                     $total->user_id_guru = Auth::user()->id;
                     $total->id_penilaian = $id;
                     $total->tanggal_id = $tgl;
@@ -266,7 +266,7 @@ class PenilaianKinerjaGuruController extends Controller
                         ['user_id_guru','=',Auth::user()->id],
                         ['id_penilaian','=',$id],
                         ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                    ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
                 }
                 $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',Auth::user()->id)->get();
                 if (count($guru) > 0) {
@@ -282,7 +282,7 @@ class PenilaianKinerjaGuruController extends Controller
                     ])->get();
                     if ($queryt == 0) {     
                         $total = new JumlahWaliTotal;
-                        $total->totals = round($nilai,5);
+                        $total->totals = round(($nilai*$bobot),5);
                         $total->user_id_guru = Auth::user()->id;
                         $total->id_penilaian = $id;
                         $total->tanggal_id = $tgl;
@@ -292,7 +292,7 @@ class PenilaianKinerjaGuruController extends Controller
                             ['user_id_guru','=',Auth::user()->id],
                             ['id_penilaian','=',$id],
                             ['tanggal_id','=',$tgl],
-                        ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                        ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
                     }
                 }
             }else {

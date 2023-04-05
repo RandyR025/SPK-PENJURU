@@ -59,6 +59,14 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->get();
         }
         $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$this->id)->get();
+        // $pengisiantelahdifilter = [];
+        // foreach ($pengisian as $key => $value) {
+        //     $tes = json_decode($value->level);
+        //     if (property_exists( $tes, 'guru') ) {
+        //         array_push($pengisiantelahdifilter, $value);
+        //     }
+        // }
+        // dd($pengisian);
         return view('backend/admin.hasil_excel',[
             'coba1'=>$coba1,
             'coba' => $coba,

@@ -20,6 +20,9 @@
         /* margin-left:350px !important; */
         margin: auto !important;
     }
+    .bantuan{
+        display:none;
+    }
  }
 
 @media (max-width: 600px){
@@ -28,6 +31,17 @@
    }
    .misi{
     margin-left: 0px !important;
+   }
+   .comparison{
+      overflow: auto;
+      white-space: nowrap;
+      /* width: 100px;
+      padding:10px; 
+      height:400px; */
+      float: left;
+   }
+   .guide{
+    display:none;
    }
    /* li.paginate_button.previous {
         display: inline;

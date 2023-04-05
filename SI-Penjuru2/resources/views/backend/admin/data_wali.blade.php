@@ -154,8 +154,8 @@ Kelola Data
               <label class="form-label">Jenis Kelamin</label>
               <div>
                 <select name="jenis_kelamin" id="edit_jeniskelamin" class="jeniskelamin form-control select-single-no-search">
-                  <option value="laki-laki">laki-laki</option>
-                  <option value="perempuan">perempuan</option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
                 </select>
               </div>
               <span class="text-danger error-text jeniskelamin_error"></span>

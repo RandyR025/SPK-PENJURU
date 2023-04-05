@@ -52,9 +52,9 @@ class HasilDataPenilaianController extends Controller
         }elseif (isset($lastmonth)) {
             $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'tanggal.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image','tanggal.id')->whereMonth('tanggal','=',$lastmonth)->groupBy('jumlah_total.tanggal_id')->get();
         }elseif (isset($firstyear)) {
-            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'tanggal.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image','tanggal.id')->whereMonth('tanggal','=',$firstyear)->groupBy('jumlah_total.tanggal_id')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'tanggal.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image','tanggal.id')->whereYear('tanggal','=',$firstyear)->groupBy('jumlah_total.tanggal_id')->get();
         }elseif (isset($lastyear)) {
-            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'tanggal.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image','tanggal.id')->whereMonth('tanggal','=',$lastyear)->groupBy('jumlah_total.tanggal_id')->get();
+            $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'tanggal.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image','tanggal.id')->whereYear('tanggal','=',$lastyear)->groupBy('jumlah_total.tanggal_id')->get();
         }else{
             $penilaian = DB::table('jumlah_total')->join('tanggal', 'jumlah_total.tanggal_id', '=', 'tanggal.id')->join('penilaian', 'tanggal.id_penilaian', '=', 'penilaian.id_penilaian')->select('penilaian.id_penilaian', DB::raw('count(*) as jumlah'), 'penilaian.nama_penilaian','tanggal.tanggal','penilaian.image','tanggal.id')->groupBy('jumlah_total.tanggal_id')->get();
         }
@@ -319,8 +319,15 @@ class HasilDataPenilaianController extends Controller
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->where('pengisian.id_penilaian','=',$id)->get();
         }
-        $pengisian = DB::table('pengisian')->where('id_penilaian','=',$id)->where('level','=','guru')->get();
-        $pdf = PDF::loadview('backend/admin.hasilpenilaian_pdf',['coba'=>$coba, 'coba1'=>$coba1, 'pengisian'=>$pengisian, 'penilaian'=>$penilaian, 'no'=>$no ,'data'=>'Laporan Hasil Jawaban Penilaian']);
+        $pengisian = DB::table('pengisian')->where('id_penilaian','=',$id)->get();
+        $pengisiantelahdifilter = [];
+        foreach ($pengisian as $key => $value) {
+                $tes = json_decode($value->level);
+                if (property_exists( $tes, 'guru') ) {
+                    array_push($pengisiantelahdifilter, $value);
+            }
+        }
+        $pdf = PDF::loadview('backend/admin.hasilpenilaian_pdf',['coba'=>$coba, 'coba1'=>$coba1, 'penilaian'=>$penilaian, 'pengisian'=>$pengisiantelahdifilter, 'no'=>$no ,'data'=>'Laporan Hasil Jawaban Penilaian']);
         return $pdf->stream('laporan-hasil-penilaian');
     }
     public function eksport_excel($id){

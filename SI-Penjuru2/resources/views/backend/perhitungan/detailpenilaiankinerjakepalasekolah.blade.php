@@ -47,7 +47,7 @@ Penilaian
                         <label class="btn btn-foreground sw-4 sh-4 p-0 rounded-xl stretched-link" for="mc_c{{ $choicenum }}">
                             <input type="text" id="question" name="question" value="{{$questionNum}}" hidden>
                             <!-- <input type="text" name="kode_pengisian" id="kode_pengisian" value="{{ $p->kode_pengisian}}" hidden> -->
-                            <input type="radio" class="option form-check-input" id="mc_c{{ $choicenum++ }}" name="answer[{{ $questionNum }}]" value="{{ $p->kode_pilihan}}" onclick="handleClickKepalaSekolah(this,'<?=$p->kode_pengisian;?>','<?=$user[0]->id;?>','<?= $tanggal->id; ?>');" <?php if(hasilPilihanWali($p['kode_pilihan'],$user[0]->id, Auth::user()->id, $tanggal->id)) echo 'checked'?>>
+                            <input type="radio" class="option form-check-input" id="mc_c{{ $choicenum++ }}" name="answer[{{ $questionNum }}]" value="{{ $p->kode_pilihan}}" onclick="handleClickKepalaSekolah(this,'<?=$p->kode_pengisian;?>','<?=$user[0]->id;?>','<?= $tanggal->id; ?>');" <?php if(hasilPilihanKepsek($p['kode_pilihan'],$user[0]->id, Auth::user()->id, $tanggal->id)) echo 'checked'?>>
                         </label>
                     </div>
                 </div>

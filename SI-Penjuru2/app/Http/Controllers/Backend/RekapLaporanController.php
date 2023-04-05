@@ -109,186 +109,262 @@ class RekapLaporanController extends Controller
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal.tanggal','>=',$firstmonth)->whereMonth('tanggal.tanggal','<=',$lastmonth)->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                        $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
-                // dd($coba);
+                // dd($penilaian);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth) && isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
-                if (isset($coba)) {
-                    
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                if (isset($coba)) {       
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
-                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisian, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
+                    $pdf = PDF::loadview('backend/admin.rekaplaporan_pdf', ['coba' => $coba, 'coba1' => $coba1, 'pengisian' => $pengisiantelahdifilter, 'penilaian' => $penilaian, 'no' => $no, 'data' => 'Rekap Laporan Hasil Penilaian']);
                     return $pdf->stream('rekap-laporan-hasil-penilaian');
                 }else {
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
@@ -301,11 +377,18 @@ class RekapLaporanController extends Controller
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal.tanggal','>=',$firstmonth)->whereMonth('tanggal.tanggal','<=',$lastmonth)->whereYear('tanggal.tanggal','>=',$firstyear)->whereYear('tanggal.tanggal','<=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {      
@@ -314,14 +397,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -330,14 +420,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth) && isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {                 
@@ -346,14 +443,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {                 
@@ -362,14 +466,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {                 
@@ -378,14 +489,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {                 
@@ -394,14 +512,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {                 
@@ -410,14 +535,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -426,14 +558,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -442,14 +581,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -458,14 +604,21 @@ class RekapLaporanController extends Controller
                     return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                 }
             } elseif (isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                     foreach ($coba1[$keyval] as $key => $value) {
                         $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                     }
-                    $pengisian[$keyval] = DB::table('pengisian')->where('pengisian.level','=','guru')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisian[$keyval] = DB::table('pengisian')->where('id_penilaian', '=', $val->id_penilaian)->get();
+                    $pengisiantelahdifilter = [];
+                        foreach ($pengisian[$keyval] as $key => $value) {
+                                $tes = json_decode($value->level);
+                                if (property_exists( $tes, 'guru') ) {
+                                    array_push($pengisiantelahdifilter, $value);
+                            }
+                        }
                 }
                 // dd($coba);
                 if (isset($coba)) {
@@ -478,11 +631,11 @@ class RekapLaporanController extends Controller
             }
         }elseif ($opsi=="pdf" && $laporan=="hasil") {
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
                 if ($firstmonth == $lastmonth && $firstyear == $lastyear) {
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -492,9 +645,9 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
                 }else {
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -507,11 +660,11 @@ class RekapLaporanController extends Controller
                 }
                 
             } elseif (isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
                 if ($firstyear == $lastyear) {
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -521,9 +674,9 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
                 }else {
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -535,11 +688,11 @@ class RekapLaporanController extends Controller
                     
                 }
             } elseif (isset($firstmonth) && isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 if ($firstmonth == $lastmonth) {
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -549,9 +702,9 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
                 }else {
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','>=',$now)->whereYear('penilaian.tanggal','<=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$now)->whereYear('tanggal','<=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -563,11 +716,11 @@ class RekapLaporanController extends Controller
                     
                 }
             } elseif (isset($firstmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -577,11 +730,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($firstmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -591,11 +744,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -605,11 +758,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -619,11 +772,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($firstmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -633,11 +786,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -647,11 +800,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -661,11 +814,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -679,11 +832,11 @@ class RekapLaporanController extends Controller
             }
         }elseif ($opsi=="excel" && $laporan=="hasil") {
             if (isset($firstmonth) && isset($lastmonth) && isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
                 if ($firstmonth == $lastmonth && $firstyear == $lastyear) {
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -692,9 +845,9 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
                 }else {
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -706,11 +859,11 @@ class RekapLaporanController extends Controller
                 }
                 
             } elseif (isset($firstyear) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->get();
                 $no = 1;
                 if ($firstyear == $lastyear) {
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -719,9 +872,9 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
                 }else {
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','>=',$firstyear)->whereYear('penilaian.tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','>=',$firstyear)->whereYear('tanggal','<=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -732,11 +885,11 @@ class RekapLaporanController extends Controller
                     
                 }
             } elseif (isset($firstmonth) && isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','=',$now)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
                 if ($firstmonth == $lastmonth) {
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -745,9 +898,9 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
                 }else {
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$firstmonth)->whereMonth('penilaian.tanggal','<=',$lastmonth)->whereYear('penilaian.tanggal','>=',$now)->whereYear('penilaian.tanggal','<=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','>=',$firstmonth)->whereMonth('tanggal','<=',$lastmonth)->whereYear('tanggal','>=',$now)->whereYear('tanggal','<=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -758,11 +911,11 @@ class RekapLaporanController extends Controller
                     
                 }
             } elseif (isset($firstmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -771,11 +924,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($firstmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -784,11 +937,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastmonth) && isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -797,11 +950,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastmonth) && isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -810,11 +963,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($firstmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$firstmonth)->whereYear('penilaian.tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -823,11 +976,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastmonth)) {
-                $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$lastmonth)->whereYear('penilaian.tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -836,11 +989,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($firstyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$firstyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -849,11 +1002,11 @@ class RekapLaporanController extends Controller
                         return back()->with('rekapError', 'Tidak Ada Laporan !!!');
                     }
             } elseif (isset($lastyear)) {
-                $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$lastyear)->get();
+                $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {

@@ -33,6 +33,29 @@ class ProfileController extends Controller
         // dd($kelas);
         return view('backend/setting.profile', compact('admin', 'guru', 'wali', 'datakelas','kelas'));
     }
+    public function index_ubahpassword()
+    {
+        $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
+        return view('backend/setting.ubah_password', compact('admin', 'guru', 'wali'));
+    }
+    public function changePassword(Request $request)
+    {
+        $user = Auth::user();
+        $currentPassword = $request->input('password_lama');
+        $newPassword = $request->input('password_baru');
+
+        if (!Hash::check($currentPassword, $user->password)) {
+            return redirect()->back()->with('loginError', 'Current password is incorrect');
+        }
+
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password has been changed');
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -88,7 +88,18 @@ class TanggalPenilaianController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tanggal = DB::table('tanggal')->where('id',$id)->get();
+        if ($tanggal) {
+            return response()->json([
+                'status' => 200,
+                'tanggal' => $tanggal,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User Not Found',
+            ]);
+        }
     }
 
     /**
@@ -100,7 +111,36 @@ class TanggalPenilaianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'id_penilaian' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages(),
+            ]);
+        } else {
+            $tanggal = DB::table('tanggal')->where('id',$id);
+            if ($tanggal) {
+                    $tanggal->update([
+                        'id_penilaian' => $request->id_penilaian,
+                        'tanggal' => $request->tanggal_pelaksanaan,
+                        'deadline' => $request->deadline,
+                        
+                ]);
+                return response()->json([
+                    'status' => 200,
+                    'message' => "Data Berhasil Di Perbarui !!!",
+                    'id' => $id,
+                    'tanggal' => $tanggal
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'User Not Found',
+                ]);
+            }
+        }
     }
 
     /**

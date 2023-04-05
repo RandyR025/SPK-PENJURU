@@ -4,7 +4,12 @@
                     <th>No</th>
                     <th>Nama</th>
                     @foreach($pengisian as $data)
-                    <th>{{$data->nama_subkriteria}}</th>
+                    <?php
+                    $tes = json_decode($data->level);
+                    ?>
+                    @if (property_exists( $tes, 'guru'))
+                    <th>{{$data->nama_pengisian}}</th>
+                    @endif
                     @endforeach
                 </tr>
             </thead>

@@ -20,6 +20,7 @@ Penilaian
 if (count($walii) < 1) {
     ?>
     <h1 class="text-danger">Silahkan Isi Identitas Diri Anda !!!!</h1>
+    <a href="{{route('profile')}}" class="btn btn-outline-primary w-100 me-1 btn-sm">Isi Data Diri</a>
 <?php
 } else {
     ?>
@@ -32,7 +33,7 @@ if (count($walii) < 1) {
                         <select name="user_id" class="user_id form-control theSelect" id="user_id">
                             <option selected disabled>Pilih Guru</option>
                             @foreach ($dataguru as $item)
-                            <option value="{{ $item->user_id }}">{{ $item->name }}</option>
+                            <option value="{{ $item->user_id }}" {{ $item->user_id == $user[0]->id ? 'selected' : '' }}>{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -55,7 +56,8 @@ if (count($walii) < 1) {
             <div class="card-body">
                 <h5 class="heading mb-2">
                     <a href="Quiz.Detail.html" class="body-link">
-                        <span class="clamp-line sh-6 lh-1-5" data-line="2">{{$data[0]->nama_penilaian}}</span>
+                        <?php $bulan =  date('F', strtotime($data[0]->tanggal)); ?>
+                        <span class="clamp-line sh-6 lh-1-5" data-line="2">{{$data[0]->nama_penilaian}} Bulan {{$bulan}}</span>
                     </a>
                 </h5>
                 <!-- <div class="mb-3 text-muted sh-8 clamp-line" data-line="3">

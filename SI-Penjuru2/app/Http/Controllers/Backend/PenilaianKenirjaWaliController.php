@@ -281,7 +281,7 @@ class PenilaianKenirjaWaliController extends Controller
                     $nilai = $nilai + $coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria ;   
                 }
             }
-            
+            $bobot = 0.1;
 
             $query = HasilWali::where([
                 ['user_id_wali','=',Auth::user()->id],
@@ -310,7 +310,7 @@ class PenilaianKenirjaWaliController extends Controller
                 ])->get();
                 if ($queryt == 0) {     
                     $total = new JumlahWaliTotal;
-                    $total->totals = round($nilai,5);
+                    $total->totals = round(($nilai*$bobot),5);
                     $total->user_id_guru = $user_id;
                     $total->id_penilaian = $id;
                     $total->tanggal_id = $tgl;
@@ -320,7 +320,7 @@ class PenilaianKenirjaWaliController extends Controller
                         ['user_id_guru','=',$user_id],
                         ['id_penilaian','=',$id],
                         ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round(($nilai + $data[0]->totals),5)]);
+                    ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
                 }
             }else {
                 HasilWali::where([

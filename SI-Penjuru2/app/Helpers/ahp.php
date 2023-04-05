@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\Hasil;
+use App\Models\HasilKepsek;
 use App\Models\Hasilpilihan;
+use App\Models\HasilPilihanKepsek;
 use App\Models\HasilPilihanWali;
 use App\Models\HasilWali;
 use App\Models\Perbandingankriteria;
@@ -274,60 +276,86 @@ function showTabelPerbandingan($jenis, $kriteria)
         $pilihan[] = $row->nama_kriteria;
     }
     ?>
+    <a type="button" class="bantuan mb-2" data-bs-toggle="modal" data-bs-target="#largeRightModalExample"><i class="fa-solid fa-circle-question fa-lg" style="color: #141010;"></i><span class="m-2" style="color: black;">Bantuan</span></a>
+    <div class="modal modal-right large fade" id="largeRightModalExample" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Petunjukan Penilaian AHP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php guider(); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Oke</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <form class="ui form" action="/perbandinganproses" method="post">
     <input type="hidden" name="_token" value="<?php echo csrf_token();?>">
-	<table class="ui celled selectable collapsing table">
-		<thead>
-			<tr>
-				<th colspan="2">Pilih Yang Lebih Penting</th>
-				<th>Nilai Perbandingan</th>
-			</tr>
-		</thead>
-		<tbody>
-    <?php
-    $urut = 0;
+    <div class="row">
 
-    for ($x=0; $x <= ($n-2) ; $x++) { 
-        for ($y=($x+1); $y <= ($n-1) ; $y++) { 
-            $urut++;
-            ?>
-            <tr>
-				<td>
-					<div class="field">
-						<div class="ui radio checkbox">
-							<input name="pilih<?php echo $urut?>" value="1" checked="" class="form-check-input" type="radio">
-							<label><?php echo $pilihan[$x]; ?></label>
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="field">
-						<div class="ui radio checkbox">
-							<input name="pilih<?php echo $urut?>" value="2" class="form-check-input" type="radio">
-							<label><?php echo $pilihan[$y]; ?></label>
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="field">
+        <div class="col comparison">
+    
+            <table class="ui celled selectable collapsing table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Pilih Yang Lebih Penting</th>
+                        <th>Nilai Perbandingan</th>
+                    </tr>
+                </thead>
+                <tbody>
             <?php
-            if ($kriteria == 'kriteria') {
-                $nilai = getNilaiPerbandinganKriteria($x,$y);
-            } else {
-                // $nilai = getNilaiPerbandinganAlternatif($x,$y,($jenis-1));
-            }
+            $urut = 0;
         
-            ?>
-                                <input type="text" name="bobot<?php echo $urut?>" class="form-control w-33" value="<?php echo $nilai?>" required>
+            for ($x=0; $x <= ($n-2) ; $x++) { 
+                for ($y=($x+1); $y <= ($n-1) ; $y++) { 
+                    $urut++;
+                    ?>
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input name="pilih<?php echo $urut?>" value="1" checked="" class="form-check-input" type="radio">
+                                    <label><?php echo $pilihan[$x]; ?></label>
+                                </div>
                             </div>
                         </td>
-                    </tr>
+                        <td>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input name="pilih<?php echo $urut?>" value="2" class="form-check-input" type="radio">
+                                    <label><?php echo $pilihan[$y]; ?></label>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-2">
+                            <div class="field">
                     <?php
-        }
-    }
-    ?>
-		</tbody>
-	</table>
+                    if ($kriteria == 'kriteria') {
+                        $nilai = getNilaiPerbandinganKriteria($x,$y);
+                    } else {
+                        // $nilai = getNilaiPerbandinganAlternatif($x,$y,($jenis-1));
+                    }
+                
+                    ?>
+                                        <input type="text" name="bobot<?php echo $urut?>" class="form-control" value="<?php echo $nilai?>" required>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php
+                }
+            }
+            ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-5 guide">
+            <?php guider(); ?>
+        </div>
+    </div>
 	<input type="text" name="jenis" value="<?php echo $jenis; ?>" hidden>
     <div class="row">
         <div class="col-12 text-center">
@@ -356,60 +384,84 @@ function showTabelSubPerbandingan($jenis, $kriteria, $id)
         $pilihan[] = $row->nama_subkriteria;
     }
     ?>
+    <a type="button" class="bantuan mb-2" data-bs-toggle="modal" data-bs-target="#largerRightModalExample"><i class="fa-solid fa-circle-question fa-lg" style="color: #141010;"></i><span class="m-2" style="color: black;">Bantuan</span></a>
+    <div class="modal modal-right large fade" id="largerRightModalExample" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Petunjukan Penilaian AHP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php guider(); ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Oke</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <form class="ui form" action="/subperbandinganproses" method="post">
     <input type="hidden" name="_token" value="<?php echo csrf_token();?>">
-	<table class="ui celled selectable collapsing table">
-		<thead>
-			<tr>
-				<th colspan="2">Pilih Yang Lebih Penting</th>
-				<th>Nilai Perbandingan</th>
-			</tr>
-		</thead>
-		<tbody>
-    <?php
-    $urut = 0;
-
-    for ($x=0; $x <= ($n-2) ; $x++) { 
-        for ($y=($x+1); $y <= ($n-1) ; $y++) { 
-            $urut++;
-            ?>
-            <tr>
-				<td>
-					<div class="field">
-						<div class="ui radio checkbox">
-							<input name="pilih<?php echo $urut?>" value="1" checked="" class="form-check-input" type="radio">
-							<label><?php echo $pilihan[$x]; ?></label>
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="field">
-						<div class="ui radio checkbox">
-							<input name="pilih<?php echo $urut?>" value="2" class="form-check-input" type="radio">
-							<label><?php echo $pilihan[$y]; ?></label>
-						</div>
-					</div>
-				</td>
-				<td>
-					<div class="field">
+    <div class="row">
+        <div class="col comparison">
+            <table class="ui celled selectable collapsing table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Pilih Yang Lebih Penting</th>
+                        <th>Nilai Perbandingan</th>
+                    </tr>
+                </thead>
+                <tbody>
             <?php
-            if ($kriteria == 'kriteria') {
-                $nilai = getNilaiPerbandinganSubkriteria($x,$y,$id);
-            } else {
-                // $nilai = getNilaiPerbandinganAlternatif($x,$y,($jenis-1));
-            }
+            $urut = 0;
         
-            ?>
-                                <input type="text" name="bobot<?php echo $urut?>" class="form-control w-33" value="<?php echo $nilai?>" required>
+            for ($x=0; $x <= ($n-2) ; $x++) { 
+                for ($y=($x+1); $y <= ($n-1) ; $y++) { 
+                    $urut++;
+                    ?>
+                    <tr>
+                        <td>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input name="pilih<?php echo $urut?>" value="1" checked="" class="form-check-input" type="radio">
+                                    <label><?php echo $pilihan[$x]; ?></label>
+                                </div>
                             </div>
                         </td>
-                    </tr>
+                        <td>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <input name="pilih<?php echo $urut?>" value="2" class="form-check-input" type="radio">
+                                    <label><?php echo $pilihan[$y]; ?></label>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-2">
+                            <div class="field">
                     <?php
-        }
-    }
-    ?>
-		</tbody>
-	</table>
+                    if ($kriteria == 'kriteria') {
+                        $nilai = getNilaiPerbandinganSubkriteria($x,$y,$id);
+                    } else {
+                        // $nilai = getNilaiPerbandinganAlternatif($x,$y,($jenis-1));
+                    }
+                
+                    ?>
+                                        <input type="text" name="bobot<?php echo $urut?>" class="form-control" value="<?php echo $nilai?>" required>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php
+                }
+            }
+            ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-5 guide">
+            <?php guider() ?>
+        </div>
+    </div>
     <input type="text" name="id" value="<?php echo $id; ?>" hidden>
 	<input type="text" name="jenis" value="<?php echo $jenis; ?>" hidden>
     <div class="row">
@@ -467,6 +519,19 @@ function hasilPilihanWali($pilihan,$guru,$wali,$tanggal){
         return false;
     }
 }
+function hasilPilihanKepsek($pilihan,$guru,$kepsek,$tanggal){
+    $query = HasilPilihanKepsek::where([
+        ['user_id_guru','=',$guru],
+        ['user_id_kepsek','=',$kepsek],
+        ['kode_pilihan','=',$pilihan],
+        ['tanggal_id','=',$tanggal],
+    ])->count();
+    if ($query == 1) {
+        return true;
+    }else {
+        return false;
+    }
+}
 
 
 function cekPenilaian($penilaian, $user, $tgl){
@@ -496,7 +561,63 @@ function cekPenilaianWali($penilaian, $wali, $guru, $tgl){
     }
 }
 
+function cekPenilaianKepsek($penilaian, $kepsek, $guru, $tgl){
+    $query = HasilKepsek::where([
+        ['user_id_kepsek','=',$kepsek],
+        ['user_id_guru','=',$guru],
+        ['id_penilaian','=',$penilaian],
+        ['tanggal_id','=',$tgl],
+    ])->count();
+    if ($query == 1) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
 function manipulasiTanggal($tgl,$jumlah=1,$format='days'){
 	$currentDate = $tgl;
 	return date('Y-m-d', strtotime($jumlah.' '.$format, strtotime($currentDate)));
 }
+function guider(){
+    ?>
+    <table class="table table-bordered border-4" style="border-style: solid; border-color: black; ">
+            <thead>
+                <tr>
+                    <th style="text-align: center;" colspan="2">Petunjuk Penilaian AHP</th>
+                </tr>
+                <tr style="text-align: center;">
+                    <th>Nilai Perbandingan</th>
+                    <th>Penjelasan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="text-align: center;">
+                    <td>1</td>
+                    <td>Kedua elemen sama pentingnya</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>3</td>
+                    <td>Elemen yang satu agak lebih penting (sedikit lebih penting) daripada elemen yang lain.</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>5</td>
+                    <td>Elemen yang satu lebih penting (cukup penting) daripada elemen yang lain</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>7</td>
+                    <td>Satu elemen lebih jelas mutlak penting (sangat penting) daripada elemen lainnya</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>9</td>
+                    <td>Satu elemen ekstrim penting  (mutlak penting) daripada elemen yang lainnya</td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td>2, 4, 6, 8</td>
+                    <td>Nilai tengah diantara dua nilai pertimbangan yang saling berdekatan</td>
+                </tr>
+            </tbody>
+          </table>
+          <?php
+}
+?>

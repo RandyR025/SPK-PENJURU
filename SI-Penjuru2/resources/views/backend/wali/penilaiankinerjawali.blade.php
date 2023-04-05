@@ -20,6 +20,7 @@ Penilaian
 if (count($walii) < 1 || count($kelas) < 1) {
     ?>
     <h1 class="text-danger">Silahkan Isi Identitas Diri Anda !!!!</h1>
+    <a href="{{route('profilewali')}}" class="btn btn-outline-primary w-100 me-1 btn-sm">Isi Data Diri</a>
 <?php 
 }else {
     ?>

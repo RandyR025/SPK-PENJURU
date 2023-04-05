@@ -54,7 +54,7 @@
         $('#edit_id').val(penilaian_id);
         $('#edit_kodepengisian').val(response.pengisian[0].kode_pengisian);
         $('#edit_namapengisian').val(response.pengisian[0].nama_pengisian);
-        $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria);
+        $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria).trigger('change');
         $('#guru').prop("checked", false)
         $('#wali').prop("checked", false)
         if (JSON.parse(response.pengisian[0].level).guru) {

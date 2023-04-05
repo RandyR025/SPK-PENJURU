@@ -205,6 +205,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['cek_login:guru']], function () {
         Route::get('/dashboardguru', [DashboardController::class, 'index'])->name('dashboardguru');
+        Route::get('/ubah_password_guru', [ProfileController::class, 'index_ubahpassword'])->name('ubah_password_guru');
         Route::get('/profileguru', [ProfileController::class, 'index'])->name('profileguru');
         Route::post('/profileguru/{id}',[ProfileController::class, 'update'])->name('updateprofileguru');
         Route::get('/penilaiankinerjaguru',[PenilaianKinerjaGuruController::class, 'index'])->name('penilaiankinerjaguru');
@@ -215,6 +216,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['middleware' => ['cek_login:wali']], function () {
         Route::get('/dashboardwali', [DashboardController::class, 'index'])->name('dashboardwali');
+        Route::get('/ubah_password_wali', [ProfileController::class, 'index_ubahpassword'])->name('ubah_password_wali');
         Route::get('/profilewali', [ProfileController::class, 'index'])->name('profilewali');
         Route::post('/profilewali/{id}',[ProfileController::class, 'update'])->name('updateprofilewali');
         Route::get('/penilaiankinerjawali',[PenilaianKenirjaWaliController::class, 'index'])->name('penilaiankinerjawali');
@@ -229,6 +231,8 @@ Route::post('/authenticate', [LoginController::class, 'masukLogin'])->name('masu
 Route::post('/keluarlogout', [LoginController::class, 'logout'])->name('keluarlogout');
 Route::get('/daftarregister', [RegisterController::class, 'index'])->name('daftarregister');
 Route::post('/simpanregistrasi', [RegisterController::class, 'simpanregistrasi'])->name('simpanregistrasi');
+Route::get('/ubah_password', [ProfileController::class, 'index_ubahpassword'])->name('ubah_password');
+Route::put('/ubah_password_baru', [ProfileController::class, 'changePassword'])->name('changepassword');
 
 Auth::routes();
 

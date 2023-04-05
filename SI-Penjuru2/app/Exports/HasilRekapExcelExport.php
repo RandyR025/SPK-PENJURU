@@ -43,7 +43,7 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
             $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal.tanggal','>=',$this->firstmonth)->whereMonth('tanggal.tanggal','<=',$this->lastmonth)->whereYear('tanggal.tanggal','>=',$this->firstyear)->whereYear('tanggal.tanggal','<=',$this->lastyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
@@ -58,14 +58,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->firstyear) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -76,14 +83,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->firstmonth) && isset($this->lastmonth)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->whereYear('tanggal','=',$this->now)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->whereYear('tanggal','=',$this->now)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -94,14 +108,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->firstmonth) && isset($this->firstyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->firstyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->firstyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -112,14 +133,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->firstmonth) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->lastyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -130,14 +158,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->lastmonth) && isset($this->firstyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->firstyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->firstyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -148,14 +183,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->lastmonth) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->lastyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -166,14 +208,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->firstmonth)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->now)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->now)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -184,14 +233,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->lastmonth)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -202,14 +258,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->firstyear)) {
-            $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$this->firstyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','>=',$this->firstyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,
@@ -220,14 +283,21 @@ class HasilRekapExcelExport implements FromView, ShouldAutoSize, WithEvents
     
             ]);
         }elseif (isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereYear('tanggal','<=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','<=',$this->lastyear)->get();
             $no = 1;
             foreach ($penilaian as $keyval => $val) {
-                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.id_penilaian', '=', $val->id_penilaian)->get();
+                $coba1[$keyval] = DB::table('users')->join('hasil', 'users.id', '=', 'hasil.user_id')->where('hasil.tanggal_id', '=', $val->id)->get();
                 foreach ($coba1[$keyval] as $key => $value) {
                     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan', '=', 'pilihan.kode_pilihan')->where('hasilpilihan.user_id', '=', $value->user_id)->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $val->id_penilaian)->get();
                 }
-                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->where('pengisian.level','=','guru')->get();
+                $pengisian[$keyval] = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$val->id_penilaian)->get();
+                // $pengisiantelahdifilter = [];
+                //         foreach ($pengisian[$keyval] as $key => $value) {
+                //                 $tes = json_decode($value->level);
+                //                 if (property_exists( $tes, 'guru') ) {
+                //                     array_push($pengisiantelahdifilter, $value);
+                //             }
+                //         }
             }
             return view('backend/admin.hasilrekap_excel',[
                 'coba1'=>$coba1,

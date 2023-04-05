@@ -71,7 +71,7 @@ Kelola Data
           <td>{{$data->tanggal}}</td>
           <td>{{$data->deadline}}</td>
           <td>
-          <button value="{{$data->id_penilaian}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+          <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 edit_penilaian" type="button" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip" onclick="tanggal_edit()">
           <i class="fa-solid fa-pen-to-square"></i>
           </button>
             <button value="{{$data->id}}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_penilaian" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
@@ -99,20 +99,28 @@ Kelola Data
         <div class="modal-body">
           <form action="" id="penilaian_form">
           <div class="mb-3 d-none">
-              <label class="form-label">Kode Penilaian</label>
-              <input id="hidden_id" type="text" class="id_penilaian form-control" value="" name="id_penilaian" />
+              <label class="form-label">id</label>
+              <input id="hidden_id" type="text" class="id_penilaian form-control" value="" name="id" />
               <span class="text-danger error-text id_penilaian_error"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">Kode Penilaian</label>
-              <input id="edit_id" type="text" class="id_penilaian form-control" value="" name="id_penilaian" />
+              <input id="edit_id" type="text" class="id_penilaian form-control" value="" name="id" />
               <span class="text-danger error-text id_penilaian_error"></span>
             </div>
             <div class="mb-3">
-              <label class="form-label">Nama Penilaian</label>
-              <input id="edit_namapenilaian" type="text" class="nama_penilaian form-control" value="" name="nama_penilaian" />
-              <span class="text-danger error-text nama_penilaian_error"></span>
-
+              <label class="form-label">Id Penilaian</label>
+              <div class="w-100">
+                <div class="w-100">
+                    <select name="id_penilaian" class="edit_user_id form-control theSelect1" id="edit_idpenilaian">
+                      <option selected disabled>Pilih Penilaian</option>
+                    @foreach ($penilaian as $item)
+                      <option value="{{ $item->id_penilaian }}">{{ $item->id_penilaian }}</option>
+                    @endforeach
+                    </select>
+                </div>
+              </div>
+              <span class="text-danger error-text id_penilaian"></span>
             </div>
             <div class="mb-3">
               <label class="form-label">Tanggal Pelaksanaan</label>
@@ -123,14 +131,6 @@ Kelola Data
               <label class="form-label">Deadline</label>
               <input id="edit_deadline" type="date" class="deadline form-control" value="" name="deadline" />
               <span class="text-danger error-text deadline_error"></span>
-            </div>
-            <div class="position-relative d-inline-block" id="singleImageUploadExample">
-              <div class="img-holder-update">
-              </div>
-              <button class="btn btn-sm btn-icon btn-icon-only btn-separator-light rounded-xl position-absolute e-0 b-0" type="button">
-                <i data-cs-icon="upload"></i>
-              </button>
-              <input class="file-upload d-none" type="file" name="image" id="edit_image" data-value="" />
             </div>
         </div>
       </div>
@@ -257,7 +257,7 @@ Kelola Data
     });
 	</script>
   <script type="text/javascript">
-    function guru_edit() {
+    function tanggal_edit() {
       $(".edit_user_id").select2({
         theme: 'bootstrap4',
         dropdownParent: $('#editModal')

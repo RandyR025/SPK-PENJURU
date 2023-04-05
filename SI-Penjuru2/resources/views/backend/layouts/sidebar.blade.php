@@ -42,7 +42,7 @@
     </li>
     @if (auth()->user()->level == "admin")
     <li>
-      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('datapengguna')||Route::is('dataguru')||Route::is('datakriteria')||Route::is('showkriteria')||Route::is('datapenilaian')||Route::is('tanggalpenilaian') ? 'active' : '' }}">
+      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('datapengguna')||Route::is('dataguru')||Route::is('datakriteria')||Route::is('datawali')||Route::is('datakelas')||Route::is('showkriteria')||Route::is('datapenilaian')||Route::is('tanggalpenilaian') ? 'active' : '' }}">
         <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>
         <span class="label">Kelola Data</span>
       </a>
@@ -58,12 +58,12 @@
           </a>
         </li>
         <li>
-          <a href="{{route('datawali')}}" class="">
+          <a href="{{route('datawali')}}" class="{{ Route::is('datawali') ? 'active' : '' }}">
             <span class="label">Data Wali</span>
           </a>
         </li>
         <li>
-          <a href="{{route('datakelas')}}" class="">
+          <a href="{{route('datakelas')}}" class="{{ Route::is('datakelas') ? 'active' : '' }}">
             <span class="label">Data Kelas</span>
           </a>
         </li>
@@ -134,34 +134,18 @@
   </ul>
   @endif
   @if (auth()->user()->level == "guru")
-  <li>
-      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
-        <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>
-        <span class="label">Kelola Data</span>
-      </a>
-      <ul id="keloladata">
         <li>
           <a href="{{route('penilaiankinerjaguru')}}" class="{{ Route::is('penilaiankinerjaguru') ? 'active' : '' }}">
-            <span class="label">Penilaian Kinerja Guru</span>
+            <i data-cs-icon="screen" class="icon" data-cs-size="18"></i><span class="label">Penilaian Kinerja Guru</span>
           </a>
         </li>
-      </ul>
-    </li>
     @endif
     @if (auth()->user()->level == "wali")
-  <li>
-      <a href="#keloladata" data-href="keloladata.html" class="{{ Route::is('penilaiankinerjawali') ? 'active' : '' }}">
-        <i data-cs-icon="screen" class="icon" data-cs-size="18"></i>
-        <span class="label">Kelola Data</span>
-      </a>
-      <ul id="keloladata">
         <li>
           <a href="{{route('penilaiankinerjawali')}}" class="{{ Route::is('penilaiankinerjawali') ? 'active' : '' }}">
-            <span class="label">Penilaian Kinerja Guru</span>
+            <i data-cs-icon="screen" class="icon" data-cs-size="18"></i><span class="label">Penilaian Kinerja Guru</span>
           </a>
         </li>
-      </ul>
-    </li>
     @endif
 </div>
 <!-- Menu End -->

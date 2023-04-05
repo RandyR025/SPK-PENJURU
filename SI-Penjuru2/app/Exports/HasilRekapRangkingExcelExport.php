@@ -41,11 +41,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
     public function view(): View
     {
         if (isset($this->firstmonth) && isset($this->lastmonth) && isset($this->firstyear) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
             $no = 1;
             if ($this->firstmonth == $this->lastmonth && $this->firstyear == $this->lastyear) {
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -53,9 +53,9 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
                     'no'=>$no,
                 ]);
             }else {
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$this->firstmonth)->whereMonth('penilaian.tanggal','<=',$this->lastmonth)->whereYear('penilaian.tanggal','>=',$this->firstyear)->whereYear('penilaian.tanggal','<=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -72,11 +72,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
             }
             
         } elseif (isset($this->firstyear) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->get();
             $no = 1;
             if ($this->firstyear == $this->lastyear) {
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -85,9 +85,9 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
             }else {
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','>=',$this->firstyear)->whereYear('penilaian.tanggal','<=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','>=',$this->firstyear)->whereYear('tanggal','<=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -103,11 +103,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
                 
             }
         } elseif (isset($this->firstmonth) && isset($this->lastmonth)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->whereYear('tanggal','=',$this->now)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->whereYear('tanggal','=',$this->now)->get();
             $no = 1;
             if ($this->firstmonth == $this->lastmonth) {
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -116,9 +116,9 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
             }else {
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','>=',$this->firstmonth)->whereMonth('penilaian.tanggal','<=',$this->lastmonth)->whereYear('penilaian.tanggal','>=',$this->now)->whereYear('penilaian.tanggal','<=',$this->now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','>=',$this->firstmonth)->whereMonth('tanggal','<=',$this->lastmonth)->whereYear('tanggal','>=',$this->now)->whereYear('tanggal','<=',$this->now)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekap_excel',[
                     'coba1'=>$coba1,
@@ -134,11 +134,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
                 
             }
         } elseif (isset($this->firstmonth) && isset($this->firstyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->firstyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->firstyear)->get();
             $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$this->firstmonth)->whereYear('penilaian.tanggal','=',$this->firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -147,11 +147,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
         } elseif (isset($this->firstmonth) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->lastyear)->get();
             $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$this->firstmonth)->whereYear('penilaian.tanggal','=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -160,11 +160,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
         } elseif (isset($this->lastmonth) && isset($this->firstyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->firstyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->firstyear)->get();
             $no = 1;
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$this->lastmonth)->whereYear('penilaian.tanggal','=',$this->firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -173,11 +173,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
         } elseif (isset($this->lastmonth) && isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->lastyear)->get();
             $no = 1;
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$this->lastmonth)->whereYear('penilaian.tanggal','=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -186,11 +186,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
         } elseif (isset($this->firstmonth)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->now)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->now)->get();
             $no = 1;
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$this->firstmonth)->whereYear('penilaian.tanggal','=',$this->now)->groupBy('users.id')->orderBy('totals','desc')->get();
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$this->firstmonth)->whereYear('tanggal','=',$this->now)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
@@ -199,11 +199,11 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
         } elseif (isset($this->lastmonth)) {
-            $penilaian = DB::table('penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->get();
             $no = 1;
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('penilaian.tanggal','=',$this->lastmonth)->whereYear('penilaian.tanggal','=',$this->now)->groupBy('users.id')->orderBy('totals','desc')->get();
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$this->lastmonth)->whereYear('tanggal','=',$this->now)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 // dd($guru);
                 return view('backend/admin.hasilrekaprangking_excel',[
@@ -213,31 +213,33 @@ class HasilRekapRangkingExcelExport implements FromView, ShouldAutoSize, WithEve
         
                 ]);
         } elseif (isset($this->firstyear)) {
-            $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$this->firstyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$this->firstyear)->get();
             $no = 1;
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','=',$this->firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$this->firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
                     'guru' => $guru,
                     'penilaian'=>$penilaian,
                     'no'=>$no,
+                    'firstyear'=>$this->firstyear,
         
                 ]);
         } elseif (isset($this->lastyear)) {
-            $penilaian = DB::table('penilaian')->whereYear('tanggal','=',$this->lastyear)->get();
+            $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$this->lastyear)->get();
             $no = 1;
-            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('penilaian.tanggal','=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+            $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$this->lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                 foreach ($penilaian as $keyval => $val) {
-                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.id_penilaian', '=', $val->id_penilaian)->get();
+                    $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
                 }
                 return view('backend/admin.hasilrekaprangking_excel',[
                     'coba1'=>$coba1,
                     'guru' => $guru,
                     'penilaian'=>$penilaian,
                     'no'=>$no,
+                    'lastyear'=>$this->lastyear,
         
                 ]);
         }

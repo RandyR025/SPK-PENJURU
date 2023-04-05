@@ -331,12 +331,12 @@ Setting
           <span class="text-danger error-text email_error"></span>
         </div>
       </div>
-      <div class="mb-3 row">
+      <!-- <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Password</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
           <input type="password" class="form-control" value="password" />
         </div>
-      </div>
+      </div> -->
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">NIK</label>
         <div class="col-sm-8 col-md-9 col-lg-10">

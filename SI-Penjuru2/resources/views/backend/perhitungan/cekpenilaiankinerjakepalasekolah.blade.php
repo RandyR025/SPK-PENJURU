@@ -25,7 +25,7 @@ Penilaian
                         <select name="user_id" class="user_id form-control theSelect" id="user_id">
                             <option selected disabled>Pilih Guru</option>
                             @foreach ($dataguru as $item)
-                            <option value="{{ $item->user_id }}">{{ $item->name }}</option>
+                            <option value="{{ $item->user_id }}" {{ $item->user_id == $user[0]->id ? 'selected' : '' }}>{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -109,10 +109,10 @@ Penilaian
                 </div> -->
                 <?php
                 
-                if (cekPenilaianWali($data[0]->id_penilaian, Auth::user()->id,$user[0]->id, $data[0]->id)) {
+                if (cekPenilaianKepsek($data[0]->id_penilaian, Auth::user()->id,$user[0]->id, $data[0]->id)) {
                     ?>
                 <div class="d-flex flex-row justify-content-between w-100 w-sm-50 w-xl-100">
-                    <a href="{{ route('detailkinerjaguru', [$data[0]->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Di Isi</a>
+                    <a href="{{ route('detailkinerjakepalasekolah', [$data[0]->id_penilaian,$user[0]->id, $data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Sudah Di Isi</a>
                 </div>
                     <?php
                     
@@ -122,11 +122,11 @@ Penilaian
                         <?php
                         if($dt < $data[0]->tanggal){
                             ?>
-                        <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Belum Boleh</a>
+                        <a href="{{ route('detailkinerjakepalasekolah', [$data[0]->id_penilaian,$user[0]->id,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Belum Boleh</a>
                         <?php
                         }elseif($dt > $data[0]->deadline){
                             ?>
-                            <a href="{{ route('detailkinerjawali', [$data[0]->id_penilaian,$user[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm disabled">Sudah Lewat</a>
+                            <a href="{{ route('detailkinerjakepalasekolah', [$data[0]->id_penilaian,$user[0]->id,$data[0]->id]) }}" class="btn btn-outline-primary w-100 me-1 btn-sm">Sudah Lewat</a>
                             <?php
                         }elseif($dt >= $data[0]->tanggal && $dt <= $data[0]->deadline){
                             ?>

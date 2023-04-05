@@ -5,7 +5,7 @@
     @if (isset($admin->image))
     <img class="profile" alt="profile" src="{{asset('images/'.$admin->image)}}" style="" />
     @else
-    <img class="profile" alt="profile" src="{{asset('backend/img/profile/profile-9.jpg')}}" style="min-height: 40px !important; height: 90%!important; max-height: 100px!important; min-width: 40px !important; width: 90%!important; max-width: 100px;" />
+    <img class="profile" alt="profile" src="{{asset('backend/img/profile/profile-11.jpg')}}" style="min-height: 40px !important; height: 90%!important; max-height: 100px!important; min-width: 40px !important; width: 90%!important; max-width: 100px;" />
     @endif
     <div class="name" style="padding-top: 15px; padding-bottom: 5px; font-size: 15px;">{{ Auth::user()->name }}</div>
   </a>
@@ -15,7 +15,7 @@
   @if (isset($guru->image))
     <img class="profile" alt="profile" src="{{asset('images/'.$guru->image)}}" style="" />
     @else
-    <img class="profile" alt="profile" src="{{asset('backend/img/profile/profile-9.jpg')}}" style="min-height: 40px !important; height: 90%!important; max-height: 100px!important; min-width: 40px !important; width: 90%!important; max-width: 100px;" />
+    <img class="profile" alt="profile" src="{{asset('backend/img/profile/profile-11.jpg')}}" style="min-height: 40px !important; height: 90%!important; max-height: 100px!important; min-width: 40px !important; width: 90%!important; max-width: 100px;" />
     @endif
     <div class="name" style="padding-top: 15px; padding-bottom: 5px; font-size: 15px;">{{ Auth::user()->name }}</div>
   </a>
@@ -25,7 +25,7 @@
   @if (isset($wali->image))
     <img class="profile" alt="profile" src="{{asset('images/'.$wali->image)}}" style="" />
     @else
-    <img class="profile" alt="profile" src="{{asset('backend/img/profile/profile-9.jpg')}}" style="min-height: 40px !important; height: 90%!important; max-height: 100px!important; min-width: 40px !important; width: 90%!important; max-width: 100px;" />
+    <img class="profile" alt="profile" src="{{asset('backend/img/profile/profile-11.jpg')}}" style="min-height: 40px !important; height: 90%!important; max-height: 100px!important; min-width: 40px !important; width: 90%!important; max-width: 100px;" />
     @endif
     <div class="name" style="padding-top: 15px; padding-bottom: 5px; font-size: 15px;">{{ Auth::user()->name }}</div>
   </a>
@@ -91,7 +91,7 @@
       <div class="col-6 ps-1 pe-1">
         <ul class="list-unstyled">
           <li>
-            <a href="#">
+            <a href="{{route('ubah_password')}}">
               <i data-cs-icon="help" class="me-2" data-cs-size="17"></i>
               <span class="align-middle">Sandi</span>
             </a>

@@ -103,7 +103,7 @@ $(document).on('click', '.edit_penilaian', function(e){
    $('#editModal').modal('show');
    $.ajax({
     type: "GET",
-    url: "/edit-penilaian/"+penilaian_id,
+    url: "/edit-tanggalpenilaian/"+penilaian_id,
     success: function(response){
       console.log(response);
       if(response.status == 404){
@@ -113,40 +113,12 @@ $(document).on('click', '.edit_penilaian', function(e){
       }else{
         $('#edit_id').val(penilaian_id);
         $('#hidden_id').val(penilaian_id);
-        $('#edit_namapenilaian').val(response.penilaian[0].nama_penilaian);
-        $('#edit_tanggalpelaksanaan').val(response.penilaian[0].tanggal);
-        $('#edit_deadline').val(response.penilaian[0].deadline);
-        if (response.penilaian[0].image == null) {
-          $(".img-holder-update").html('<img src="backend/img/profile/profile-11.jpg" alt="user" class="rounded-xl border border-separator-light border-4 sw-11 sh-11" />');
-      }else{
-          $(".img-holder-update").html('<img src="images/'+response.penilaian[0].image+'" alt="user" class="rounded-xl border border-separator-light border-4 sw-11 sh-11" />');
-      }
-      $('input[type="file"]').attr('data-value','<img src="images/'+response.penilaian[0].image+'" alt="user" class="rounded-xl border border-separator-light border-4 sw-11 sh-11" />');
-      $('input[type="file"]').val('');
+        $("#edit_idpenilaian").val(response.tanggal[0].id_penilaian).trigger('change');
+        $('#edit_tanggalpelaksanaan').val(response.tanggal[0].tanggal);
+        $('#edit_deadline').val(response.tanggal[0].deadline);
       }
     }
    });
-   $('input[type="file"][name="image"]').on('change', function(){
-    var img_path = $(this)[0].value;
-    var img_holder = $('.img-holder-update');
-    var currentImagePath = $(this).data('value');
-    var extension = img_path.substring(img_path.lastIndexOf('.')+1).toLowerCase();
-    if(extension == 'jpg' || extension == 'jpeg' || extension == 'png'){
-        if(typeof(FileReader) != 'undefined'){
-            img_holder.empty();
-            var reader = new FileReader();
-            reader.onload = function(e){
-                $('<img/>', {'src': e.target.result, 'class': 'rounded-xl border border-separator-light border-4 sw-11 sh-11'}).appendTo(img_holder);
-            }
-            img_holder.show();
-            reader.readAsDataURL($(this)[0].files[0]);
-        }else{
-            $(img_holder).html('This Browser Not Support File Reader');
-        }
-    }else{
-        $(img_holder).html(currentImagePath);
-    }
-});
   });
 
 
@@ -164,7 +136,7 @@ $(document).on("submit", "#penilaian_form", function (e) {
 
   $.ajax({
       type: "POST",
-      url: "/update-penilaian/" + penilaian_id,
+      url: "/update-tanggalpenilaian/" + penilaian_id,
       data: EditformData,
       contentType: false,
       processData: false,
