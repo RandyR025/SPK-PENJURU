@@ -155,16 +155,16 @@ Kelola Data
                 </select>
               </div> -->
                         <div class="form-check">
-                          <input name="level[guru]" class="form-check-input" type="checkbox" id="guru" value="guru" />
-                          <label class="form-check-label" for="guru">Guru</label>
+                          <input name="level[guru]" class="form-check-input" type="checkbox" id="editguru" value="guru" />
+                          <label class="form-check-label" for="editguru">Guru</label>
                         </div>
                         <div class="form-check">
-                          <input name="level[wali]" class="form-check-input" type="checkbox" id="wali" value="wali" />
-                          <label class="form-check-label" for="wali">Wali</label>
+                          <input name="level[wali]" class="form-check-input" type="checkbox" id="editwali" value="wali" />
+                          <label class="form-check-label" for="editwali">Wali</label>
                         </div>
                         <div class="form-check">
-                          <input name="level[kepalasekolah]" class="form-check-input" type="checkbox" id="kepalasekolah" value="kepalasekolah" />
-                          <label class="form-check-label" for="kepalasekolah">Kepala Sekolah</label>
+                          <input name="level[kepalasekolah]" class="form-check-input" type="checkbox" id="editkepalasekolah" value="kepalasekolah" />
+                          <label class="form-check-label" for="editkepalasekolah">Kepala Sekolah</label>
                         </div>
               <span class="text-danger error-text level_error"></span>
               <span class="text-danger error-text level_error"></span>
@@ -261,7 +261,7 @@ $newID = $char . sprintf("%02s", $noUrut);
                         </div>
                         <div class="form-check">
                           <input name="level[kepalasekolah]" class="form-check-input" type="checkbox" id="kepalasekolah" value="kepalasekolah" />
-                          <label class="form-check-label" for="wali">kepalasekolah</label>
+                          <label class="form-check-label" for="kepalasekolah">Kepala Sekolah</label>
                         </div>
               <span class="text-danger error-text level_error"></span>
             </div>

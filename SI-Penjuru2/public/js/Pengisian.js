@@ -55,13 +55,17 @@
         $('#edit_kodepengisian').val(response.pengisian[0].kode_pengisian);
         $('#edit_namapengisian').val(response.pengisian[0].nama_pengisian);
         $('#edit_kode_kriteria').val(response.pengisian[0].kode_kriteria).trigger('change');
-        $('#guru').prop("checked", false)
-        $('#wali').prop("checked", false)
+        $('#editguru').prop("checked", false)
+        $('#editkepalasekolah').prop("checked", false)
+        $('#editwali').prop("checked", false)
         if (JSON.parse(response.pengisian[0].level).guru) {
-          $('#guru').prop("checked", true)
+          $('#editguru').prop("checked", true)
+        }
+        if (JSON.parse(response.pengisian[0].level).kepalasekolah) {
+          $('#editkepalasekolah').prop("checked", true)
         }
         if(JSON.parse(response.pengisian[0].level).wali) {
-          $('#wali').prop("checked", true)
+          $('#editwali').prop("checked", true)
         }
         // $('#edit_level').val(JSON.parse(response.pengisian[0].level).guru);
         // $('#edit_kode_subkriteria').val(response.pengisian[0].kode_subkriteria);
