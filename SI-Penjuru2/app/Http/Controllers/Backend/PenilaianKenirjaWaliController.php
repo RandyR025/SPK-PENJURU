@@ -323,6 +323,22 @@ class PenilaianKenirjaWaliController extends Controller
                     ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
                 }
             }else {
+                $data = JumlahWaliTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                $dataa = HasilWali::where([
+                    ['user_id_wali','=',Auth::user()->id],
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                JumlahWaliTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->update(['totals'=> round((($nilai*$bobot) + (($data[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
                 HasilWali::where([
                     ['user_id_wali','=',Auth::user()->id],
                     ['user_id_guru','=',$user_id],

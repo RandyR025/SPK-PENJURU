@@ -10,6 +10,7 @@ use App\Models\Pengisian;
 use App\Models\Pilihan;
 use App\Models\Penilaian;
 use App\Models\JumlahTotal;
+use App\Models\JumlahWaliTotal;
 // use Barryvdh\DomPDF\PDF;
 use PDF;
 use Maatwebsite\Excel\Facades\Excel;
@@ -265,6 +266,7 @@ class HasilDataPenilaianController extends Controller
             }
             
 
+            $bobot = 0.4;
             $query = Hasil::where([
                 ['user_id','=',$user_id],
                 ['id_penilaian','=',$id],
@@ -277,8 +279,64 @@ class HasilDataPenilaianController extends Controller
                 $total->id_penilaian = $id;
                 $total->tanggal_id = $tgl;
                 $total->save();
+                $queryt = JumlahTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $data = JumlahTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                if ($queryt == 0) {     
+                    $total = new JumlahTotal;
+                    $total->totals = round(($nilai*$bobot),5);
+                    $total->user_id_guru = $user_id;
+                    $total->id_penilaian = $id;
+                    $total->tanggal_id = $tgl;
+                    $total->save();
+                }else {
+                    JumlahTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
+                }
+                $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',$user_id)->get();
+                if (count($guru) > 0) {
+                    $queryt = JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->count();
+                    $data = JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->get();
+                    if ($queryt == 0) {     
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round(($nilai*$bobot),5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    }else {
+                        JumlahWaliTotal::where([
+                            ['user_id_guru','=',$user_id],
+                            ['id_penilaian','=',$id],
+                            ['tanggal_id','=',$tgl],
+                        ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
+                    }
+                }
             }else {
                 $data = JumlahTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                $dataaa = JumlahWaliTotal::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
@@ -288,13 +346,19 @@ class HasilDataPenilaianController extends Controller
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
                 ])->get();
-                
-                    JumlahTotal::where([
-                        ['user_id_guru','=',$user_id],
-                        ['id_penilaian','=',$id],
-                        ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round(($nilai + ($data[0]->totals - $dataa[0]->totals)),5)]);
-                
+                JumlahTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->update(['totals'=> round((($nilai*$bobot) + (($data[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
+                $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',$user_id)->get();
+                if (count($guru) > 0) {
+                JumlahWaliTotal::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->update(['totals'=> round((($nilai*$bobot) + (($dataaa[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
+                }
                 Hasil::where([
                     ['user_id','=',$user_id],
                     ['id_penilaian','=',$id],
