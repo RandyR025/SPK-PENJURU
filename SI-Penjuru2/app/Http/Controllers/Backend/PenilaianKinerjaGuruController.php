@@ -315,14 +315,14 @@ class PenilaianKinerjaGuruController extends Controller
                     ['user_id_guru','=',Auth::user()->id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
-                ])->update(['totals'=> round((($nilai*$bobot) + (($data[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
+                ])->update(['totals'=> round((($nilai*$bobot) + ($data[0]->totals - ($dataa[0]->totals * $bobot))),5)]);
                 $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',Auth::user()->id)->get();
                 if (count($guru) > 0) {
                 JumlahWaliTotal::where([
                     ['user_id_guru','=',Auth::user()->id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
-                ])->update(['totals'=> round((($nilai*$bobot) + (($dataaa[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
+                ])->update(['totals'=> round((($nilai*$bobot) + ($dataaa[0]->totals - ($dataa[0]->totals * $bobot))),5)]);
                 }
                 Hasil::where([
                     ['user_id','=',Auth::user()->id],

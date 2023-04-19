@@ -338,7 +338,7 @@ class PenilaianKenirjaWaliController extends Controller
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
-                ])->update(['totals'=> round((($nilai*$bobot) + (($data[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
+                ])->update(['totals'=> round((($nilai*$bobot) + ($data[0]->totals - ($dataa[0]->totals*$bobot))),5)]);
                 HasilWali::where([
                     ['user_id_wali','=',Auth::user()->id],
                     ['user_id_guru','=',$user_id],

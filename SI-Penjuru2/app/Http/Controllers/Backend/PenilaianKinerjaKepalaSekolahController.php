@@ -373,14 +373,14 @@ class PenilaianKinerjaKepalaSekolahController extends Controller
                         ['user_id_guru','=',$user_id],
                         ['id_penilaian','=',$id],
                         ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round((($nilai*$bobot) + (($data[0]->totals/$bobot) - $dataa[0]->totals)),5)]);
+                    ])->update(['totals'=> round((($nilai*$bobot) + ($data[0]->totals - ($dataa[0]->totals * $bobot))),5)]);
                 $guru = DB::table('guru')->join('users','guru.user_id','=','users.id')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('guru.user_id','=',$user_id)->get();
                 if (count($guru) > 0) {
                     JumlahWaliTotal::where([
                         ['user_id_guru','=',$user_id],
                         ['id_penilaian','=',$id],
                         ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round((($nilai*$bobott) + (($dataaa[0]->totals/$bobott) - $dataa[0]->totals)),5)]);
+                    ])->update(['totals'=> round((($nilai*$bobott) + ($dataaa[0]->totals - ($dataa[0]->totals * $bobott))),5)]);
                 }
                 HasilKepsek::where([
                     ['user_id_kepsek','=',Auth::user()->id],
