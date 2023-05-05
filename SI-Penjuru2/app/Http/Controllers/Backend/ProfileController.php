@@ -117,7 +117,7 @@ class ProfileController extends Controller
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
                     'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
-                    'nik' => 'required|unique:guru|unique:admin|unique:wali',
+                    'nik' => 'required|unique:guru|unique:admin|unique:wali|min:15',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
@@ -165,7 +165,7 @@ class ProfileController extends Controller
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
                     'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
-                    'nik' => 'required',
+                    'nik' => 'required|min:15',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
@@ -330,7 +330,7 @@ class ProfileController extends Controller
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
                     'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
-                    'nik' => 'required|unique:guru|unique:admin|unique:wali',
+                    'nik' => 'required|unique:guru|unique:admin|unique:wali|min:15',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
@@ -393,7 +393,7 @@ class ProfileController extends Controller
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
                     'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
-                    'nik' => 'required',
+                    'nik' => 'required|min:15',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
@@ -463,7 +463,7 @@ class ProfileController extends Controller
                 $validator = Validator::make($request->all(), [
                     'name' => 'required|max:32',
                     'email' => ['required','email',Rule::unique('users')->ignore(User::find($id))],
-                    'nik' => 'required',
+                    'nik' => 'required|min:15',
                     'tempat_lahir' => 'required',
                     'tanggal_lahir' => 'required',
                     'jenis_kelamin' => 'required',
