@@ -227,10 +227,10 @@ class PenilaianKinerjaGuruController extends Controller
                 if ($coba1[$key] ==  null) {
                     return back()->with('status','Silahkan Jawab Semua Pertanyaan');
                 }else {
-                    $nilai = $nilai + $coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria ;   
+                    $nilai = $nilai + ($coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria) ;   
                 }
             }
-            
+            dd($nilai);
             $bobot = 0.4;
             $query = Hasil::where([
                 ['user_id','=',Auth::user()->id],

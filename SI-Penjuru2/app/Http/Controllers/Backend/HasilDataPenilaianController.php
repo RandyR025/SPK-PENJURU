@@ -102,19 +102,40 @@ class HasilDataPenilaianController extends Controller
         // $pengisian = collect(DB::table('pilihan')->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->join('subkriteria', 'pengisian.kode_subkriteria', '=', 'subkriteria.kode_subkriteria')->join('kriteria', 'subkriteria.kode_kriteria', '=', 'kriteria.kode_kriteria')->get()->groupBy('kode_pengisian'));
         // dd($hasil);
         $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
+        $tanggal = DB::table('tanggal')->where('id', $tgl)->get();
         $no = 1;
         // $coba1 = Pengisian::with('penilaian')->where('id_penilaian','=',$id)->get();
         // foreach ($coba1 as $key => $value) {
         //     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.kode_pengisian','=',$value->kode_pengisian)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->get();
         // }
         $coba = [];
-        $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$id)->where('hasil.tanggal_id','=',$tgl)->get();
+        /* Guru */
+        /* $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$id)->where('hasil.tanggal_id','=',$tgl)->get();
         foreach ($coba1 as $key => $value) {
-            $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihan.tanggal_id', '=', $tgl)->get();
+            $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihan.tanggal_id', '=', $tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+        } */
+        /* End Guru */
+
+        /* Kepala Sekolah */
+        /* $coba1 = DB::table('users')->join('hasilkepsek','users.id','=','hasilkepsek.user_id_guru')->where('hasilkepsek.id_penilaian','=',$id)->where('hasilkepsek.tanggal_id','=',$tgl)->get();
+        foreach ($coba1 as $key => $value) {
+            $coba[$key] = DB::table('hasilpilihankepsek')->join('pilihan', 'hasilpilihankepsek.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihankepsek.user_id_guru','=',$value->user_id_guru)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihankepsek.tanggal_id', '=', $tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+        } */
+        /*End Kepala Sekolah */
+
+        /* Wali Murid */
+        $wali_kelas = DB::table('guru')->join('detail_kelas','guru.user_id','=','detail_kelas.user_id')->join('kelas','detail_kelas.kode_kelas','=','kelas.kode_kelas')->join('users','guru.user_id','=','users.id')->get();
+        // dd($wali_kelas);
+        foreach ($wali_kelas as $key => $value) {
+            $coba1[$key] = DB::table('users')->join('hasilwali','users.id','=','hasilwali.user_id_wali')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('detail_kelas.kode_kelas','=',$value->kode_kelas)->where('hasilwali.user_id_guru','=',$value->user_id)->where('hasilwali.id_penilaian','=',$id)->where('hasilwali.tanggal_id','=',$tgl)->get();
+            foreach ($coba1[$key] as $keyy => $valuee) {
+                $coba[$keyy] = DB::table('hasilpilihanwali')->join('pilihan', 'hasilpilihanwali.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihanwali.user_id_wali','=',$valuee->user_id_wali)->where('hasilpilihanwali.user_id_guru','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihanwali.tanggal_id', '=', $tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+            }
         }
-        $pengisian = DB::table('pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('id_penilaian','=',$id)->get();
-        // dd($coba1);
-        return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba1','coba','pengisian'));
+        /*End Wali Murid */
+        $pengisian = DB::table('subkriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->where('id_penilaian','=',$id)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+        // dd($pengisian);
+        return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba1','coba','pengisian','tanggal','wali_kelas'));
     }
 
     /**
@@ -394,7 +415,7 @@ class HasilDataPenilaianController extends Controller
         $pdf = PDF::loadview('backend/admin.hasilpenilaian_pdf',['coba'=>$coba, 'coba1'=>$coba1, 'penilaian'=>$penilaian, 'pengisian'=>$pengisiantelahdifilter, 'no'=>$no ,'data'=>'Laporan Hasil Jawaban Penilaian']);
         return $pdf->stream('laporan-hasil-penilaian');
     }
-    public function eksport_excel($id){
-        return Excel::download(new HasilPenilaianExcelExport($id),'penilaian.xlsx');
+    public function eksport_excel($id,$tgl){
+        return Excel::download(new HasilPenilaianExcelExport($id,$tgl),'penilaian.xlsx');
     }
 }

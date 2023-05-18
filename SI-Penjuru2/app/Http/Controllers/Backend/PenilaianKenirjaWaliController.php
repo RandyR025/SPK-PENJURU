@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hasil;
+use App\Models\HasilKepsek;
 use App\Models\HasilPilihanWali;
 use App\Models\HasilWali;
 use App\Models\JumlahTotal;
@@ -282,6 +283,8 @@ class PenilaianKenirjaWaliController extends Controller
                 }
             }
             $bobot = 0.1;
+            $bobot_guru = 0.4;
+            $bobot_kepsek = 0.5;
 
             $query = HasilWali::where([
                 ['user_id_wali','=',Auth::user()->id],
@@ -298,53 +301,180 @@ class PenilaianKenirjaWaliController extends Controller
                 $total->id_penilaian = $id;
                 $total->save();
 
+                $ratarata_jumlah = DB::table('hasilwali')->where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $ratarata = DB::table('hasilwali')->selectRaw('SUM(totals) as totals')->where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->first();
+                $ratarata_total = $ratarata->totals / $ratarata_jumlah;
+                // dd($ratarata_total);
+
                 $queryt = JumlahWaliTotal::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
                 ])->count();
-                $data = JumlahWaliTotal::where([
+                $cek_kepalasekolah = HasilKepsek::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $cek_guru = Hasil::where([
+                    ['user_id','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $data = HasilKepsek::where([
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
                 ])->get();
-                if ($queryt == 0) {     
-                    $total = new JumlahWaliTotal;
-                    $total->totals = round(($nilai*$bobot),5);
-                    $total->user_id_guru = $user_id;
-                    $total->id_penilaian = $id;
-                    $total->tanggal_id = $tgl;
-                    $total->save();
+                $data_guru = Hasil::where([
+                    ['user_id','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                // dd($cek_kepalasekolah);
+                if ($queryt == 0) {
+                    if ($cek_kepalasekolah == 0 && $cek_guru == 0) {     
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round(($ratarata_total*$bobot),5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    }elseif ($cek_kepalasekolah > 0 && $cek_guru > 0) {
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round((($ratarata_total*$bobot) + ($data[0]->totals*$bobot_kepsek) + ($data_guru[0]->totals*$bobot_guru)),5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    } elseif ($cek_kepalasekolah > 0  && $cek_guru == 0) {
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round((($ratarata_total*$bobot) + ($data[0]->totals*$bobot_kepsek)),5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    }elseif ($cek_kepalasekolah == 0 && $cek_guru > 0) {
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round((($ratarata_total*$bobot) + ($data_guru[0]->totals*$bobot_guru)),5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    }
                 }else {
-                    JumlahWaliTotal::where([
-                        ['user_id_guru','=',$user_id],
-                        ['id_penilaian','=',$id],
-                        ['tanggal_id','=',$tgl],
-                    ])->update(['totals'=> round((($nilai*$bobot) + $data[0]->totals),5)]);
+                    if ($cek_kepalasekolah == 0 && $cek_guru == 0) {     
+                        $total = new JumlahWaliTotal;
+                        $total->totals = round(($ratarata_total*$bobot),5);
+                        $total->user_id_guru = $user_id;
+                        $total->id_penilaian = $id;
+                        $total->tanggal_id = $tgl;
+                        $total->save();
+                    }elseif ($cek_kepalasekolah > 0 && $cek_guru > 0) {
+                        JumlahWaliTotal::where([
+                            ['user_id_guru','=',$user_id],
+                            ['id_penilaian','=',$id],
+                            ['tanggal_id','=',$tgl],
+                        ])->update(['totals'=> round((($ratarata_total*$bobot) + ($data[0]->totals*$bobot_kepsek) + ($data_guru[0]->totals*$bobot_guru)),5)]);
+                    } elseif ($cek_kepalasekolah > 0  && $cek_guru == 0) {
+                        JumlahWaliTotal::where([
+                            ['user_id_guru','=',$user_id],
+                            ['id_penilaian','=',$id],
+                            ['tanggal_id','=',$tgl],
+                        ])->update(['totals'=> round((($ratarata_total*$bobot) + ($data[0]->totals*$bobot_kepsek)),5)]);
+                    }elseif ($cek_kepalasekolah == 0 && $cek_guru > 0) {
+                        JumlahWaliTotal::where([
+                            ['user_id_guru','=',$user_id],
+                            ['id_penilaian','=',$id],
+                            ['tanggal_id','=',$tgl],
+                        ])->update(['totals'=> round((($ratarata_total*$bobot) + ($data_guru[0]->totals*$bobot_guru)),5)]);
+                    }
                 }
+                
             }else {
-                $data = JumlahWaliTotal::where([
-                    ['user_id_guru','=',$user_id],
-                    ['id_penilaian','=',$id],
-                    ['tanggal_id','=',$tgl],
-                ])->get();
-                $dataa = HasilWali::where([
-                    ['user_id_wali','=',Auth::user()->id],
-                    ['user_id_guru','=',$user_id],
-                    ['id_penilaian','=',$id],
-                    ['tanggal_id','=',$tgl],
-                ])->get();
-                JumlahWaliTotal::where([
-                    ['user_id_guru','=',$user_id],
-                    ['id_penilaian','=',$id],
-                    ['tanggal_id','=',$tgl],
-                ])->update(['totals'=> round((($nilai*$bobot) + ($data[0]->totals - ($dataa[0]->totals*$bobot))),5)]);
+                // $data = JumlahWaliTotal::where([
+                //     ['user_id_guru','=',$user_id],
+                //     ['id_penilaian','=',$id],
+                //     ['tanggal_id','=',$tgl],
+                // ])->get();
+                // $dataa = HasilWali::where([
+                //     ['user_id_wali','=',Auth::user()->id],
+                //     ['user_id_guru','=',$user_id],
+                //     ['id_penilaian','=',$id],
+                //     ['tanggal_id','=',$tgl],
+                // ])->get();
                 HasilWali::where([
                     ['user_id_wali','=',Auth::user()->id],
                     ['user_id_guru','=',$user_id],
                     ['id_penilaian','=',$id],
                     ['tanggal_id','=',$tgl],
                 ])->update(['totals'=> round($nilai,5)]);
+                $ratarata_jumlah = DB::table('hasilwali')->where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $ratarata = DB::table('hasilwali')->selectRaw('SUM(totals) as totals')->where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->first();
+                $ratarata_total = $ratarata->totals / $ratarata_jumlah;
+                // dd($ratarata_total);
+                $cek_kepalasekolah = HasilKepsek::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $cek_guru = Hasil::where([
+                    ['user_id','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->count();
+                $data = HasilKepsek::where([
+                    ['user_id_guru','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                $data_guru = Hasil::where([
+                    ['user_id','=',$user_id],
+                    ['id_penilaian','=',$id],
+                    ['tanggal_id','=',$tgl],
+                ])->get();
+                if ($cek_kepalasekolah == 0 && $cek_guru == 0) {     
+                    $total = new JumlahWaliTotal;
+                    $total->totals = round(($ratarata_total*$bobot),5);
+                    $total->user_id_guru = $user_id;
+                    $total->id_penilaian = $id;
+                    $total->tanggal_id = $tgl;
+                    $total->save();
+                }elseif ($cek_kepalasekolah > 0 && $cek_guru > 0) {
+                    JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->update(['totals'=> round((($ratarata_total*$bobot) + ($data[0]->totals*$bobot_kepsek) + ($data_guru[0]->totals*$bobot_guru)),5)]);
+                } elseif ($cek_kepalasekolah > 0  && $cek_guru == 0) {
+                    JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->update(['totals'=> round((($ratarata_total*$bobot) + ($data[0]->totals*$bobot_kepsek)),5)]);
+                }elseif ($cek_kepalasekolah == 0 && $cek_guru > 0) {
+                    JumlahWaliTotal::where([
+                        ['user_id_guru','=',$user_id],
+                        ['id_penilaian','=',$id],
+                        ['tanggal_id','=',$tgl],
+                    ])->update(['totals'=> round((($ratarata_total*$bobot) + ($data_guru[0]->totals*$bobot_guru)),5)]);
+                }
             }
             
             // dd($coba1);
