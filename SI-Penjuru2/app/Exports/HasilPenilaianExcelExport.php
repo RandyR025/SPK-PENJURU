@@ -63,14 +63,10 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
         /* Kepala Sekolah */
 
         /* Wali Murid */
-        $wali_kelas = DB::table('guru')->join('detail_kelas','guru.user_id','=','detail_kelas.user_id')->join('kelas','detail_kelas.kode_kelas','=','kelas.kode_kelas')->join('users','guru.user_id','=','users.id')->get();
+        $wali_kelas = DB::table('users as wali')->join('hasilwali','wali.id','=','hasilwali.user_id_wali')->join('users as guru','hasilwali.user_id_guru','=','guru.id')->join('detail_kelas','guru.id','=','detail_kelas.user_id')->join('kelas','detail_kelas.kode_kelas','=','kelas.kode_kelas')->where('hasilwali.id_penilaian','=',$this->id)->where('hasilwali.tanggal_id','=',$this->tgl)->select('guru.name as guru', 'wali.name as wali', 'nama_kelas', 'user_id_guru', 'user_id_wali','id_penilaian','tanggal_id')->orderBy('user_id_guru','asc')->get();
         foreach ($wali_kelas as $key => $value) {
-            // dd($wali_kelas);
-            $coba1[$key] = DB::table('users')->join('hasilwali','users.id','=','hasilwali.user_id_wali')->join('detail_kelas','users.id','=','detail_kelas.user_id')->where('detail_kelas.kode_kelas','=',$value->kode_kelas)->where('hasilwali.user_id_guru','=',$value->user_id)->where('hasilwali.id_penilaian','=',$this->id)->where('hasilwali.tanggal_id','=',$this->tgl)->get();
-            foreach ($coba1[$key] as $keyy => $valuee) {
-                $coba[$keyy] = DB::table('hasilpilihanwali')->join('pilihan', 'hasilpilihanwali.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihanwali.user_id_wali','=',$valuee->user_id_wali)->where('hasilpilihanwali.user_id_guru','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $this->id)->where('hasilpilihanwali.tanggal_id', '=', $this->tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+                $coba[$key] = DB::table('hasilpilihanwali')->join('pilihan', 'hasilpilihanwali.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihanwali.user_id_wali','=',$value->user_id_wali)->where('hasilpilihanwali.user_id_guru','=',$value->user_id_guru)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $this->id)->where('hasilpilihanwali.tanggal_id', '=', $this->tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
             }
-        }
         /* Wali Murid */
         $pengisian = DB::table('subkriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->where('id_penilaian','=',$this->id)->orderBy('subkriteria.kode_subkriteria','asc')->get();
         // $pengisiantelahdifilter = [];
@@ -82,7 +78,6 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
         // }
         // dd($pengisian);
         return view('backend/admin.hasil_excel',[
-            'coba1'=>$coba1,
             'coba' => $coba,
             'pengisian'=>$pengisian,
             'penilaian'=>$penilaian,

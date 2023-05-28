@@ -17,17 +17,15 @@
             </thead>
             <tbody>
                 @foreach ($wali_kelas as $key => $item)
-                @foreach ($coba1[$key] as $keyy => $itemm)
                 <tr>
                     <td>{{ $no++ }}</td>
-                    <td>{{ $itemm->name }}</td>
-                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->wali }}</td>
+                    <td>{{ $item->guru }}</td>
                     <td>{{ $item->nama_kelas }}</td>
-                    @foreach ($coba[$keyy] as $keycoba => $p)
+                    @foreach ($coba[$key] as $keycoba => $p)
                     <td>{{ $p->points }}</td>
                     @endforeach
                 </tr>
-                @endforeach
                 @endforeach
             </tbody>
         </table>
