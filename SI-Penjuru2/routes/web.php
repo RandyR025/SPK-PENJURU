@@ -165,6 +165,8 @@ Route::group(['middleware' => ['auth']], function () {
         /* Start Hasil Penilaian */
         Route::get('/daftarpenilaian', [HasilDataPenilaianController::class, 'index'])->name('daftarpenilaian');
         Route::get('/hasilpenilaian/{id}/tanggal/{tgl}', [HasilDataPenilaianController::class, 'show'])->name('hasilpenilaian');
+        Route::get('/hasilpenilaiankepsek/{id}/tanggal/{tgl}', [HasilDataPenilaianController::class, 'showKepsek'])->name('hasilpenilaiankepsek');
+        Route::get('/hasilpenilaianwali/{id}/tanggal/{tgl}', [HasilDataPenilaianController::class, 'showWali'])->name('hasilpenilaianwali');
         Route::get('/hasilpenilaiancek/{id}/cek/{pen}/{tgl}', [HasilDataPenilaianController::class, 'cek'])->name('hasilpenilaiancek');
         Route::post('/penilaiancek', [HasilDataPenilaianController::class, 'hasilcek'])->name('penilaiancek');
         Route::get('/gettotalnilaicek/{id}/total/{user}/{tgl}', [HasilDataPenilaianController::class, 'totalnilai'])->name('gettotalnilaicek');
@@ -186,7 +188,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         /* Start Cetak */
         Route::get('/hasilpenilaian/cetakpdf/{id}', [HasilDataPenilaianController::class, 'cetak_pdf'])->name('hasilpenilaiancetakpdf');
-        Route::get('/hasilpenilaian/cetakxlsx/{id}/{tgl}', [HasilDataPenilaianController::class, 'eksport_excel'])->name('hasilpenilaiancetakexcel');
+        Route::get('/hasilpenilaian/cetakxlsx/{id}/{tgl}/{cek}', [HasilDataPenilaianController::class, 'eksport_excel'])->name('hasilpenilaiancetakexcel');
         Route::get('/hasilpenilaianrangking/cetakpdf/{id}', [HasilController::class, 'cetak_pdf'])->name('hasilpenilaianrangkingcetakpdf');
         Route::get('/hasilpenilaianrangking/cetakxlsx/{id}', [HasilController::class, 'eksport_excel'])->name('hasilpenilaianrangkingcetakexcel');
         Route::get('/hasilpenilaianrangkingwali/cetakpdf/{id}', [HasilController::class, 'cetak_pdf_wali'])->name('hasilpenilaianrangkingwalicetakpdf');

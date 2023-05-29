@@ -110,19 +110,61 @@ class HasilDataPenilaianController extends Controller
         // }
         $coba = [];
         /* Guru */
-        /* $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$id)->where('hasil.tanggal_id','=',$tgl)->get();
+        $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$id)->where('hasil.tanggal_id','=',$tgl)->get();
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihan.tanggal_id', '=', $tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
-        } */
+        }
         /* End Guru */
+        $pengisian = DB::table('subkriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->where('id_penilaian','=',$id)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+        // dd($pengisian);
+        $cek="guru";
+        return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba','pengisian','tanggal','coba1','cek'));
+    }
 
+    public function showKepsek($id,$tgl)
+    {
+        $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $hasil = DB::table('hasil')->join('users', 'hasil.user_id','=','users.id')->join('penilaian','hasil.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->get();
+        // $pengisian = collect(DB::table('pilihan')->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->join('subkriteria', 'pengisian.kode_subkriteria', '=', 'subkriteria.kode_subkriteria')->join('kriteria', 'subkriteria.kode_kriteria', '=', 'kriteria.kode_kriteria')->get()->groupBy('kode_pengisian'));
+        // dd($hasil);
+        $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
+        $tanggal = DB::table('tanggal')->where('id', $tgl)->get();
+        $no = 1;
+        // $coba1 = Pengisian::with('penilaian')->where('id_penilaian','=',$id)->get();
+        // foreach ($coba1 as $key => $value) {
+        //     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.kode_pengisian','=',$value->kode_pengisian)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->get();
+        // }
+        $coba = [];
         /* Kepala Sekolah */
-        /* $coba1 = DB::table('users')->join('hasilkepsek','users.id','=','hasilkepsek.user_id_guru')->where('hasilkepsek.id_penilaian','=',$id)->where('hasilkepsek.tanggal_id','=',$tgl)->get();
+        $coba1 = DB::table('users')->join('hasilkepsek','users.id','=','hasilkepsek.user_id_guru')->where('hasilkepsek.id_penilaian','=',$id)->where('hasilkepsek.tanggal_id','=',$tgl)->get();
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihankepsek')->join('pilihan', 'hasilpilihankepsek.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihankepsek.user_id_guru','=',$value->user_id_guru)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $id)->where('hasilpilihankepsek.tanggal_id', '=', $tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
-        } */
+        }
         /*End Kepala Sekolah */
+        $pengisian = DB::table('subkriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->where('id_penilaian','=',$id)->orderBy('subkriteria.kode_subkriteria','asc')->get();
+        // dd($pengisian);
+        $cek = "kepsek";
+        return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba','pengisian','tanggal','coba1','cek'));
+    }
 
+    public function showWali($id,$tgl)
+    {
+        $admin = DB::table('admin')->join('users', 'admin.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $wali = DB::table('wali')->join('users', 'wali.user_id', '=', 'users.id')->find(Auth::user()->id);
+        $hasil = DB::table('hasil')->join('users', 'hasil.user_id','=','users.id')->join('penilaian','hasil.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->get();
+        // $pengisian = collect(DB::table('pilihan')->join('pengisian', 'pilihan.kode_pengisian', '=', 'pengisian.kode_pengisian')->join('penilaian', 'pengisian.id_penilaian', '=', 'penilaian.id_penilaian')->where('penilaian.id_penilaian',$id)->join('subkriteria', 'pengisian.kode_subkriteria', '=', 'subkriteria.kode_subkriteria')->join('kriteria', 'subkriteria.kode_kriteria', '=', 'kriteria.kode_kriteria')->get()->groupBy('kode_pengisian'));
+        // dd($hasil);
+        $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
+        $tanggal = DB::table('tanggal')->where('id', $tgl)->get();
+        $no = 1;
+        // $coba1 = Pengisian::with('penilaian')->where('id_penilaian','=',$id)->get();
+        // foreach ($coba1 as $key => $value) {
+        //     $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.kode_pengisian','=',$value->kode_pengisian)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->get();
+        // }
+        $coba = [];
         /* Wali Murid */
         $wali_kelas = DB::table('users as wali')->join('hasilwali','wali.id','=','hasilwali.user_id_wali')->join('users as guru','hasilwali.user_id_guru','=','guru.id')->join('detail_kelas','guru.id','=','detail_kelas.user_id')->join('kelas','detail_kelas.kode_kelas','=','kelas.kode_kelas')->where('hasilwali.id_penilaian','=',$id)->where('hasilwali.tanggal_id','=',$tgl)->select('guru.name as guru', 'wali.name as wali', 'nama_kelas', 'user_id_guru', 'user_id_wali','id_penilaian','tanggal_id')->orderBy('user_id_guru','asc')->get();
         // dd($wali_kelas);
@@ -132,7 +174,8 @@ class HasilDataPenilaianController extends Controller
         /*End Wali Murid */
         $pengisian = DB::table('subkriteria')->join('pengisian','subkriteria.kode_subkriteria','=','pengisian.kode_subkriteria')->where('id_penilaian','=',$id)->orderBy('subkriteria.kode_subkriteria','asc')->get();
         // dd($pengisian);
-        return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba','pengisian','tanggal','wali_kelas'));
+        $cek = "wali";
+        return view('backend/admin.hasil_penilaian', compact('admin','guru', 'wali','hasil','no','penilaian','coba','pengisian','tanggal','wali_kelas','cek'));
     }
 
     /**
@@ -412,7 +455,7 @@ class HasilDataPenilaianController extends Controller
         $pdf = PDF::loadview('backend/admin.hasilpenilaian_pdf',['coba'=>$coba, 'coba1'=>$coba1, 'penilaian'=>$penilaian, 'pengisian'=>$pengisiantelahdifilter, 'no'=>$no ,'data'=>'Laporan Hasil Jawaban Penilaian']);
         return $pdf->stream('laporan-hasil-penilaian');
     }
-    public function eksport_excel($id,$tgl){
-        return Excel::download(new HasilPenilaianExcelExport($id,$tgl),'penilaian.xlsx');
+    public function eksport_excel($id,$tgl,$cek){
+        return Excel::download(new HasilPenilaianExcelExport($id,$tgl,$cek),'penilaian.xlsx');
     }
 }

@@ -41,7 +41,7 @@ Kelola Data
                 </button>
                 <div class="dropdown-menu shadow dropdown-menu-end">
                     <!-- <button class="dropdown-item export-copy" type="button">Copy</button> -->
-                    <a href="{{route('hasilpenilaiancetakexcel',[$penilaian[0]->id_penilaian,$tanggal[0]->id])}}" class="dropdown-item export-excel" type="button">Excel</a>
+                    <a href="{{route('hasilpenilaiancetakexcel',[$penilaian[0]->id_penilaian,$tanggal[0]->id,$cek])}}" class="dropdown-item export-excel" type="button">Excel</a>
                     <a href="{{route('hasilpenilaiancetakpdf',$penilaian[0]->id_penilaian)}}" class="dropdown-item export-cvs" type="button">PDF</a>
                 </div>
             </div>
@@ -54,6 +54,70 @@ Kelola Data
 <div class="container">
     <div class="row">
         <table class="table table-hover" id="datatable">
+            @if($cek == "guru")
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    @foreach($pengisian as $data)
+                    <?php
+                    $tes = json_decode($data->level);
+                    ?>
+                    @if (property_exists( $tes, 'guru'))
+                    <th>{{$data->nama_subkriteria}}</th>
+                    @endif
+                    @endforeach
+                    <th>Cek Jawaban</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($coba1 as $key => $item)
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{ $item->name }}</td>
+                    @foreach ($coba[$key] as $keycoba => $p)
+                    <td>{{$p->nama_pilihan}} ({{ $p->points }})</td>
+                    @endforeach
+                    <td>
+                        <a href="{{ route('hasilpenilaiancek', [$item->user_id,$item->id_penilaian,$item->tanggal_id]) }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
+                            <i class="fa-regular fa-eye"></i>
+                        </a>
+                        <button value="{{$item->user_id}}" onclick="handleClick(this,'<?=$item->id_penilaian;?>','<?=$item->tanggal_id;?>');" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_cekjawaban" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
+                        <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+            @endif
+            @if($cek == "kepsek")
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama</th>
+                    @foreach($pengisian as $data)
+                    <?php
+                    $tes = json_decode($data->level);
+                    ?>
+                    @if (property_exists( $tes, 'kepalasekolah'))
+                    <th>{{$data->nama_subkriteria}}</th>
+                    @endif
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($coba1 as $key => $item)
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{ $item->name }}</td>
+                    @foreach ($coba[$key] as $keycoba => $p)
+                    <td>{{$p->nama_pilihan}} ({{ $p->points }})</td>
+                    @endforeach
+                </tr>
+                @endforeach
+            </tbody>
+            @endif
+            @if($cek == "wali")
             <thead>
                 <tr>
                     <th>No</th>
@@ -68,7 +132,6 @@ Kelola Data
                     <th>{{$data->nama_pengisian}}</th>
                     @endif
                     @endforeach
-                    <th>Cek Jawaban</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,17 +144,10 @@ Kelola Data
                     @foreach ($coba[$key] as $keycoba => $p)
                     <td>{{$p->nama_pilihan}} ({{ $p->points }})</td>
                     @endforeach
-                    <td>
-                        <a href="{{ route('hasilpenilaiancek', [$item->user_id_guru,$item->id_penilaian,$item->tanggal_id]) }}" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1" data-bs-placement="top" titte data-bs-original-title="Edit" data-bs-toggle="tooltip">
-                            <i class="fa-regular fa-eye"></i>
-                        </a>
-                        <button value="{{$item->user_id_guru}}" onclick="handleClick(this,'<?=$item->id_penilaian;?>','<?=$item->tanggal_id;?>');" class="btn btn-icon btn-icon-only btn-outline-secondary mb-1 delete_cekjawaban" type="button" data-bs-toggle="tooltip" data-bs-placement="top" titte data-bs-original-title="Hapus">
-                        <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
                 </tr>
                 @endforeach
             </tbody>
+            @endif
         </table>
     </div>
 </div>
