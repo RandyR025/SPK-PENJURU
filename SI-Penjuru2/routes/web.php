@@ -173,8 +173,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::delete('/delete-cekjawaban/{id}/penilaian/{penilaian}',[HasilDataPenilaianController::class, 'destroy']);
 
         Route::get('/daftarpenilaianrangking', [HasilController::class, 'index'])->name('daftarpenilaianrangking');
-        Route::get('/hasilrangkingpenilaian/{id}', [HasilController::class, 'show'])->name('hasilrangkingpenilaian');
-        Route::get('/hasilrangkingpenilaianwali/{id}', [HasilController::class, 'showwali'])->name('hasilrangkingpenilaianwali');
+        Route::get('/hasilrangkingpenilaian/{id}/{tgl}', [HasilController::class, 'show'])->name('hasilrangkingpenilaian');
+        Route::get('/hasilrangkingpenilaianwali/{id}/{tgl}', [HasilController::class, 'showwali'])->name('hasilrangkingpenilaianwali');
         /* End Hasil Penilaian */
 
         /* Penilaian Kinerja Kepala Sekolah */
