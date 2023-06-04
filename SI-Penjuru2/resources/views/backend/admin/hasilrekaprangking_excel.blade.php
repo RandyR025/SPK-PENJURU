@@ -1,7 +1,5 @@
 <table class="table table-bordered" id="datatable">
     @foreach($penilaian as $valkey => $val)
-    @foreach ($coba1[$valkey] as $key => $item)
-    @if(isset($coba1[$valkey]))
     <thead>
         <tr>
             <th>
@@ -17,8 +15,6 @@
             <th>Rangking</th>
         </tr>
     </thead>
-    @endif
-    @endforeach
     <tbody>
         <?php
         $nomor = 1;
@@ -85,6 +81,6 @@
             {{$nomor++}}
         </tr>
         @endforeach
-        @endif
     </tbody>
+    @endif
 </table>

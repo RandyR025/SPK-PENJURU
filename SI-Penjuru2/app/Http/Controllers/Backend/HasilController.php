@@ -148,27 +148,27 @@ class HasilController extends Controller
         //
     }
 
-    public function cetak_pdf($id){
+    public function cetak_pdf($id,$tgl){
         $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
         $no = 1;
-        $jumlah_total = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->get();
+        $jumlah_total = DB::table('jumlah_total')->join('users', 'jumlah_total.user_id_guru','=','users.id')->join('penilaian','jumlah_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->where('tanggal_id','=',$tgl)->orderBy('totals','desc')->get();
         $pdf = PDF::loadview('backend/admin.hasilpenilaianrangking_pdf',['jumlah_total'=>$jumlah_total,'data'=>'Laporan Hasil Rangking','penilaian'=>$penilaian, 'no'=>$no]);
         return $pdf->stream('laporan-hasil-rangking');
     }
-    public function cetak_pdf_wali($id){
+    public function cetak_pdf_wali($id,$tgl){
         $penilaian = DB::table('penilaian')->where('id_penilaian', $id)->get();
         $no = 1;
-        $jumlah_total = DB::table('jumlah_wali_total')->join('users', 'jumlah_wali_total.user_id_guru','=','users.id')->join('penilaian','jumlah_wali_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->get();
+        $jumlah_total = DB::table('jumlah_wali_total')->join('users', 'jumlah_wali_total.user_id_guru','=','users.id')->join('penilaian','jumlah_wali_total.id_penilaian','=','penilaian.id_penilaian')->where('penilaian.id_penilaian','=',$id)->where('tanggal_id','=',$tgl)->orderBy('totals','desc')->get();
         $pdf = PDF::loadview('backend/admin.hasilpenilaianrangking_pdf',['jumlah_total'=>$jumlah_total,'data'=>'Laporan Hasil Rangking','penilaian'=>$penilaian, 'no'=>$no]);
         return $pdf->stream('laporan-hasil-rangking');
     }
 
-    public function eksport_excel($id){
+    public function eksport_excel($id,$tgl){
         $cek = "guru";
-        return Excel::download(new HasilPenilaianRangkingExcelExport($id,$cek),'penilaian.xlsx');
+        return Excel::download(new HasilPenilaianRangkingExcelExport($id,$cek,$tgl),'penilaian.xlsx');
     }
-    public function eksport_excel_wali($id){
+    public function eksport_excel_wali($id,$tgl){
         $cek = "wali";
-        return Excel::download(new HasilPenilaianRangkingExcelExport($id,$cek),'penilaian.xlsx');
+        return Excel::download(new HasilPenilaianRangkingExcelExport($id,$cek,$tgl),'penilaian.xlsx');
     }
 }

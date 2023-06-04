@@ -718,9 +718,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($firstmonth) && isset($firstyear)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -732,9 +732,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($firstmonth) && isset($lastyear)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                    $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                    // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -746,9 +746,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($lastmonth) && isset($firstyear)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -760,9 +760,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($lastmonth) && isset($lastyear)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get()->orderBy('totals','desc');
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -774,9 +774,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($firstmonth)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$firstmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -788,9 +788,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($lastmonth)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
+                // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereMonth('tanggal','=',$lastmonth)->whereYear('tanggal','=',$now)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -804,7 +804,7 @@ class RekapLaporanController extends Controller
                 $no = 1;
                 $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$firstyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {
@@ -816,9 +816,9 @@ class RekapLaporanController extends Controller
             } elseif (isset($lastyear)) {
                 $penilaian = DB::table('tanggal')->join('penilaian','tanggal.id_penilaian','=','penilaian.id_penilaian')->whereYear('tanggal','=',$lastyear)->get();
                 $no = 1;
-                $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
+                // $guru = DB::table('guru')->join('users', 'guru.user_id', '=', 'users.id')->join('jumlah_total','users.id','=','jumlah_total.user_id_guru')->join('tanggal','jumlah_total.tanggal_id','=','tanggal.id')->select('users.name',DB::raw('SUM(jumlah_total.totals) as jumlah_nilai'))->whereYear('tanggal','=',$lastyear)->groupBy('users.id')->orderBy('totals','desc')->get();
                     foreach ($penilaian as $keyval => $val) {
-                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->get();
+                        $coba1[$keyval] = DB::table('users')->join('jumlah_total', 'users.id', '=', 'jumlah_total.user_id_guru')->where('jumlah_total.tanggal_id', '=', $val->id)->orderBy('totals','desc')->get();
                     }
                     // dd($guru);
                     if (isset($coba1)) {

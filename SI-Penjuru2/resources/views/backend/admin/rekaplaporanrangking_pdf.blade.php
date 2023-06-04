@@ -18,16 +18,10 @@
     </center>
     @foreach($penilaian as $valkey => $val)
     <p>
-    @foreach ($coba1[$valkey] as $key => $item)
-    @if(isset($coba1[$valkey]))
         Penilaian {{$val->nama_penilaian}}
         Tanggal {{$val->tanggal}}
-    @endif
-    @endforeach
     </p>
-    <table class="table table-bordered" id="datatable">
-    @foreach ($coba1[$valkey] as $key => $item)
-    @if(isset($coba1[$valkey]))    
+    <table class="table table-bordered" id="datatable"> 
         <thead>
             <tr>
                 <th>Nama</th>
@@ -35,8 +29,6 @@
                 <th>Rangking</th>
             </tr>
         </thead>
-    @endif
-    @endforeach
         <tbody>
             <?php
             $nomor = 1;

@@ -57,7 +57,7 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
         if ($this->cek == "guru") {
         $penilaian = DB::table('penilaian')->where('id_penilaian', $this->id)->get();
         $no = 1;
-        $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$this->id)->get();
+        $coba1 = DB::table('users')->join('hasil','users.id','=','hasil.user_id')->where('hasil.id_penilaian','=',$this->id)->where('hasil.tanggal_id', '=', $this->tgl)->orderBy('user_id', 'asc')->get();
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihan')->join('pilihan', 'hasilpilihan.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihan.user_id','=',$value->user_id)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $this->id)->where('hasilpilihan.tanggal_id', '=', $this->tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
         }
@@ -83,7 +83,7 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
         $penilaian = DB::table('penilaian')->where('id_penilaian', $this->id)->get();
         $no = 1;
         /* Kepala Sekolah */
-        $coba1 = DB::table('users')->join('hasilkepsek','users.id','=','hasilkepsek.user_id_guru')->where('hasilkepsek.id_penilaian','=',$this->id)->where('hasilkepsek.tanggal_id','=',$this->tgl)->get();
+        $coba1 = DB::table('users')->join('hasilkepsek','users.id','=','hasilkepsek.user_id_guru')->where('hasilkepsek.id_penilaian','=',$this->id)->where('hasilkepsek.tanggal_id','=',$this->tgl)->orderBy('user_id_guru', 'asc')->get();
         foreach ($coba1 as $key => $value) {
             $coba[$key] = DB::table('hasilpilihankepsek')->join('pilihan', 'hasilpilihankepsek.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihankepsek.user_id_guru','=',$value->user_id_guru)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $this->id)->where('hasilpilihankepsek.tanggal_id', '=', $this->tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
         }
@@ -110,7 +110,7 @@ class HasilPenilaianExcelExport implements FromView, ShouldAutoSize, WithEvents
         $penilaian = DB::table('penilaian')->where('id_penilaian', $this->id)->get();
         $no = 1;
         /* Wali Murid */
-        $wali_kelas = DB::table('users as wali')->join('hasilwali','wali.id','=','hasilwali.user_id_wali')->join('users as guru','hasilwali.user_id_guru','=','guru.id')->join('detail_kelas','guru.id','=','detail_kelas.user_id')->join('kelas','detail_kelas.kode_kelas','=','kelas.kode_kelas')->where('hasilwali.id_penilaian','=',$this->id)->where('hasilwali.tanggal_id','=',$this->tgl)->select('guru.name as guru', 'wali.name as wali', 'nama_kelas', 'user_id_guru', 'user_id_wali','id_penilaian','tanggal_id')->orderBy('user_id_guru','asc')->get();
+        $wali_kelas = DB::table('users as wali')->join('hasilwali','wali.id','=','hasilwali.user_id_wali')->join('users as guru','hasilwali.user_id_guru','=','guru.id')->join('detail_kelas','guru.id','=','detail_kelas.user_id')->join('kelas','detail_kelas.kode_kelas','=','kelas.kode_kelas')->where('hasilwali.id_penilaian','=',$this->id)->where('hasilwali.tanggal_id','=',$this->tgl)->select('guru.name as guru', 'wali.name as wali', 'nama_kelas', 'user_id_guru', 'user_id_wali','id_penilaian','tanggal_id')->orderBy('kelas.kode_kelas', 'asc')->orderBy('user_id_guru', 'asc')->orderBy('wali.name', 'asc')->get();
         foreach ($wali_kelas as $key => $value) {
                 $coba[$key] = DB::table('hasilpilihanwali')->join('pilihan', 'hasilpilihanwali.kode_pilihan','=','pilihan.kode_pilihan')->where('hasilpilihanwali.user_id_wali','=',$value->user_id_wali)->where('hasilpilihanwali.user_id_guru','=',$value->user_id_guru)->join('pengisian','pilihan.kode_pengisian','=','pengisian.kode_pengisian')->join('subkriteria','pengisian.kode_subkriteria','=','subkriteria.kode_subkriteria')->where('pengisian.id_penilaian', '=', $this->id)->where('hasilpilihanwali.tanggal_id', '=', $this->tgl)->orderBy('subkriteria.kode_subkriteria','asc')->get();
             }

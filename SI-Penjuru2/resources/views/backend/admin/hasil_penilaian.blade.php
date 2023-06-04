@@ -42,7 +42,7 @@ Kelola Data
                 <div class="dropdown-menu shadow dropdown-menu-end">
                     <!-- <button class="dropdown-item export-copy" type="button">Copy</button> -->
                     <a href="{{route('hasilpenilaiancetakexcel',[$penilaian[0]->id_penilaian,$tanggal[0]->id,$cek])}}" class="dropdown-item export-excel" type="button">Excel</a>
-                    <a href="{{route('hasilpenilaiancetakpdf',$penilaian[0]->id_penilaian)}}" class="dropdown-item export-cvs" type="button">PDF</a>
+                    <a href="{{route('hasilpenilaiancetakpdf',[$penilaian[0]->id_penilaian,$tanggal[0]->id,$cek])}}" class="dropdown-item export-cvs" type="button">PDF</a>
                 </div>
             </div>
             <!-- Export Dropdown End -->
