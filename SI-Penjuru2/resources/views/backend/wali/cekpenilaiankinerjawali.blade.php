@@ -55,10 +55,8 @@ if (count($walii) < 1) {
             @endif
             <div class="card-body">
                 <h5 class="heading mb-2">
-                    <a href="Quiz.Detail.html" class="body-link">
                         <?php $bulan =  date('F', strtotime($data[0]->tanggal)); ?>
                         <span class="clamp-line sh-6 lh-1-5" data-line="2">{{$data[0]->nama_penilaian}} Bulan {{$bulan}}</span>
-                    </a>
                 </h5>
                 <!-- <div class="mb-3 text-muted sh-8 clamp-line" data-line="3">
                     Pie fruitcake jelly beans. Candy tootsie chocolate croissant jujubes icing chocolate croissant jujubes icing macaroon croissant.
