@@ -230,7 +230,7 @@ class PenilaianKinerjaGuruController extends Controller
                     $nilai = $nilai + ($coba1[$key]->points * $coba1[$key]->nilai_kriteria * $coba1[$key]->nilai_subkriteria) ;   
                 }
             }
-            dd($nilai);
+            // dd($nilai);
             $bobot = 0.4;
             $query = Hasil::where([
                 ['user_id','=',Auth::user()->id],

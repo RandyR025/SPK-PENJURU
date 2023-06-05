@@ -229,8 +229,8 @@ Kelola Data
               <div>
                 <select name="jenis_kelamin" id="" class="jenis_kelamin form-control select-single-no-search">
                   <option value="0" label="&nbsp;" selected disabled>Pilih Jenis Kelamin</option>
-                  <option value="laki-laki">laki-laki</option>
-                  <option value="perempuan">perempuan</option>
+                  <option value="Laki-laki">laki-laki</option>
+                  <option value="Perempuan">perempuan</option>
                 </select>
               </div>
               <span class="text-danger error-text jenis_kelamin_error"></span>
