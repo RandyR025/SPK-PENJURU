@@ -25,13 +25,23 @@ Setting
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Password Lama</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input id="lama_password" name="password_lama" type="password" class="form-control" required />
+          <input id="lama_password" name="password_lama" type="password" class="form-control @error('password_lama') is-invalid @enderror" />
+          @error('password_lama')
+          <div class="invalid-feedback">
+            {{ $message }}
+          </div>
+          @enderror
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-lg-2 col-md-3 col-sm-4 col-form-label">Password Baru</label>
         <div class="col-sm-8 col-md-9 col-lg-10">
-          <input id="baru_password" name="password_baru" type="password" class="form-control" required />
+          <input id="baru_password" name="password_baru" type="password" class="form-control form-control @error('password_baru') is-invalid @enderror" />
+          @error('password_baru')
+          <div class="invalid-feedback">
+            {{ $message }}
+          </div>
+          @enderror
         </div>
       </div>
       <div class="mb-3 row mt-5">

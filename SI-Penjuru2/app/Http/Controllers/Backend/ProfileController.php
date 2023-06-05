@@ -42,12 +42,17 @@ class ProfileController extends Controller
     }
     public function changePassword(Request $request)
     {
+        request()->validate(
+            [
+                'password_lama'=>'required',
+                'password_baru'=>'required',
+            ]);
         $user = Auth::user();
         $currentPassword = $request->input('password_lama');
         $newPassword = $request->input('password_baru');
 
         if (!Hash::check($currentPassword, $user->password)) {
-            return redirect()->back()->with('loginError', 'Current password is incorrect');
+            return redirect()->back()->with('loginError', 'Password lama salah');
         }
 
         $user->password = Hash::make($newPassword);
